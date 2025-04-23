@@ -109,7 +109,8 @@
         "matching":"Matching Rules",
         "sessionAffinity":"Session Affinity",
         "healthCheck":"Health Check",
-        "httpRequest":"Http Request"
+        "httpRequest":"Http Request",
+        "httpClient": "Http Client"
       },
       "form": {
         "httpRequest":{

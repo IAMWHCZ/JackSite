@@ -1,13 +1,19 @@
-# .NET (solutions directory)
-**/bin/
-**/obj/
+# .NET
+**/[Bb]in/
+**/[Oo]bj/
+**/bin
+**/obj
 **/*.user
 **/*.suo
 **/*.dbmdl
 **/*.jfm
 **/.vs/
 **/*.DotSettings.user
-**/*.sln.DotSettings.user
+
+# Database files
+**/*.db
+**/*.db-shm
+**/*.db-wal
 
 # Node.js (apps directory)
 **/node_modules/
@@ -83,3 +89,5 @@
 **/Thumbs.db
 **/ehthumbs.db
 **/Desktop.ini
+solutions/src/BuildingBlocks/JackSite.Common/bin/Debug/net8.0/JackSite.Common.dll
+solutions/src/BuildingBlocks/JackSite.Common/bin/Debug/net8.0/JackSite.Common.dll
