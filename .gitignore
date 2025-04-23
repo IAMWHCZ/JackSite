@@ -1,0 +1,85 @@
+# .NET (solutions directory)
+**/bin/
+**/obj/
+**/*.user
+**/*.suo
+**/*.dbmdl
+**/*.jfm
+**/.vs/
+**/*.DotSettings.user
+**/*.sln.DotSettings.user
+
+# Node.js (apps directory)
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/*.local
+**/.env
+**/.env.*
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.vs/
+.DS_Store
+**/.DS_Store
+
+# Logs
+**/logs/
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+**/lerna-debug.log*
+
+# Database
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+
+# Build results
+**/[Dd]ebug/
+**/[Rr]elease/
+**/x64/
+**/x86/
+**/[Aa][Rr][Mm]/
+**/[Aa][Rr][Mm]64/
+**/bld/
+**/[Bb]in/
+**/[Oo]bj/
+**/[Ll]og/
+**/[Ll]ogs/
+
+# Docker
+**/.docker/
+**/docker-compose.override.yml
+
+# Cache and temp files
+**/.cache/
+**/.temp/
+**/.tmp/
+
+# Package files
+**/yarn.lock
+**/package-lock.json
+**/pnpm-lock.yaml
+
+# Testing
+**/coverage/
+**/.nyc_output
+
+# Build output
+**/out/
+**/build/
+
+# Editor specific
+**/*.swp
+**/*.swo
+**/*~
+
+# OS specific
+**/Thumbs.db
+**/ehthumbs.db
+**/Desktop.ini
