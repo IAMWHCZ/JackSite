@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/JackSite.YarpApi.Gateway.props" />
+</Project>

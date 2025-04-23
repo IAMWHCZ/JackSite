@@ -1,0 +1,6 @@
+@JackSite.WebTools.Server_HostAddress = http://localhost:5239
+
+GET {{JackSite.WebTools.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

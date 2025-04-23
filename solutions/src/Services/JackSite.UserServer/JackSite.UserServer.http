@@ -1,0 +1,6 @@
+@JackSite.UserServer_HostAddress = http://localhost:5233
+
+GET {{JackSite.UserServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
