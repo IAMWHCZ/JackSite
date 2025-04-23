@@ -23,12 +23,23 @@
     <projectFile profileName="http">src/Services/JackSite.WebTools.Server/JackSite.WebTools.Server.csproj</projectFile>
     <projectFile profileName="https">src/Services/JackSite.WebTools.Server/JackSite.WebTools.Server.csproj</projectFile>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="e479d29b-dea4-4d18-87cf-5eac8cfe9a97" name="Changes" comment="" />
+    <list default="true" id="e479d29b-dea4-4d18-87cf-5eac8cfe9a97" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.solutions/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.solutions/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "customColor": "",
@@ -41,8 +52,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    ".NET Launch Settings Profile.JackSite.YarpApi.Gateway: http.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -352,7 +369,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1745421865753</updated>
-      <workItem from="1745421873879" duration="296000" />
+      <workItem from="1745421873879" duration="1019000" />
     </task>
     <servers />
   </component>
