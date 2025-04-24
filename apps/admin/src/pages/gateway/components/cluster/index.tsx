@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 
 export const ClusterContainer = () => {
     const { t } = useTranslation();
-    const { setOpenClusterDialog } = useGatewayStore()
+    const { setOpenClusterDialog,setSelectedCluster } = useGatewayStore()
     const { reload } = useClusters()
     
     const handleReloadConfig = async () => {
@@ -30,7 +30,10 @@ export const ClusterContainer = () => {
                     <Button
                         variant="contained"
                         startIcon={<Plus size={20} />}
-                        onClick={() => setOpenClusterDialog(true)}
+                        onClick={() => {
+                            setSelectedCluster(null!)
+                            setOpenClusterDialog(true)
+                        }}
                     >
                         {t('gateway.actions.addCluster')}
                     </Button>

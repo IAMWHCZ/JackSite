@@ -231,6 +231,13 @@
     "confirm":"Confirm",
     "notification":"System Prompt",
     "deleteSuccess":"Delete Success!"
+  },
+  "datePicker": {
+    "selectDate": "Select Date",
+    "invalidDate": "Please select a valid date",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "placeholder": "Select date"
   }
 }
 

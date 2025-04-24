@@ -231,5 +231,12 @@
     "confirm":"确定",
     "notification":"系统提示",
     "deleteSuccess":"删除成功！"
+  },
+  "datePicker": {
+    "selectDate": "选择日期",
+    "invalidDate": "请选择有效日期",
+    "startDate": "开始日期",
+    "endDate": "结束日期",
+    "placeholder": "请选择日期"
   }
 }

@@ -91,3 +91,6 @@
 **/Desktop.ini
 solutions/src/BuildingBlocks/JackSite.Common/bin/Debug/net8.0/JackSite.Common.dll
 solutions/src/BuildingBlocks/JackSite.Common/bin/Debug/net8.0/JackSite.Common.dll
+apps/admin/package.json
+apps/admin/bun.lockb
+apps/admin/bun.lockb
