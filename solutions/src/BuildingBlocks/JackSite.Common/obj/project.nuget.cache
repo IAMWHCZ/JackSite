@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "bp9uaa5jDLwREIf8cpHU3KoD/ZGuldkCYNPX34zc5XK4AesHH8QytQammCjMF/tuNC03A/aXRZdwBDI5cZydQA==",
+  "dgSpecHash": "emB30Dd22+s=",
   "success": true,
-  "projectFilePath": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Common/JackSite.Common.csproj",
+  "projectFilePath": "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Common\\JackSite.Common.csproj",
   "expectedPackageFiles": [
-    "/home/cheng-zhuo/.nuget/packages/mediatr/12.2.0/mediatr.12.2.0.nupkg.sha512",
-    "/home/cheng-zhuo/.nuget/packages/mediatr.contracts/2.0.1/mediatr.contracts.2.0.1.nupkg.sha512",
-    "/home/cheng-zhuo/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+    "C:\\Users\\cheng_zhuo\\.nuget\\packages\\mediatr\\12.2.0\\mediatr.12.2.0.nupkg.sha512",
+    "C:\\Users\\cheng_zhuo\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\cheng_zhuo\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }

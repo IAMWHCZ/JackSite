@@ -1,25 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "/home/cheng-zhuo/projects/JackChengSite/solutions/src/Services/JackSite.Notification.Server/JackSite.Notification.Server.csproj": {}
+    "D:\\projects\\jack-site\\solutions\\src\\Services\\JackSite.Notification.Server\\JackSite.Notification.Server.csproj": {}
   },
   "projects": {
-    "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Common/JackSite.Common.csproj": {
+    "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Common\\JackSite.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Common/JackSite.Common.csproj",
+        "projectUniqueName": "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Common\\JackSite.Common.csproj",
         "projectName": "JackSite.Common",
-        "projectPath": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Common/JackSite.Common.csproj",
-        "packagesPath": "/home/cheng-zhuo/.nuget/packages/",
-        "outputPath": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Common/obj/",
+        "projectPath": "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Common\\JackSite.Common.csproj",
+        "packagesPath": "C:\\Users\\cheng_zhuo\\.nuget\\packages\\",
+        "outputPath": "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Common\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\工作应用\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/cheng-zhuo/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\cheng_zhuo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,7 +39,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -63,34 +76,41 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.115/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Infrastructure/JackSite.Infrastructure.csproj": {
+    "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Infrastructure\\JackSite.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Infrastructure/JackSite.Infrastructure.csproj",
+        "projectUniqueName": "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Infrastructure\\JackSite.Infrastructure.csproj",
         "projectName": "JackSite.Infrastructure",
-        "projectPath": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Infrastructure/JackSite.Infrastructure.csproj",
-        "packagesPath": "/home/cheng-zhuo/.nuget/packages/",
-        "outputPath": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Infrastructure/obj/",
+        "projectPath": "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Infrastructure\\JackSite.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\cheng_zhuo\\.nuget\\packages\\",
+        "outputPath": "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\工作应用\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/cheng-zhuo/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\cheng_zhuo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Common/JackSite.Common.csproj": {
-                "projectPath": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Common/JackSite.Common.csproj"
+              "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Common\\JackSite.Common.csproj": {
+                "projectPath": "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Common\\JackSite.Common.csproj"
               }
             }
           }
@@ -99,7 +119,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -212,37 +238,44 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.115/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/cheng-zhuo/projects/JackChengSite/solutions/src/Services/JackSite.Notification.Server/JackSite.Notification.Server.csproj": {
+    "D:\\projects\\jack-site\\solutions\\src\\Services\\JackSite.Notification.Server\\JackSite.Notification.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/Services/JackSite.Notification.Server/JackSite.Notification.Server.csproj",
+        "projectUniqueName": "D:\\projects\\jack-site\\solutions\\src\\Services\\JackSite.Notification.Server\\JackSite.Notification.Server.csproj",
         "projectName": "JackSite.Notification.Server",
-        "projectPath": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/Services/JackSite.Notification.Server/JackSite.Notification.Server.csproj",
-        "packagesPath": "/home/cheng-zhuo/.nuget/packages/",
-        "outputPath": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/Services/JackSite.Notification.Server/obj/",
+        "projectPath": "D:\\projects\\jack-site\\solutions\\src\\Services\\JackSite.Notification.Server\\JackSite.Notification.Server.csproj",
+        "packagesPath": "C:\\Users\\cheng_zhuo\\.nuget\\packages\\",
+        "outputPath": "D:\\projects\\jack-site\\solutions\\src\\Services\\JackSite.Notification.Server\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\工作应用\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/cheng-zhuo/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\cheng_zhuo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Common/JackSite.Common.csproj": {
-                "projectPath": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Common/JackSite.Common.csproj"
+              "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Common\\JackSite.Common.csproj": {
+                "projectPath": "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Common\\JackSite.Common.csproj"
               },
-              "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Infrastructure/JackSite.Infrastructure.csproj": {
-                "projectPath": "/home/cheng-zhuo/projects/JackChengSite/solutions/src/BuildingBlocks/JackSite.Infrastructure/JackSite.Infrastructure.csproj"
+              "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Infrastructure\\JackSite.Infrastructure.csproj": {
+                "projectPath": "D:\\projects\\jack-site\\solutions\\src\\BuildingBlocks\\JackSite.Infrastructure\\JackSite.Infrastructure.csproj"
               }
             }
           }
@@ -251,7 +284,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -297,7 +336,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.115/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
