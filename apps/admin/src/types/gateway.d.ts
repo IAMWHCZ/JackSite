@@ -62,7 +62,7 @@ export type Transform = {
 
 export type SessionAffinityConfig = {
   enabled: boolean;
-  policy: 'Cookie' | 'CustomHeader';
+  policy?: 'Cookie' | 'CustomHeader';
   affinityKeyName?: string;
   failurePolicy?: 'Redistribute' | 'Return503Error';
   settings?: {

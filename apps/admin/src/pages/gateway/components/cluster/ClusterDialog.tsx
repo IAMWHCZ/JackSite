@@ -23,12 +23,12 @@ import { useGatewayStore } from "@/stores/gateway";
 
 const defaultClusterConfig: ClusterConfig = {
   clusterId: "",
-  loadBalancingPolicy: "RoundRobin",
+  loadBalancingPolicy: undefined,
   sessionAffinity: {
     enabled: false,
-    policy: "Cookie",
-    affinityKeyName: "SessionAffinity",
-    failurePolicy: "Return503Error",
+    policy: undefined,
+    affinityKeyName: "",
+    failurePolicy: undefined,
     cookie: {
       path: "/",
       httpOnly: true,
@@ -39,34 +39,34 @@ const defaultClusterConfig: ClusterConfig = {
   healthCheck: {
     active: {
       enabled: true,
-      interval: "00:00:10",
-      timeout: "00:00:10",
-      policy: "ConsecutiveFailures",
-      path: "/health",
+      interval: "",
+      timeout: "",
+      policy: "",
+      path: "",
     },
     passive: {
       enabled: false,
-      policy: "TransportFailureRate",
-      reactivationPeriod: "00:00:10",
+      policy: "",
+      reactivationPeriod: "",
     },
   },
   httpClient: {
     dangerousAcceptAnyServerCertificate: false,
     maxConnectionsPerServer: 1024,
     enableMultipleHttp2Connections: false,
-    requestHeaderEncoding: "utf-8",
-    responseHeaderEncoding: "utf-8",
+    requestHeaderEncoding: "",
+    responseHeaderEncoding: "",
   },
   httpRequest: {
-    version: "2.0",
-    versionPolicy: "RequestVersionOrLower",
-    activityTimeout: "00:00:30",
-    allowResponseBuffering: true,
+    version: "",
+    versionPolicy: undefined,
+    activityTimeout: "",
+    allowResponseBuffering: false,
   },
   destinations: {},
   metadata: {},
 };
-const initialData = null;
+
 
 export const ClusterDialog = () => {
   const { t } = useTranslation();
@@ -90,10 +90,12 @@ export const ClusterDialog = () => {
   });
 
   useEffect(() => {
-    if (initialData) {
+    if (selectedCluster) {
+      form.reset(selectedCluster);
+    }else{
       form.reset();
     }
-  }, [initialData, form]);
+  }, [form,selectedCluster]);
 
   return (
     <Dialog
@@ -106,7 +108,7 @@ export const ClusterDialog = () => {
       }}
     >
       <DialogTitle sx={{ m: 0, p: 2, pr: 6 }}>
-        {initialData
+        {selectedCluster
           ? t("gateway.dialog.title.editCluster")
           : t("gateway.dialog.title.addCluster")}
         <Tooltip title={t("gateway.dialog.close")}>
@@ -148,7 +150,7 @@ export const ClusterDialog = () => {
               >
                 {({ state, handleChange }) => (
                   <TextField
-                    disabled={!!initialData}
+                    disabled={!!selectedCluster}
                     value={state.value}
                     onChange={({ target: { value } }) => handleChange(value)}
                     label={t("gateway.dialog.form.clusterId.label")}
