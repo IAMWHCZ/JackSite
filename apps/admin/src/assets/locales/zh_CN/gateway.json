@@ -1,0 +1,12 @@
+{
+    "route": {
+        "title": "路由配置",
+        "reload": "重新加载路由"
+    },
+    "cluster": {
+        "title": "集群配置",
+        "reload": "重新加载集群",
+        "reloading": "正在加载..."
+    },
+    "format":"格式化"
+}

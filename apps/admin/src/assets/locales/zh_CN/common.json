@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "home": "首页",
+    "gateway": "网关配置"
+  },
+  "tooltip": {
+    "theme": "切换到{{mode}}主题",
+    "language": "切换到{{lang}}",
+    "account": "账户设置",
+    "collapse": "收起侧边栏",
+    "expand": "展开侧边栏"
+  },
+  "header": {
+    "title": "管理后台"
+  },
+  "menu": {
+    "profile": "个人中心",
+    "settings": "系统设置",
+    "logout": "退出登录"
+  },
+  "enabled": "已开启",
+  "disabled": "已关闭",
+  "cancel": "取消",
+  "confirm": "确定",
+  "notification": "系统提示",
+  "deleteSuccess": "删除成功！",
+  "saveSuccess": "配置保存成功",
+  "save": "保存",
+  "title":"JackSite 后台系统"
+}

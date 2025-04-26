@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "home": "Dashboard",
+    "gateway": "Gateway Config"
+  },
+  "tooltip": {
+    "theme": "Switch to {{mode}} theme",
+    "language": "Switch to {{lang}}",
+    "account": "Account Settings",
+    "collapse": "Collapse Sidebar",
+    "expand": "Expand Sidebar"
+  },
+  "header": {
+    "title": "Admin Dashboard"
+  },
+  "menu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "notification": "System Prompt",
+  "deleteSuccess": "Delete Success!",
+  "saveSuccess": "Configuration saved successfully",
+  "save": "Save",
+  "title":"JackSite Backend System"
+}

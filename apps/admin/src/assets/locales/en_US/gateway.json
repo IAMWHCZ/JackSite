@@ -1,0 +1,12 @@
+{
+    "route":{
+        "title":"Route Config",
+        "reload":"Reload Route"
+    },
+    "cluster":{
+        "title":"Cluster Config",
+        "reload":"Reload Cluster",
+        "reloading":"Reloading..."
+    },
+    "format":"Format"
+}
