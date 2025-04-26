@@ -1,6 +1,0 @@
-@JackSite.IdentityServer_HostAddress = http://localhost:5189
-
-GET {{JackSite.IdentityServer_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

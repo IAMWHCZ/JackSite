@@ -5,7 +5,7 @@ export const DocumentTitle = () => {
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    document.title = t('system.title');
+    document.title = t('title');
   }, [t, i18n.language]); // 当语言改变时更新标题
 
   return null;

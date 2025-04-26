@@ -1,7 +1,7 @@
 // 基础类型定义
 export type ClusterConfig = {
   clusterId: string;
-  loadBalancingPolicy?: 'PowerOfTwoChoices' | 'FirstAlphabetical' | 'Random' | 'RoundRobin' | 'LeastRequests';
+  loadBalancingPolicy?: 'PowerOfTwoChoices' | 'FirstAlphabetical' | 'Random' | 'RoundRobin' | 'LeastRequests' | '';
   sessionAffinity?: SessionAffinityConfig;
   healthCheck?: HealthCheckConfig;
   httpClient?: HttpClientConfig;
@@ -62,9 +62,9 @@ export type Transform = {
 
 export type SessionAffinityConfig = {
   enabled: boolean;
-  policy?: 'Cookie' | 'CustomHeader';
+  policy?: 'Cookie' | 'CustomHeader' | '';
   affinityKeyName?: string;
-  failurePolicy?: 'Redistribute' | 'Return503Error';
+  failurePolicy?: 'Redistribute' | 'Return503Error' |  '';
   settings?: {
     customHeaderName?: string;
   };
@@ -117,7 +117,7 @@ export type HttpClientConfig = {
 export type ForwarderRequestConfig = {
   activityTimeout?: string;
   version?: string;
-  versionPolicy?: 'RequestVersionExact' | 'RequestVersionOrLower' | 'RequestVersionOrHigher';
+  versionPolicy?: 'RequestVersionExact' | 'RequestVersionOrLower' | 'RequestVersionOrHigher' | '';
   allowResponseBuffering?: boolean;
 }
 

@@ -6,14 +6,13 @@ import {
   Tab,
   Tabs, Button
 } from '@mui/material';
-import { RouteContainer } from './components/route';
-import { ClusterContainer } from './components/cluster';
-import { RefreshCw } from "lucide-react";
 import { useMutation } from '@tanstack/react-query';
 import { GatewayApi } from '@/apis/gateway';
 import toast from 'react-hot-toast';
 import { useClusters } from '@/hooks/useClusters';
 import { useRoutes } from '@/hooks/useRoutes';
+import { RouteEditor } from './components/RouteEditor';
+import { ClusterEditor } from './components/ClusterEditor';
 
 export const GatewayPage = () => {
   const { t } = useTranslation();
@@ -34,7 +33,7 @@ export const GatewayPage = () => {
         return;
       }
       if (res.isSuccess) {
-        value === 'cluster' ? await cluster.list.refetch() : await routes.list.refetch()
+        value === 'cluster' ? await cluster.getJson.refetch() : await routes.getJson.refetch()
       }
     } catch (error) {
       toast.error(t('common.error.unknown'));
@@ -42,54 +41,19 @@ export const GatewayPage = () => {
     }
   }
   return (
-    <Box p={3}>
-      <Box className={"flex flex-row justify-between items-center w-full"} >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          textColor="primary"
-          indicatorColor="primary"
-          sx={{
-            mb: 3,
-            '& .MuiTab-root': {
-              fontSize: '1.2rem',
-              fontWeight: 500,
-              py: 1.5,
-              textTransform: 'none',
-            },
-            '& .Mui-selected': {
-              fontWeight: 600,
-            },
-            '& .MuiTabs-indicator': {
-              height: 3,
-            },
-          }}
-        >
-          <Tab
-            label={t('gateway.routes.title')}
-            value="route"
-            sx={{ minHeight: 56 }}
-          />
-          <Tab
-            label={t('gateway.clusters.title')}
-            value="cluster"
-            sx={{ minHeight: 56 }}
-          />
-        </Tabs>
-        <Button
-          onClick={handleReload}
-          loading={reload.isPending}
-          variant="outlined"
-          startIcon={<RefreshCw size={20} />}>
-          {t('gateway.reload')}
-        </Button>
+    <Box p={3} height={"100%"}>            
+      <Box sx={{ 
+        display: 'flex', 
+        gap: 2,  // 组件之间的间距
+        flexDirection: 'row'  // 水平排列
+      }}>
+        <Box sx={{ flex: 1 }}>  {/* 占据等量空间 */}
+          <RouteEditor />
+        </Box>
+        <Box sx={{ flex: 1 }}>
+          <ClusterEditor />
+        </Box>
       </Box>
-      {
-        value === 'route' ?
-          <RouteContainer />
-          :
-          <ClusterContainer />
-      }
     </Box>
   );
 };

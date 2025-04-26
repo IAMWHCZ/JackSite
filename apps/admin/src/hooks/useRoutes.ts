@@ -4,13 +4,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useRoutes() {
     const queryClient = useQueryClient();
-    const queryKey = ['gateway-routes'];
+    const queryKey = ['gateway-route-json'];
 
     return {
         // 查询路由列表
         list: useQuery({
-            queryKey,
-            queryFn: GatewayApi.routes.getList
+            queryKey:['gateway-route-list'],
+            queryFn: GatewayApi.routes.getList,
+            enabled: false 
         }),
 
         // 创建路由
@@ -33,6 +34,16 @@ export function useRoutes() {
         // 重载配置
         reload: useMutation<ApiResponse<[]>, Error, void>({
             mutationFn: () => GatewayApi.reload(1),
+            onSuccess: () => queryClient.invalidateQueries({ queryKey })
+        }),
+        // 获取路由配置
+        getJson: useQuery({
+            queryKey,
+            queryFn: GatewayApi.routes.getJson
+        }),
+        // 更新路由配置
+        updateJson: useMutation({
+            mutationFn: GatewayApi.routes.updateJson,
             onSuccess: () => queryClient.invalidateQueries({ queryKey })
         })
     };
