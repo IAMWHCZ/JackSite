@@ -1,0 +1,13 @@
+﻿services:
+  jacksite.entityframeworkcore:
+    image: jacksite.entityframeworkcore
+    build:
+      context: .
+      dockerfile: JackSite.EntityFrameworkCore/Dockerfile
+
+  jacksite.host:
+    image: jacksite.host
+    build:
+      context: .
+      dockerfile: src/JackSite.Host/Dockerfile
+
