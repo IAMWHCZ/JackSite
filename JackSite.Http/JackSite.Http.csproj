@@ -8,9 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
+      <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\JackSite.Application\JackSite.Application.csproj" />
+      <ProjectReference Include="..\JackSite.Contracts\JackSite.Contracts.csproj" />
+      <ProjectReference Include="..\JackSite.Infrastructure\JackSite.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
