@@ -300,3 +300,10 @@ volumes:
       context: .
       dockerfile: services/users/JackSite.User.WebAPI/Dockerfile
 
+services:
+  jacksite.notification.grpc:
+    image: jacksite.notification.grpc
+    build:
+      context: .
+      dockerfile: services/notifications/JackSite.Notification.Grpc/Dockerfile
+

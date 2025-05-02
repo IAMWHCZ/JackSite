@@ -16,6 +16,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\shareds\JackSite.Shared.CQRS\JackSite.Shared.CQRS.csproj" />
       <ProjectReference Include="..\..\..\shareds\JackSite.Shared.EntityFrameworkCore\JackSite.Shared.EntityFrameworkCore.csproj" />
+      <ProjectReference Include="..\..\..\shareds\JackSite.Shared.EventBus\JackSite.Shared.EventBus.csproj" />
       <ProjectReference Include="..\..\..\shareds\JackSite.Shared.Http\JackSite.Shared.Http.csproj" />
       <ProjectReference Include="..\..\..\shareds\JackSite.Shared.Logging\JackSite.Shared.Logging.csproj" />
     </ItemGroup>
@@ -25,6 +26,14 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\CreateUser\" />
+      <Folder Include="Features\GetUserById\" />
+      <Folder Include="Features\GetUsers\" />
+      <Folder Include="Features\RemoveUser\" />
+      <Folder Include="Features\UpdateUser\" />
     </ItemGroup>
 
 </Project>
