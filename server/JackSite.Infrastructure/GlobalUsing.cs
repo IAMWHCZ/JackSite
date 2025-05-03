@@ -1,0 +1,12 @@
+﻿global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Diagnostics;
+global using JackSite.Infrastructure.Data;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Configuration;
+global using System.Linq.Expressions;
+global using System.Runtime.CompilerServices;
+global using JackSite.Domain.Base;
+global using JackSite.Domain.Repositories;
+global using System.Reflection;
+global using JackSite.Infrastructure.Interceptors;
+global using JackSite.Infrastructure.Repositories;

@@ -1,9 +1,0 @@
-global using JackSite.Notification.Grpc.Data;
-global using JackSite.Notification.Grpc.EventHandlers;
-global using JackSite.Notification.Grpc.Interfaces;
-global using JackSite.Notification.Grpc.Options;
-global using JackSite.Notification.Grpc.Services;
-global using JackSite.Shared.EntityFrameworkCore.Extensions;
-global using JackSite.Shared.EntityFrameworkCore.Providers;
-global using JackSite.Shared.EventBus.Abstractions;
-global using JackSite.Shared.EventBus.Events;
