@@ -1,0 +1,7 @@
+﻿services:
+  jacksite.identity.server:
+    image: jacksite.identity.server
+    build:
+      context: .
+      dockerfile: JackSite.Identity.Server/Dockerfile
+

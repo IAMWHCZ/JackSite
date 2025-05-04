@@ -1,4 +1,3 @@
-using JackSite.Domain.Entities;
 using JackSite.Domain.Services;
 
 namespace JackSite.Infrastructure.Services;
@@ -15,12 +14,8 @@ public class PermissionService(IPermissionRepository permissionRepository) : IPe
         }
 
         // 创建新权限
-        var permission = new Permission
-        {
-            Name = name,
-            Code = code,
-            Description = description
-        };
+        var permission = new Permission(name,code);
+        permission.UpdateDescription(description);
         
         return await permissionRepository.AddAsync(permission, cancellationToken);
     }
@@ -43,11 +38,9 @@ public class PermissionService(IPermissionRepository permissionRepository) : IPe
             }
         }
         
-        // 更新权限
-        permission.Name = name;
-        permission.Code = code;
-        permission.Description = description;
-        
+        permission.UpdateName(name);
+        permission.UpdateCode(code);
+        permission.UpdateDescription(description);
         await permissionRepository.UpdateAsync(permission, cancellationToken);
         return true;
     }

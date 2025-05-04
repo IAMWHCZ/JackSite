@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JackSite.Identity.Server", "JackSite.Identity.Server\JackSite.Identity.Server.csproj", "{74BC05FC-2F0A-459F-9EE4-A5F60DFDB375}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87B83A59-F81C-4DAE-BD6D-9B7603810B4C}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74BC05FC-2F0A-459F-9EE4-A5F60DFDB375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74BC05FC-2F0A-459F-9EE4-A5F60DFDB375}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74BC05FC-2F0A-459F-9EE4-A5F60DFDB375}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74BC05FC-2F0A-459F-9EE4-A5F60DFDB375}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

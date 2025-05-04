@@ -6,3 +6,6 @@ global using System.Threading.Tasks;
 global using JackSite.Domain.Common;
 global using System.Linq.Expressions;
 global using JackSite.Domain.Base;
+global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using JackSite.Domain.Enums;

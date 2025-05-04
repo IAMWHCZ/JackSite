@@ -3,7 +3,7 @@ namespace JackSite.Domain.Base;
 /// <summary>
 /// 事务接口
 /// </summary>
-public interface ITransaction : IDisposable, IAsyncDisposable
+public interface ITransaction : IDisposable
 {
     /// <summary>
     /// 提交事务

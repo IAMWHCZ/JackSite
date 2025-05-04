@@ -4,6 +4,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        
         services
             .AddApplicationDbContext(configuration)
             .AddRepositories()
@@ -73,6 +74,9 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
+        // 修改这行，提供具体的实现类
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
         // 自动注册所有服务
         var assembly = Assembly.GetExecutingAssembly();
 
@@ -88,7 +92,7 @@ public static class ServiceCollectionExtensions
             // 查找该服务实现的接口
             var interfaceType = serviceType.GetInterfaces()
                 .FirstOrDefault(i => i.Name == $"I{serviceType.Name}" ||
-                                     (i.Name.StartsWith("I") && i.Name.Substring(1) == serviceType.Name));
+                                     (i.Name.StartsWith('I') && i.Name[1..] == serviceType.Name));
 
             if (interfaceType != null)
             {

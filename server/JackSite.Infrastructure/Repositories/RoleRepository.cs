@@ -33,11 +33,7 @@ public class RoleRepository(ApplicationDbContext dbContext) : BaseRepository<Rol
         
         if (!exists)
         {
-            var rolePermission = new RolePermission
-            {
-                RoleId = roleId,
-                PermissionId = permissionId
-            };
+            var rolePermission = new RolePermission(roleId,permissionId);
             
             await _dbContext.Set<RolePermission>().AddAsync(rolePermission, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);

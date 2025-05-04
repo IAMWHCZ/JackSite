@@ -8,7 +8,8 @@ namespace JackSite.Infrastructure.Services;
 public class UserService(
     IUserBasicRepository userRepository,
     IRoleRepository roleRepository,
-    IBaseRepository<UserRole> userRoleRepository)
+    IBaseRepository<UserRole> userRoleRepository,
+    IUnitOfWork unitOfWork)
     : IUserService
 {
     public async Task<UserBasic?> AuthenticateAsync(string username, string password,
@@ -46,16 +47,23 @@ public class UserService(
         var salt = GenerateSalt();
         var passwordHash = HashPassword(password, salt);
 
-        var user = new UserBasic
+        // 使用领域构造函数创建用户实体
+        var user = new UserBasic(username, email, passwordHash, salt);
+        
+        // 使用工作单元模式保存
+        using var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
+        try
         {
-            Username = username,
-            Email = email,
-            PasswordHash = passwordHash,
-            Salt = salt,
-            IsActive = true
-        };
-
-        return await userRepository.AddAsync(user, cancellationToken);
+            await userRepository.AddAsync(user, cancellationToken);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+            return user;
+        }
+        catch
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
     }
 
     public async Task<bool> AssignRoleToUserAsync(long userId, long roleId,
@@ -74,24 +82,11 @@ public class UserService(
             return false;
         }
 
-        // 检查用户是否已经拥有该角色
-        var existingUserRole = await userRoleRepository.FindOneAsync(
-            ur => ur.UserId == userId && ur.RoleId == roleId,
-            cancellationToken);
-
-        if (existingUserRole != null)
-        {
-            return true; // 用户已经拥有该角色
-        }
-
-        // 分配角色给用户
-        var userRole = new UserRole
-        {
-            UserId = userId,
-            RoleId = roleId
-        };
-
-        await userRoleRepository.AddAsync(userRole, cancellationToken);
+        // 使用领域行为添加角色
+        user.AddRole(role);
+        
+        // 使用工作单元模式保存
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         return true;
     }
 

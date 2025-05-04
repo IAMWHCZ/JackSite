@@ -10,3 +10,6 @@ global using JackSite.Domain.Repositories;
 global using System.Reflection;
 global using JackSite.Infrastructure.Interceptors;
 global using JackSite.Infrastructure.Repositories;
+global using JackSite.Domain.Entities;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders; 
+global using JackSite.Infrastructure.Extensions;

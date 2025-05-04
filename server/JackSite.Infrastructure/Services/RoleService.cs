@@ -1,4 +1,3 @@
-using JackSite.Domain.Entities;
 using JackSite.Domain.Services;
 
 namespace JackSite.Infrastructure.Services;
@@ -18,12 +17,7 @@ public class RoleService(
         }
 
         // 创建新角色
-        var role = new Role
-        {
-            Name = name,
-            Description = description
-        };
-        
+        var role = new Role(name, description);
         return await roleRepository.AddAsync(role, cancellationToken);
     }
 
@@ -46,9 +40,8 @@ public class RoleService(
         }
         
         // 更新角色
-        role.Name = name;
-        role.Description = description;
-        
+        role.UpdateName(name);
+        role.UpdateDescription(description);
         await roleRepository.UpdateAsync(role, cancellationToken);
         return true;
     }
