@@ -30,4 +30,8 @@
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.9.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\JackSite.Identity.ServiceDefaults\JackSite.Identity.ServiceDefaults.csproj" />
+    </ItemGroup>
+
 </Project>
