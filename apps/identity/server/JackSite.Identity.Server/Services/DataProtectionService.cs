@@ -1,13 +1,8 @@
+using JackSite.Identity.Server.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
 
 namespace JackSite.Identity.Server.Services
 {
-    public interface IDataProtectionService
-    {
-        string Protect(string plainText);
-        string Unprotect(string protectedText);
-    }
-    
     public class DataProtectionService : IDataProtectionService
     {
         private readonly IDataProtectionProvider _dataProtectionProvider;

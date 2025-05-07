@@ -1,27 +1,16 @@
 using System.Net;
 using System.Net.Mail;
-using System.Text;
+using JackSite.Identity.Server.Interfaces;
 
 namespace JackSite.Identity.Server.Services
 {
-    public interface IEmailService
+    public class EmailService(
+        IConfiguration configuration,
+        ILogger<EmailService> logger) : IEmailService
     {
-        Task<bool> SendEmailAsync(string to, string subject, string body, bool isHtml = false);
-    }
-    
-    public class EmailService : IEmailService
-    {
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<EmailService> _logger;
-        
-        public EmailService(
-            IConfiguration configuration,
-            ILogger<EmailService> logger)
-        {
-            _configuration = configuration;
-            _logger = logger;
-        }
-        
+        private readonly IConfiguration _configuration = configuration;
+        private readonly ILogger<EmailService> _logger = logger;
+
         public async Task<bool> SendEmailAsync(string to, string subject, string body, bool isHtml = false)
         {
             try

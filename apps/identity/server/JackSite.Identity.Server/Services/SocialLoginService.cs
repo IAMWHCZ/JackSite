@@ -2,16 +2,14 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using JackSite.Identity.Server.Enums;
+using JackSite.Identity.Server.Interfaces;
 using JackSite.Identity.Server.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace JackSite.Identity.Server.Services
 {
-    public interface ISocialLoginService
-    {
-        Task<ApplicationUser> ProcessExternalLoginAsync(string provider, string code, string redirectUri);
-        string GetAuthorizationUrl(string provider, string redirectUri, string state);
-    }
+
     
     public class SocialLoginService : ISocialLoginService
     {
@@ -44,14 +42,14 @@ namespace JackSite.Identity.Server.Services
             };
         }
         
-        public async Task<ApplicationUser> ProcessExternalLoginAsync(string provider, string code, string redirectUri)
+        public async Task<ApplicationUser> ProcessExternalLoginAsync(SocialProvider provider, string code, string redirectUri)
         {
-            var userInfo = provider.ToLower() switch
+            var userInfo = provider switch
             {
-                "google" => await GetGoogleUserInfoAsync(code, redirectUri),
-                "microsoft" => await GetMicrosoftUserInfoAsync(code, redirectUri),
-                "facebook" => await GetFacebookUserInfoAsync(code, redirectUri),
-                "github" => await GetGitHubUserInfoAsync(code, redirectUri),
+                SocialProvider.Google => await GetGoogleUserInfoAsync(code, redirectUri),
+                SocialProvider.Microsoft => await GetMicrosoftUserInfoAsync(code, redirectUri),
+                SocialProvider.Facebook => await GetFacebookUserInfoAsync(code, redirectUri),
+                SocialProvider.GitHub => await GetGitHubUserInfoAsync(code, redirectUri),
                 _ => throw new ArgumentException($"Unsupported provider: {provider}")
             };
             
@@ -87,10 +85,10 @@ namespace JackSite.Identity.Server.Services
             }
             
             // 添加或更新外部登录信息
-            var externalLoginInfo = new UserLoginInfo(provider, userInfo.Id, provider);
+            var externalLoginInfo = new UserLoginInfo(provider.ToString(), userInfo.Id.ToString(), provider.ToString());
             
             var existingLogins = await _userManager.GetLoginsAsync(user);
-            var existingLogin = existingLogins.FirstOrDefault(l => l.LoginProvider == provider);
+            var existingLogin = existingLogins.FirstOrDefault(l => l.LoginProvider == provider.ToString());
             
             if (existingLogin == null)
             {
@@ -170,7 +168,7 @@ namespace JackSite.Identity.Server.Services
                 
                 return new ExternalUserInfo
                 {
-                    Id = userInfo.GetProperty("sub").GetString(),
+                    Id = Convert.ToInt64(userInfo.GetProperty("sub")),
                     Email = userInfo.GetProperty("email").GetString(),
                     FirstName = userInfo.TryGetProperty("given_name", out var firstName) ? firstName.GetString() : "",
                     LastName = userInfo.TryGetProperty("family_name", out var lastName) ? lastName.GetString() : "",
@@ -251,7 +249,7 @@ namespace JackSite.Identity.Server.Services
                 
                 return new ExternalUserInfo
                 {
-                    Id = userInfo.GetProperty("id").GetString(),
+                    Id = Convert.ToInt64(userInfo.GetProperty("id")),
                     Email = userInfo.GetProperty("userPrincipalName").GetString(),
                     FirstName = userInfo.TryGetProperty("givenName", out var firstName) ? firstName.GetString() : "",
                     LastName = userInfo.TryGetProperty("surname", out var lastName) ? lastName.GetString() : "",
@@ -326,7 +324,7 @@ namespace JackSite.Identity.Server.Services
                 
                 return new ExternalUserInfo
                 {
-                    Id = userInfo.GetProperty("id").GetString(),
+                    Id = Convert.ToInt64(userInfo.GetProperty("id")),
                     Email = userInfo.TryGetProperty("email", out var email) ? email.GetString() : null,
                     FirstName = userInfo.TryGetProperty("first_name", out var firstName) ? firstName.GetString() : "",
                     LastName = userInfo.TryGetProperty("last_name", out var lastName) ? lastName.GetString() : "",
@@ -454,7 +452,7 @@ namespace JackSite.Identity.Server.Services
                 
                 return new ExternalUserInfo
                 {
-                    Id = userInfo.GetProperty("id").ToString(),
+                    Id = Convert.ToInt64(userInfo.GetProperty("id")),
                     Email = email,
                     FirstName = firstName,
                     LastName = lastName,

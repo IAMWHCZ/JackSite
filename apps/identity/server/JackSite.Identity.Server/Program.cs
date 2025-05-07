@@ -9,6 +9,7 @@ using JackSite.Identity.Server.Services;
 using JackSite.Identity.Server.Services.BackgroundServices;
 using Microsoft.AspNetCore.DataProtection;
 using JackSite.Identity.Server.Extensions;
+using JackSite.Identity.Server.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +40,8 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddHostedService<UserSyncBackgroundService>();
 
 // Configure Identity
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
     // Password settings from configuration
     var passwordPolicy = builder.Configuration.GetSection("PasswordPolicy");
     options.Password.RequiredLength = passwordPolicy.GetValue<int>("MinLength");
@@ -47,7 +49,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
     options.Password.RequireLowercase = passwordPolicy.GetValue<bool>("RequireLowercase");
     options.Password.RequireDigit = passwordPolicy.GetValue<bool>("RequireDigit");
     options.Password.RequireNonAlphanumeric = passwordPolicy.GetValue<bool>("RequireSpecialChar");
-    
+
     // Lockout settings
     var lockoutPolicy = builder.Configuration.GetSection("AccountLockout");
     options.Lockout.MaxFailedAccessAttempts = lockoutPolicy.GetValue<int>("MaxFailedAttempts");
@@ -56,11 +58,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
 .AddDefaultTokenProviders();
 
 // Configure JWT Authentication
-builder.Services.AddAuthentication(options => {
+builder.Services.AddAuthentication(options =>
+{
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(options => {
+.AddJwtBearer(options =>
+{
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -76,7 +80,8 @@ builder.Services.AddAuthentication(options => {
 .AddSocialLogins(builder.Configuration);
 
 // Add Redis cache
-builder.Services.AddStackExchangeRedisCache(options => {
+builder.Services.AddStackExchangeRedisCache(options =>
+{
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
 
@@ -85,8 +90,10 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 // Configure CORS
-builder.Services.AddCors(options => {
-    options.AddPolicy("DefaultPolicy", policy => {
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DefaultPolicy", policy =>
+    {
         policy.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>())
               .AllowAnyHeader()
               .AllowAnyMethod();
@@ -98,7 +105,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    
+
 }
 
 app.UseHttpsRedirection();

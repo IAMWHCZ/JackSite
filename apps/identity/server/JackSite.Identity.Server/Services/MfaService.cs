@@ -1,60 +1,25 @@
 using System.Security.Cryptography;
+using JackSite.Identity.Server.Enums;
+using JackSite.Identity.Server.Interfaces;
 using JackSite.Identity.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using OtpNet;
 
 namespace JackSite.Identity.Server.Services
 {
-    public interface IMfaService
-    {
-        // TOTP 相关方法
-        Task<(string secretKey, string qrCodeUri)> GenerateTotpSetupAsync(ApplicationUser user);
-        Task<bool> VerifyTotpCodeAsync(ApplicationUser user, string code);
-        Task<bool> EnableTotpMfaAsync(ApplicationUser user, string code);
-        
-        // SMS 相关方法
-        Task<bool> SendSmsVerificationCodeAsync(ApplicationUser user);
-        Task<bool> VerifySmsCodeAsync(ApplicationUser user, string code);
-        Task<bool> EnableSmsMfaAsync(ApplicationUser user, string phoneNumber, string code);
-        
-        // Email 相关方法
-        Task<bool> SendEmailVerificationCodeAsync(ApplicationUser user);
-        Task<bool> VerifyEmailCodeAsync(ApplicationUser user, string code);
-        Task<bool> EnableEmailMfaAsync(ApplicationUser user, string email, string code);
-        
-        // 通用方法
-        Task<bool> DisableMfaAsync(ApplicationUser user);
-        Task<bool> IsMfaEnabledAsync(ApplicationUser user);
-        Task<string> GetMfaTypeAsync(ApplicationUser user);
-    }
     
-    public class MfaService : IMfaService
+    
+    public class MfaService(
+        UserManager<ApplicationUser> userManager,
+        IConfiguration configuration,
+        ILogger<MfaService> logger,
+        ISmsService smsService,
+        IEmailService emailService,
+        IDataProtectionService dataProtectionService) : IMfaService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<MfaService> _logger;
-        private readonly ISmsService _smsService;
-        private readonly IEmailService _emailService;
-        private readonly IDataProtectionService _dataProtectionService;
-        
-        public MfaService(
-            UserManager<ApplicationUser> userManager,
-            IConfiguration configuration,
-            ILogger<MfaService> logger,
-            ISmsService smsService,
-            IEmailService emailService,
-            IDataProtectionService dataProtectionService)
-        {
-            _userManager = userManager;
-            _configuration = configuration;
-            _logger = logger;
-            _smsService = smsService;
-            _emailService = emailService;
-            _dataProtectionService = dataProtectionService;
-        }
-        
+
         #region TOTP Methods
-        
+
         public async Task<(string secretKey, string qrCodeUri)> GenerateTotpSetupAsync(ApplicationUser user)
         {
             // 生成一个新的随机密钥
@@ -64,29 +29,29 @@ namespace JackSite.Identity.Server.Services
             var base32Secret = Base32Encoding.ToString(secretKey);
             
             // 创建 QR 码 URI
-            var appName = _configuration["Mfa:AppName"] ?? "JackSite";
+            var appName = configuration["Mfa:AppName"] ?? "JackSite";
             var qrCodeUri = $"otpauth://totp/{appName}:{user.Email}?secret={base32Secret}&issuer={appName}";
             
             // 加密并存储密钥（但不启用 MFA，直到验证成功）
-            user.MfaKey = _dataProtectionService.Protect(base32Secret);
-            user.MfaType = "TOTP";
+            user.MfaKey = dataProtectionService.Protect(base32Secret);
+            user.MfaType = MfaType.TOTP;
             user.IsMfaRegistrationComplete = false;
             
-            await _userManager.UpdateAsync(user);
+            await userManager.UpdateAsync(user);
             
             return (base32Secret, qrCodeUri);
         }
         
         public async Task<bool> VerifyTotpCodeAsync(ApplicationUser user, string code)
         {
-            if (string.IsNullOrEmpty(user.MfaKey) || user.MfaType != "TOTP")
+            if (string.IsNullOrEmpty(user.MfaKey) || user.MfaType != MfaType.TOTP)
             {
                 return false;
             }
             
             try
             {
-                var secretKey = _dataProtectionService.Unprotect(user.MfaKey);
+                var secretKey = dataProtectionService.Unprotect(user.MfaKey);
                 var secretBytes = Base32Encoding.ToBytes(secretKey);
                 
                 var totp = new Totp(secretBytes);
@@ -94,7 +59,7 @@ namespace JackSite.Identity.Server.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error verifying TOTP code for user {UserId}", user.Id);
+                logger.LogError(ex, "Error verifying TOTP code for user {UserId}", user.Id);
                 return false;
             }
         }
@@ -107,7 +72,7 @@ namespace JackSite.Identity.Server.Services
                 user.IsMfaRegistrationComplete = true;
                 user.MfaRegistrationDate = DateTime.UtcNow;
                 
-                var result = await _userManager.UpdateAsync(user);
+                var result = await userManager.UpdateAsync(user);
                 return result.Succeeded;
             }
             
@@ -131,41 +96,41 @@ namespace JackSite.Identity.Server.Services
                 var verificationCode = GenerateNumericCode(6);
                 
                 // 加密并临时存储验证码
-                var encryptedCode = _dataProtectionService.Protect(verificationCode);
+                var encryptedCode = dataProtectionService.Protect(verificationCode);
                 user.MfaKey = encryptedCode;
-                user.MfaType = "SMS";
+                user.MfaType = MfaType.SMS;
                 user.IsMfaRegistrationComplete = false;
                 
-                await _userManager.UpdateAsync(user);
+                await userManager.UpdateAsync(user);
                 
                 // 发送短信
                 var phoneNumber = $"{user.PhoneNumberCountryCode}{user.PhoneNumber}";
                 var message = $"Your verification code is: {verificationCode}";
                 
-                return await _smsService.SendSmsAsync(phoneNumber, message);
+                return await smsService.SendSmsAsync(phoneNumber, message);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error sending SMS verification code for user {UserId}", user.Id);
+                logger.LogError(ex, "Error sending SMS verification code for user {UserId}", user.Id);
                 return false;
             }
         }
         
         public async Task<bool> VerifySmsCodeAsync(ApplicationUser user, string code)
         {
-            if (string.IsNullOrEmpty(user.MfaKey) || user.MfaType != "SMS")
+            if (string.IsNullOrEmpty(user.MfaKey) || user.MfaType != MfaType.SMS)
             {
                 return false;
             }
             
             try
             {
-                var storedCode = _dataProtectionService.Unprotect(user.MfaKey);
+                var storedCode = dataProtectionService.Unprotect(user.MfaKey);
                 return storedCode == code;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error verifying SMS code for user {UserId}", user.Id);
+                logger.LogError(ex, "Error verifying SMS code for user {UserId}", user.Id);
                 return false;
             }
         }
@@ -186,7 +151,7 @@ namespace JackSite.Identity.Server.Services
             user.PhoneNumberCountryCode = countryCode;
             user.PhoneNumberConfirmed = false;
             
-            await _userManager.UpdateAsync(user);
+            await userManager.UpdateAsync(user);
             
             // 发送验证码
             await SendSmsVerificationCodeAsync(user);
@@ -199,7 +164,7 @@ namespace JackSite.Identity.Server.Services
                 user.MfaRegistrationDate = DateTime.UtcNow;
                 user.PhoneNumberConfirmed = true;
                 
-                var result = await _userManager.UpdateAsync(user);
+                var result = await userManager.UpdateAsync(user);
                 return result.Succeeded;
             }
             
@@ -223,15 +188,15 @@ namespace JackSite.Identity.Server.Services
                 var verificationCode = GenerateNumericCode(6);
                 
                 // 加密并临时存储验证码
-                var encryptedCode = _dataProtectionService.Protect(verificationCode);
+                var encryptedCode = dataProtectionService.Protect(verificationCode);
                 user.MfaKey = encryptedCode;
-                user.MfaType = "Email";
+                user.MfaType = MfaType.Email;
                 user.IsMfaRegistrationComplete = false;
                 
-                await _userManager.UpdateAsync(user);
+                await userManager.UpdateAsync(user);
                 
                 // 构建邮件内容
-                var appName = _configuration["Mfa:AppName"] ?? "JackSite";
+                var appName = configuration["Mfa:AppName"] ?? "JackSite";
                 var subject = $"{appName} - 您的验证码";
                 var body = $@"
                 <html>
@@ -244,30 +209,30 @@ namespace JackSite.Identity.Server.Services
                 </html>";
                 
                 // 发送邮件
-                return await _emailService.SendEmailAsync(user.Email, subject, body, true);
+                return await emailService.SendEmailAsync(user.Email, subject, body, true);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error sending email verification code for user {UserId}", user.Id);
+                logger.LogError(ex, "Error sending email verification code for user {UserId}", user.Id);
                 return false;
             }
         }
         
         public async Task<bool> VerifyEmailCodeAsync(ApplicationUser user, string code)
         {
-            if (string.IsNullOrEmpty(user.MfaKey) || user.MfaType != "Email")
+            if (string.IsNullOrEmpty(user.MfaKey) || user.MfaType != MfaType.Email)
             {
                 return false;
             }
             
             try
             {
-                var storedCode = _dataProtectionService.Unprotect(user.MfaKey);
+                var storedCode = dataProtectionService.Unprotect(user.MfaKey);
                 return storedCode == code;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error verifying email code for user {UserId}", user.Id);
+                logger.LogError(ex, "Error verifying email code for user {UserId}", user.Id);
                 return false;
             }
         }
@@ -287,7 +252,7 @@ namespace JackSite.Identity.Server.Services
                 user.Email = email;
                 user.EmailConfirmed = false;
                 
-                await _userManager.UpdateAsync(user);
+                await userManager.UpdateAsync(user);
                 
                 // 发送验证码
                 await SendEmailVerificationCodeAsync(user);
@@ -301,7 +266,7 @@ namespace JackSite.Identity.Server.Services
                 user.MfaRegistrationDate = DateTime.UtcNow;
                 user.EmailConfirmed = true;
                 
-                var result = await _userManager.UpdateAsync(user);
+                var result = await userManager.UpdateAsync(user);
                 return result.Succeeded;
             }
             
@@ -316,10 +281,10 @@ namespace JackSite.Identity.Server.Services
         {
             user.IsMfaEnabled = false;
             user.IsMfaRegistrationComplete = false;
-            user.MfaKey = null;
-            user.MfaType = null;
+            user.MfaKey = null!;
+            user.MfaType = default!;
             
-            var result = await _userManager.UpdateAsync(user);
+            var result = await userManager.UpdateAsync(user);
             return result.Succeeded;
         }
         
@@ -328,7 +293,7 @@ namespace JackSite.Identity.Server.Services
             return Task.FromResult(user.IsMfaEnabled && user.IsMfaRegistrationComplete);
         }
         
-        public Task<string> GetMfaTypeAsync(ApplicationUser user)
+        public Task<MfaType> GetMfaTypeAsync(ApplicationUser user)
         {
             return Task.FromResult(user.MfaType);
         }
@@ -337,7 +302,7 @@ namespace JackSite.Identity.Server.Services
         
         #region Helper Methods
         
-        private byte[] GenerateSecretKey()
+        private static byte[] GenerateSecretKey()
         {
             var key = new byte[20]; // 160 bits
             using (var rng = RandomNumberGenerator.Create())
@@ -360,20 +325,20 @@ namespace JackSite.Identity.Server.Services
             return code;
         }
         
-        private bool IsValidPhoneNumber(string phoneNumber)
+        private static bool IsValidPhoneNumber(string phoneNumber)
         {
             // 简单验证，实际应用中可能需要更复杂的验证
             return !string.IsNullOrEmpty(phoneNumber) && 
                    phoneNumber.Length >= 8 && 
-                   phoneNumber.StartsWith("+");
+                   phoneNumber.StartsWith('+');
         }
         
         private (string countryCode, string number) ParsePhoneNumber(string phoneNumber)
         {
             // 简单解析，实际应用中可能需要更复杂的解析
-            if (phoneNumber.StartsWith("+"))
+            if (phoneNumber.StartsWith('+'))
             {
-                var parts = phoneNumber.Substring(1).Split(' ', 2);
+                var parts = phoneNumber[1..].Split(' ', 2);
                 if (parts.Length == 2)
                 {
                     return ($"+{parts[0]}", parts[1]);
@@ -384,7 +349,7 @@ namespace JackSite.Identity.Server.Services
             return ("+1", phoneNumber);
         }
         
-        private bool IsValidEmail(string email)
+        private static bool IsValidEmail(string email)
         {
             try
             {
@@ -396,7 +361,7 @@ namespace JackSite.Identity.Server.Services
                 return false;
             }
         }
-        
+
         #endregion
     }
 }

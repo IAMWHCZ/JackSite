@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.2" />
+    <PackageReference Include="Aspire.Hosting.Garnet" Version="9.2.1" />
+    <PackageReference Include="Aspire.Hosting.MySql" Version="9.2.1" />
   </ItemGroup>
 
   <ItemGroup>

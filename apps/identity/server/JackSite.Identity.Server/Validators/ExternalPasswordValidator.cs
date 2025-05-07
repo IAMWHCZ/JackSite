@@ -1,17 +1,11 @@
+using JackSite.Identity.Server.Interfaces;
 using JackSite.Identity.Server.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace JackSite.Identity.Server.Services
 {
-    public class ExternalPasswordValidator : IPasswordValidator<ApplicationUser>
+    public class ExternalPasswordValidator(IExternalUserService externalUserService) : IPasswordValidator<ApplicationUser>
     {
-        private readonly IExternalUserService _externalUserService;
-        
-        public ExternalPasswordValidator(IExternalUserService externalUserService)
-        {
-            _externalUserService = externalUserService;
-        }
-        
         public async Task<IdentityResult> ValidateAsync(UserManager<ApplicationUser> manager, ApplicationUser user, string password)
         {
             if (!user.IsExternalUser)
@@ -21,7 +15,7 @@ namespace JackSite.Identity.Server.Services
             }
             
             // For external users, validate against the external system
-            var isValid = await _externalUserService.ValidateUserCredentialsAsync(user.UserName, password);
+            var isValid = await externalUserService.ValidateUserCredentialsAsync(user.UserName, password);
             
             if (isValid)
             {

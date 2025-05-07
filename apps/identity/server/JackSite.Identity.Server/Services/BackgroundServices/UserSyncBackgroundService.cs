@@ -1,4 +1,4 @@
-using JackSite.Identity.Server.Services;
+using JackSite.Identity.Server.Interfaces;
 
 namespace JackSite.Identity.Server.Services.BackgroundServices
 {
@@ -8,7 +8,7 @@ namespace JackSite.Identity.Server.Services.BackgroundServices
         private readonly IConfiguration _configuration;
         private readonly ILogger<UserSyncBackgroundService> _logger;
         private readonly TimeSpan _syncInterval;
-        
+
         public UserSyncBackgroundService(
             IServiceProvider serviceProvider,
             IConfiguration configuration,
@@ -17,39 +17,36 @@ namespace JackSite.Identity.Server.Services.BackgroundServices
             _serviceProvider = serviceProvider;
             _configuration = configuration;
             _logger = logger;
-            
-            // Get sync interval from configuration, default to 1 hour
+
             _syncInterval = TimeSpan.FromMinutes(
-                _configuration.GetValue<int>("ExternalUserSync:IntervalMinutes", 60));
+                minutes: _configuration.GetValue<int>("ExternalUserSync:IntervalMinutes", 60));
         }
-        
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("User sync background service is starting");
-            
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Starting scheduled user sync");
-                
+
                 try
                 {
-                    using (var scope = _serviceProvider.CreateScope())
-                    {
-                        var syncService = scope.ServiceProvider.GetRequiredService<IUserSyncService>();
-                        await syncService.SyncAllExternalUsersAsync();
-                    }
+                    using var scope = _serviceProvider.CreateScope();
+                    var syncService = scope.ServiceProvider.GetRequiredService<IUserSyncService>();
+                    await syncService.SyncAllExternalUsersAsync();
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error occurred during scheduled user sync");
                 }
-                
-                _logger.LogInformation("Scheduled user sync completed. Next sync in {SyncInterval} minutes", 
+
+                _logger.LogInformation("Scheduled user sync completed. Next sync in {SyncInterval} minutes",
                     _syncInterval.TotalMinutes);
-                
+
                 await Task.Delay(_syncInterval, stoppingToken);
             }
-            
+
             _logger.LogInformation("User sync background service is stopping");
         }
     }

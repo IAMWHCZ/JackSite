@@ -1,3 +1,4 @@
+using JackSite.Identity.Server.Interfaces;
 using JackSite.Identity.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,25 +8,16 @@ namespace JackSite.Identity.Server.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Roles = "Administrator")]
-    public class UserSyncController : ControllerBase
+    public class UserSyncController(
+        IUserSyncService userSyncService,
+        ILogger<UserSyncController> logger) : ControllerBase
     {
-        private readonly IUserSyncService _userSyncService;
-        private readonly ILogger<UserSyncController> _logger;
-        
-        public UserSyncController(
-            IUserSyncService userSyncService,
-            ILogger<UserSyncController> logger)
-        {
-            _userSyncService = userSyncService;
-            _logger = logger;
-        }
-        
         [HttpPost("sync-user/{externalUserId}")]
         public async Task<IActionResult> SyncUser(string externalUserId)
         {
-            _logger.LogInformation("Manual sync requested for external user: {ExternalUserId}", externalUserId);
+            logger.LogInformation("Manual sync requested for external user: {ExternalUserId}", externalUserId);
             
-            await _userSyncService.SyncExternalUserAsync(externalUserId);
+            await userSyncService.SyncExternalUserAsync(externalUserId);
             
             return Ok(new { message = "User sync initiated" });
         }
@@ -33,9 +25,9 @@ namespace JackSite.Identity.Server.Controllers
         [HttpPost("sync-all")]
         public async Task<IActionResult> SyncAllUsers()
         {
-            _logger.LogInformation("Manual sync requested for all external users");
+            logger.LogInformation("Manual sync requested for all external users");
             
-            await _userSyncService.SyncAllExternalUsersAsync();
+            await userSyncService.SyncAllExternalUsersAsync();
             
             return Ok(new { message = "All users sync initiated" });
         }

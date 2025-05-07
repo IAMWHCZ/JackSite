@@ -7,14 +7,14 @@ namespace JackSite.Identity.Server.Models
         public FacebookOptions Facebook { get; set; }
         public GitHubOptions GitHub { get; set; }
     }
-    
+
     public class GoogleOptions
     {
         public bool Enabled { get; set; }
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
     }
-    
+
     public class MicrosoftOptions
     {
         public bool Enabled { get; set; }
@@ -22,14 +22,14 @@ namespace JackSite.Identity.Server.Models
         public string ClientSecret { get; set; }
         public string TenantId { get; set; }
     }
-    
+
     public class FacebookOptions
     {
         public bool Enabled { get; set; }
         public string AppId { get; set; }
         public string AppSecret { get; set; }
     }
-    
+
     public class GitHubOptions
     {
         public bool Enabled { get; set; }

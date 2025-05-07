@@ -1,17 +1,12 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using JackSite.Identity.Server.Interfaces;
 using JackSite.Identity.Server.Models;
 
 namespace JackSite.Identity.Server.Services
 {
-    public interface IExternalUserService
-    {
-        Task<ExternalUserInfo> GetUserByIdAsync(string externalUserId);
-        Task<ExternalUserInfo> GetUserByUsernameAsync(string username);
-        Task<ExternalUserInfo> GetUserByEmailAsync(string email);
-        Task<bool> ValidateUserCredentialsAsync(string username, string password);
-    }
+    
     
     public class ExternalUserService : IExternalUserService
     {
@@ -53,12 +48,12 @@ namespace JackSite.Identity.Server.Services
                 
                 _logger.LogWarning("Failed to get external user by ID: {ExternalUserId}. Status: {StatusCode}", 
                     externalUserId, response.StatusCode);
-                return null;
+                return null!;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting external user by ID: {ExternalUserId}", externalUserId);
-                return null;
+                return null!;
             }
         }
         
@@ -79,12 +74,12 @@ namespace JackSite.Identity.Server.Services
                 
                 _logger.LogWarning("Failed to get external user by username: {Username}. Status: {StatusCode}", 
                     username, response.StatusCode);
-                return null;
+                return null!;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting external user by username: {Username}", username);
-                return null;
+                return null!;
             }
         }
         
@@ -105,12 +100,12 @@ namespace JackSite.Identity.Server.Services
                 
                 _logger.LogWarning("Failed to get external user by email: {Email}. Status: {StatusCode}", 
                     email, response.StatusCode);
-                return null;
+                return null!;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting external user by email: {Email}", email);
-                return null;
+                return null!;
             }
         }
         
@@ -141,16 +136,5 @@ namespace JackSite.Identity.Server.Services
         }
     }
     
-    public class ExternalUserInfo
-    {
-        public string Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public bool IsActive { get; set; }
-        public List<string> Roles { get; set; } = [];
-        
-        public string Provider { get; set; }
-    }
+    
 }

@@ -6,11 +6,13 @@ namespace JackSite.Identity.Server.Models
 {
     public class ApplicationUser : IdentityUser
     {
+
+        public new long Id { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public DateTime? LastPasswordChangeDate { get; set; }
         public bool IsExternalUser { get; set; }
-        public string ExternalUserId { get; set; } = string.Empty;
+        public long ExternalUserId { get; set; }
         
         // MFA 相关字段
         public bool IsMfaEnabled { get; set; }

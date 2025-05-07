@@ -1,4 +1,5 @@
-using JackSite.Identity.Server.Services;
+using JackSite.Identity.Server.Enums;
+using JackSite.Identity.Server.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,22 +8,11 @@ namespace JackSite.Identity.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SocialLoginController : ControllerBase
+    public class SocialLoginController(
+        ISocialLoginService socialLoginService,
+        ITokenService tokenService,
+        ILogger<SocialLoginController> logger) : ControllerBase
     {
-        private readonly ISocialLoginService _socialLoginService;
-        private readonly ITokenService _tokenService;
-        private readonly ILogger<SocialLoginController> _logger;
-        
-        public SocialLoginController(
-            ISocialLoginService socialLoginService,
-            ITokenService tokenService,
-            ILogger<SocialLoginController> logger)
-        {
-            _socialLoginService = socialLoginService;
-            _tokenService = tokenService;
-            _logger = logger;
-        }
-        
         [HttpGet("providers")]
         public IActionResult GetProviders()
         {
@@ -43,26 +33,26 @@ namespace JackSite.Identity.Server.Controllers
                 HttpContext.Session.SetString("SocialLoginRedirectUri", redirectUri);
                 
                 // 获取授权URL
-                var authorizationUrl = _socialLoginService.GetAuthorizationUrl(provider, redirectUri, state);
+                var authorizationUrl = socialLoginService.GetAuthorizationUrl(provider, redirectUri, state);
                 
                 return Ok(new { url = authorizationUrl });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error generating authorization URL for provider: {Provider}", provider);
+                logger.LogError(ex, "Error generating authorization URL for provider: {Provider}", provider);
                 return BadRequest(new { message = "Failed to generate authorization URL" });
             }
         }
         
         [HttpGet("callback/{provider}")]
-        public async Task<IActionResult> Callback(string provider, [FromQuery] string code, [FromQuery] string state, [FromQuery] string error)
+        public async Task<IActionResult> Callback(SocialProvider provider, [FromQuery] string code, [FromQuery] string state, [FromQuery] string error)
         {
             try
             {
                 // 检查是否有错误
                 if (!string.IsNullOrEmpty(error))
                 {
-                    _logger.LogWarning("Error returned from provider {Provider}: {Error}", provider, error);
+                    logger.LogWarning("Error returned from provider {Provider}: {Error}", provider, error);
                     return BadRequest(new { message = "Authentication failed" });
                 }
                 
@@ -70,7 +60,7 @@ namespace JackSite.Identity.Server.Controllers
                 var savedState = HttpContext.Session.GetString("SocialLoginState");
                 if (string.IsNullOrEmpty(savedState) || savedState != state)
                 {
-                    _logger.LogWarning("Invalid state parameter for provider {Provider}", provider);
+                    logger.LogWarning("Invalid state parameter for provider {Provider}", provider);
                     return BadRequest(new { message = "Invalid state parameter" });
                 }
                 
@@ -78,7 +68,7 @@ namespace JackSite.Identity.Server.Controllers
                 var redirectUri = HttpContext.Session.GetString("SocialLoginRedirectUri");
                 
                 // 处理社交登录
-                var user = await _socialLoginService.ProcessExternalLoginAsync(provider, code, redirectUri);
+                var user = await socialLoginService.ProcessExternalLoginAsync(provider, code, redirectUri);
                 
                 if (user == null)
                 {
@@ -86,7 +76,7 @@ namespace JackSite.Identity.Server.Controllers
                 }
                 
                 // 生成令牌
-                var (accessToken, refreshToken) = await _tokenService.GenerateTokensAsync(user);
+                var (accessToken, refreshToken) = await tokenService.GenerateTokensAsync(user);
                 
                 // 清除会话数据
                 HttpContext.Session.Remove("SocialLoginState");
@@ -101,12 +91,12 @@ namespace JackSite.Identity.Server.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error processing callback for provider: {Provider}", provider);
+                logger.LogError(ex, "Error processing callback for provider: {Provider}", provider);
                 return BadRequest(new { message = "Authentication failed" });
             }
         }
         
-        private string GenerateState()
+        private static string GenerateState()
         {
             using var rng = RandomNumberGenerator.Create();
             var stateBytes = new byte[32];

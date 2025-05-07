@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using JackSite.Identity.Server.Data;
+using JackSite.Identity.Server.Interfaces;
 using JackSite.Identity.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,34 +11,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace JackSite.Identity.Server.Services
 {
-    public interface ITokenService
+   
+    public class TokenService(
+        UserManager<ApplicationUser> userManager,
+        IConfiguration configuration,
+        ApplicationDbContext context,
+        ILogger<TokenService> logger) : ITokenService
     {
-        Task<(string accessToken, string refreshToken)> GenerateTokensAsync(ApplicationUser user);
-        Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken);
-        Task RevokeTokenAsync(string refreshToken);
-        Task<string> GenerateMfaTokenAsync(ApplicationUser user);
-        string ValidateMfaToken(string mfaToken);
-    }
-    
-    public class TokenService : ITokenService
-    {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IConfiguration _configuration;
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<TokenService> _logger;
-        
-        public TokenService(
-            UserManager<ApplicationUser> userManager,
-            IConfiguration configuration,
-            ApplicationDbContext context,
-            ILogger<TokenService> logger)
-        {
-            _userManager = userManager;
-            _configuration = configuration;
-            _context = context;
-            _logger = logger;
-        }
-        
         public async Task<(string accessToken, string refreshToken)> GenerateTokensAsync(ApplicationUser user)
         {
             var accessToken = await GenerateAccessTokenAsync(user);
@@ -52,15 +32,15 @@ namespace JackSite.Identity.Server.Services
                 IsRevoked = false
             };
             
-            await _context.RefreshTokens.AddAsync(refreshTokenEntity);
-            await _context.SaveChangesAsync();
+            await context.RefreshTokens.AddAsync(refreshTokenEntity);
+            await context.SaveChangesAsync();
             
             return (accessToken, refreshToken);
         }
         
         public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken)
         {
-            var storedToken = await _context.RefreshTokens
+            var storedToken = await context.RefreshTokens
                 .FirstOrDefaultAsync(t => t.Token == refreshToken && !t.IsRevoked);
                 
             if (storedToken == null || storedToken.ExpiryDate < DateTime.UtcNow)
@@ -68,7 +48,7 @@ namespace JackSite.Identity.Server.Services
                 throw new SecurityTokenException("Invalid or expired refresh token");
             }
             
-            var user = await _userManager.FindByIdAsync(storedToken.UserId);
+            var user = await userManager.FindByIdAsync(storedToken.UserId.ToString());
             if (user == null)
             {
                 throw new SecurityTokenException("User not found");
@@ -76,7 +56,7 @@ namespace JackSite.Identity.Server.Services
             
             // 撤销旧的刷新令牌
             storedToken.IsRevoked = true;
-            _context.RefreshTokens.Update(storedToken);
+            context.RefreshTokens.Update(storedToken);
             
             // 生成新的令牌
             var accessToken = await GenerateAccessTokenAsync(user);
@@ -91,22 +71,22 @@ namespace JackSite.Identity.Server.Services
                 IsRevoked = false
             };
             
-            await _context.RefreshTokens.AddAsync(refreshTokenEntity);
-            await _context.SaveChangesAsync();
+            await context.RefreshTokens.AddAsync(refreshTokenEntity);
+            await context.SaveChangesAsync();
             
             return (accessToken, newRefreshToken);
         }
         
         public async Task RevokeTokenAsync(string refreshToken)
         {
-            var storedToken = await _context.RefreshTokens
+            var storedToken = await context.RefreshTokens
                 .FirstOrDefaultAsync(t => t.Token == refreshToken);
                 
             if (storedToken != null)
             {
                 storedToken.IsRevoked = true;
-                _context.RefreshTokens.Update(storedToken);
-                await _context.SaveChangesAsync();
+                context.RefreshTokens.Update(storedToken);
+                await context.SaveChangesAsync();
             }
         }
         
@@ -114,17 +94,17 @@ namespace JackSite.Identity.Server.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("token_type", "mfa")
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new("token_type", "mfa")
             };
             
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: configuration["Jwt:Issuer"],
+                audience: configuration["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(5), // MFA 令牌有效期短
                 signingCredentials: creds);
@@ -135,7 +115,7 @@ namespace JackSite.Identity.Server.Services
         public string ValidateMfaToken(string mfaToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             
             var validationParameters = new TokenValidationParameters
             {
@@ -143,8 +123,8 @@ namespace JackSite.Identity.Server.Services
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = _configuration["Jwt:Issuer"],
-                ValidAudience = _configuration["Jwt:Audience"],
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidAudience = configuration["Jwt:Audience"],
                 IssuerSigningKey = key
             };
             
@@ -169,14 +149,14 @@ namespace JackSite.Identity.Server.Services
         
         private async Task<string> GenerateAccessTokenAsync(ApplicationUser user)
         {
-            var userRoles = await _userManager.GetRolesAsync(user);
+            var userRoles = await userManager.GetRolesAsync(user);
             
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.Email, user.Email),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             
             foreach (var role in userRoles)
@@ -184,12 +164,12 @@ namespace JackSite.Identity.Server.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
             
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: configuration["Jwt:Issuer"],
+                audience: configuration["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(15),
                 signingCredentials: creds);
@@ -197,14 +177,12 @@ namespace JackSite.Identity.Server.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
         
-        private string GenerateRefreshToken()
+        private static string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
         }
     }
 }

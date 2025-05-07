@@ -1,3 +1,4 @@
+using JackSite.Identity.Server.Interfaces;
 using JackSite.Identity.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Distributed;
@@ -5,25 +6,12 @@ using System.Text.Json;
 
 namespace JackSite.Identity.Server.Services
 {
-    public class ExternalUserStore : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>
+    public class ExternalUserStore(
+        IExternalUserService externalUserService,
+        IDistributedCache cache,
+        IConfiguration configuration) : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>
     {
-        private readonly IExternalUserService _externalUserService;
-        private readonly IDistributedCache _cache;
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<ExternalUserStore> _logger;
-        
-        public ExternalUserStore(
-            IExternalUserService externalUserService,
-            IDistributedCache cache,
-            IConfiguration configuration,
-            ILogger<ExternalUserStore> logger)
-        {
-            _externalUserService = externalUserService;
-            _cache = cache;
-            _configuration = configuration;
-            _logger = logger;
-        }
-        
+
         public async Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             // This implementation doesn't support creating users in the external system
@@ -44,7 +32,7 @@ namespace JackSite.Identity.Server.Services
         {
             // Try to get from cache first
             var cacheKey = $"ExternalUser_{userId}";
-            var cachedUser = await _cache.GetStringAsync(cacheKey, cancellationToken);
+            var cachedUser = await cache.GetStringAsync(cacheKey, cancellationToken);
             
             if (!string.IsNullOrEmpty(cachedUser))
             {
@@ -52,7 +40,7 @@ namespace JackSite.Identity.Server.Services
             }
             
             // Get from external system
-            var externalUser = await _externalUserService.GetUserByIdAsync(userId);
+            var externalUser = await externalUserService.GetUserByIdAsync(userId);
             if (externalUser == null)
             {
                 return null;
@@ -68,7 +56,7 @@ namespace JackSite.Identity.Server.Services
         
         public async Task<ApplicationUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            var externalUser = await _externalUserService.GetUserByUsernameAsync(normalizedUserName);
+            var externalUser = await externalUserService.GetUserByUsernameAsync(normalizedUserName);
             if (externalUser == null)
             {
                 return null;
@@ -89,7 +77,7 @@ namespace JackSite.Identity.Server.Services
         
         public Task<string> GetUserIdAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.Id);
+            return Task.FromResult(user.Id.ToString());
         }
         
         public Task<string> GetUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
@@ -140,7 +128,7 @@ namespace JackSite.Identity.Server.Services
             // Nothing to dispose
         }
         
-        private ApplicationUser MapToApplicationUser(ExternalUserInfo externalUser)
+        private static ApplicationUser MapToApplicationUser(ExternalUserInfo externalUser)
         {
             return new ApplicationUser
             {
@@ -164,10 +152,10 @@ namespace JackSite.Identity.Server.Services
             var cacheOptions = new DistributedCacheEntryOptions
             {
                 AbsoluteExpirationRelativeToNow = 
-                    TimeSpan.FromMinutes(_configuration.GetValue<int>("UserCache:ExpirationMinutes"))
+                    TimeSpan.FromMinutes(configuration.GetValue<int>("UserCache:ExpirationMinutes"))
             };
             
-            await _cache.SetStringAsync(
+            await cache.SetStringAsync(
                 cacheKey, 
                 JsonSerializer.Serialize(user),
                 cacheOptions,
