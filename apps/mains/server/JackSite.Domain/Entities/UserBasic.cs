@@ -123,9 +123,8 @@ public class UserBasic : BaseEntity, ISoftDeletable, IAggregateRoot
     
     public void AddRole(Role role)
     {
-        if (role == null)
-            throw new ArgumentNullException(nameof(role));
-            
+        ArgumentNullException.ThrowIfNull(role);
+
         if (_userRoles.Any(ur => ur.RoleId == role.Id))
             return; // 用户已拥有该角色
             

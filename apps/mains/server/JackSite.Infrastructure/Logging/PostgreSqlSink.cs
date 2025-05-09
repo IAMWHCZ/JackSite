@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Serilog.Core;
 using Serilog.Events;
+using LogEventLevel = JackSite.Domain.Enums.LogEventLevel;
 
 namespace JackSite.Infrastructure.Logging;
 
@@ -10,18 +11,15 @@ namespace JackSite.Infrastructure.Logging;
 public class PostgreSqlSink : ILogEventSink
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly string _applicationName;
     private readonly string _machineName;
 
     /// <summary>
     /// 初始化 PostgreSQL 日志接收器
     /// </summary>
     /// <param name="serviceProvider">服务提供者</param>
-    /// <param name="applicationName">应用名称</param>
-    public PostgreSqlSink(IServiceProvider serviceProvider, string applicationName)
+    public PostgreSqlSink(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        _applicationName = applicationName;
         _machineName = Environment.MachineName;
     }
 
@@ -34,8 +32,14 @@ public class PostgreSqlSink : ILogEventSink
         try
         {
             using var scope = _serviceProvider.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
+            var dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            
+            // 如果数据库上下文不可用，则跳过保存到数据库
+            if (dbContext == null)
+            {
+                return;
+            }
+            
             var logEntry = CreateLogEntry(logEvent);
             dbContext.Logs.Add(logEntry);
             dbContext.SaveChanges();
@@ -57,7 +61,7 @@ public class PostgreSqlSink : ILogEventSink
         var properties = logEvent.Properties;
         var logEntry = new LogEntry
         {
-            Level = logEvent.Level.ToString(),
+            Level = (LogEventLevel)logEvent.Level,
             Timestamp = logEvent.Timestamp.UtcDateTime,
             Message = logEvent.RenderMessage(),
             Exception = logEvent.Exception?.ToString(),
@@ -65,17 +69,15 @@ public class PostgreSqlSink : ILogEventSink
                 ? sourceContext.ToString().Trim('"')
                 : null,
             Properties = SerializeProperties(properties),
-            ApplicationName = _applicationName,
             MachineName = _machineName,
             
             // 从日志属性中提取请求和用户信息
             RequestPath = GetPropertyValue(properties, "RequestPath"),
             RequestMethod = GetPropertyValue(properties, "RequestMethod"),
             ClientIp = GetPropertyValue(properties, "ClientIp"),
-            UserId = GetPropertyValue(properties, "UserId") is { } userId && long.TryParse(userId, out var id) 
+            UpdateBy = GetPropertyValue(properties, "UserId") is { } userId && long.TryParse(userId, out var id) 
                 ? id 
-                : null,
-            UserName = GetPropertyValue(properties, "UserName")
+                : 0
         };
 
         return logEntry;

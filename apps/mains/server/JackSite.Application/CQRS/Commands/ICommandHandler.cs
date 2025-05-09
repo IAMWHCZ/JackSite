@@ -1,5 +1,3 @@
-using MediatR;
-
 namespace JackSite.Application.CQRS.Commands;
 
 /// <summary>

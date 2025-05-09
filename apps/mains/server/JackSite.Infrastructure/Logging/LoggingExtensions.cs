@@ -23,11 +23,12 @@ public static class LoggingExtensions
         string? userId = null,
         string? userName = null)
     {
-        var disposables = new List<IDisposable>(5);
-        
-        disposables.Add(LogContext.PushProperty("RequestPath", requestPath));
-        disposables.Add(LogContext.PushProperty("RequestMethod", requestMethod));
-        
+        var disposables = new List<IDisposable>(5)
+        {
+            LogContext.PushProperty("RequestPath", requestPath),
+            LogContext.PushProperty("RequestMethod", requestMethod)
+        };
+
         if (!string.IsNullOrEmpty(clientIp))
             disposables.Add(LogContext.PushProperty("ClientIp", clientIp));
         

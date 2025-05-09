@@ -1,5 +1,4 @@
 using System.ComponentModel;
-
 namespace JackSite.Domain.Enums;
 
 public enum TimeZoneType:byte

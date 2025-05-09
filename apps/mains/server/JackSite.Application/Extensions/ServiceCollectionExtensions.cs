@@ -1,5 +1,4 @@
-using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
+
 
 namespace JackSite.Application.Extensions;
 
@@ -19,7 +18,14 @@ public static class ServiceCollectionExtensions
             ? [Assembly.GetExecutingAssembly()]
             : assemblies;
             
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembliesToScan));
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblies(assembliesToScan);
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
+        });
+        
         
         return services;
     }
