@@ -4,12 +4,12 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        
         services
             .AddApplicationDbContext(configuration)
             .AddRepositories()
             .AddServices()
-            .AddInterceptors();
+            .AddInterceptors()
+            .AddHybridCache(configuration);  // 添加混合缓存服务
 
         return services;
     }
