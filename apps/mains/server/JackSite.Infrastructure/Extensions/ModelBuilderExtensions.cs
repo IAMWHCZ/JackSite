@@ -43,8 +43,6 @@ public static class ModelBuilderExtensions
                     index.SetDatabaseName(index.GetDatabaseName()!.ToSnakeCase());
                 }
             }
-
-
         }
         return builder;
     }
