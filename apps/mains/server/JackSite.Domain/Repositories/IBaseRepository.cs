@@ -4,7 +4,7 @@ namespace JackSite.Domain.Repositories;
 /// 基础仓储接口
 /// </summary>
 /// <typeparam name="TEntity">实体类型</typeparam>
-public interface IBaseRepository<TEntity> where TEntity : BaseEntity
+public interface IBaseRepository<TEntity> where TEntity : BaseEntity 
 {
     /// <summary>
     /// 根据ID获取实体

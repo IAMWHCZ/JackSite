@@ -1,6 +1,6 @@
 namespace JackSite.Domain.Entities;
 
-public class Permission : BaseEntity, ISoftDeletable
+public sealed class Permission : BaseEntity, ISoftDeletable
 {
     [Required]
     [MaxLength(50)]
@@ -21,7 +21,7 @@ public class Permission : BaseEntity, ISoftDeletable
     public DateTime? DeletedOnUtc { get; set; }
     
     private readonly List<RolePermission> _rolePermissions = [];
-    public virtual IReadOnlyCollection<RolePermission> RolePermissions => _rolePermissions.AsReadOnly();
+    public IReadOnlyCollection<RolePermission> RolePermissions => _rolePermissions.AsReadOnly();
     
     // 供EF Core使用的私有构造函数
     private Permission() { }

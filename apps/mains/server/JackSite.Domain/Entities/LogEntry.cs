@@ -1,26 +1,17 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace JackSite.Domain.Entities;
 
 /// <summary>
 /// 系统日志实体
 /// </summary>
-public class LogEntry
+public class LogEntry:BaseEntity
 {
-    /// <summary>
-    /// 日志ID
-    /// </summary>
-    [Key]
-    public long Id { get; set; }
 
     /// <summary>
     /// 日志级别
     /// </summary>
     [Required]
-    [MaxLength(10)]
-    [Column(TypeName = "varchar(10)")]
-    public string Level { get; set; } = string.Empty;
+    [Column(TypeName = "smallint")]
+    public LogEventLevel Level { get; set; }
 
     /// <summary>
     /// 日志时间戳
@@ -74,26 +65,7 @@ public class LogEntry
     [MaxLength(50)]
     [Column(TypeName = "varchar(50)")]
     public string? ClientIp { get; set; }
-
-    /// <summary>
-    /// 用户ID（如果已登录）
-    /// </summary>
-    public long? UserId { get; set; }
-
-    /// <summary>
-    /// 用户名（如果已登录）
-    /// </summary>
-    [MaxLength(100)]
-    [Column(TypeName = "varchar(100)")]
-    public string? UserName { get; set; }
-
-    /// <summary>
-    /// 应用名称
-    /// </summary>
-    [MaxLength(100)]
-    [Column(TypeName = "varchar(100)")]
-    public string? ApplicationName { get; set; }
-
+    
     /// <summary>
     /// 机器名称
     /// </summary>

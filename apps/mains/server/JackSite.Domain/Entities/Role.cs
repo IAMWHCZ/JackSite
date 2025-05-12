@@ -1,5 +1,4 @@
 namespace JackSite.Domain.Entities;
-
 public class Role : BaseEntity, ISoftDeletable, IAggregateRoot
 {
     [Required]
@@ -20,7 +19,7 @@ public class Role : BaseEntity, ISoftDeletable, IAggregateRoot
     private readonly List<UserRole> _userRoles = [];
     public virtual IReadOnlyCollection<UserRole> UserRoles => _userRoles.AsReadOnly();
     
-    private readonly List<RolePermission> _rolePermissions = new();
+    private readonly List<RolePermission> _rolePermissions = [];
     public virtual IReadOnlyCollection<RolePermission> RolePermissions => _rolePermissions.AsReadOnly();
     
     // 供EF Core使用的私有构造函数
@@ -52,9 +51,8 @@ public class Role : BaseEntity, ISoftDeletable, IAggregateRoot
     
     public void AddPermission(Permission permission)
     {
-        if (permission == null)
-            throw new ArgumentNullException(nameof(permission));
-            
+        ArgumentNullException.ThrowIfNull(permission);
+
         if (_rolePermissions.Any(rp => rp.PermissionId == permission.Id))
             return; // 角色已拥有该权限
             

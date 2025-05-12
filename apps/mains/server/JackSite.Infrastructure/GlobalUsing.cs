@@ -13,3 +13,5 @@ global using JackSite.Infrastructure.Repositories;
 global using JackSite.Domain.Entities;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders; 
 global using JackSite.Infrastructure.Extensions;
+global using Microsoft.AspNetCore.Builder;
+global using Serilog;
