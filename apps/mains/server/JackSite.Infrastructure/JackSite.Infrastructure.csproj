@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\JackSite.Domain\JackSite.Domain.csproj" />
+      <ProjectReference Include="..\JackSite.Shared\JackSite.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,4 +1,4 @@
-using JackSite.Domain.Extensions;
+using JackSite.Shared.Extensions;
 
 namespace JackSite.Infrastructure.Extensions;
 

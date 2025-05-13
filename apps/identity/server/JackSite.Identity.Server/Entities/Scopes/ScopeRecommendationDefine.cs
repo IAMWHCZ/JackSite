@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JackSite.Identity.Server.Entities.Scopes
 {
-    public class RecommendationDefine:BaseEntity
+    public class ScopeRecommendationDefine : BaseEntity
     {
         [Required]
         [Comment("定义名称")]
