@@ -27,4 +27,4 @@ var httpApi = builder.AddProject("jacksite-api", "../JackSite.Http/JackSite.Http
     .WithReference(redis);
 
 
-builder.Build().Run();
+await builder.Build().RunAsync();
