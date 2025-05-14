@@ -2,7 +2,7 @@ using JackSite.Domain.ValueObjects;
 
 namespace JackSite.Domain.Entities;
 
-public class UserProfile : BaseEntity, ISoftDeletable
+public class UserProfile : Entity, ISoftDeletable
 {
     [Required]
     public long UserId { get; private set; }

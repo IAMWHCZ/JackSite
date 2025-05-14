@@ -1,6 +1,6 @@
 namespace JackSite.Domain.Entities;
 
-public  class RolePermission : BaseEntity
+public  class RolePermission : Entity
 {
     [Required]
     public long RoleId { get; set; }

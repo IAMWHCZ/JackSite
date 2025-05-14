@@ -1,7 +1,7 @@
 namespace JackSite.Domain.Entities;
 
 [Table("UserRoles")]
-public class UserRole : BaseEntity
+public class UserRole : Entity
 {
     [Required]
     public long UserId { get; private set; }

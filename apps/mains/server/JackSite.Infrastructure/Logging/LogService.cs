@@ -12,12 +12,12 @@ namespace JackSite.Infrastructure.Logging;
 public class LogService : ILogService
 {
     private readonly ILogger _logger;
-    private readonly IBaseRepository<LogEntry>? _logRepository;
+    private readonly IBaseRepository<LogEntry,long>? _logRepository;
 
     /// <summary>
     /// 创建日志服务实例
     /// </summary>
-    public LogService(IBaseRepository<LogEntry>? logRepository = null)
+    public LogService(IBaseRepository<LogEntry,long>? logRepository = null)
     {
         _logger = Log.Logger;
         _logRepository = logRepository;
@@ -26,7 +26,7 @@ public class LogService : ILogService
     /// <summary>
     /// 使用指定的 Serilog 日志记录器创建日志服务实例
     /// </summary>
-    private LogService(ILogger logger, IBaseRepository<LogEntry>? logRepository = null)
+    private LogService(ILogger logger, IBaseRepository<LogEntry,long>? logRepository = null)
     {
         _logger = logger;
         _logRepository = logRepository;
@@ -122,7 +122,7 @@ public class LogService : ILogService
     /// <summary>
     /// 创建一个带有操作上下文的日志服务
     /// </summary>
-    public static ILogService ForOperation(string operationName, IBaseRepository<LogEntry>? logRepository = null)
+    public static ILogService ForOperation(string operationName, IBaseRepository<LogEntry,long>? logRepository = null)
     {
         return new LogService(Log.Logger.ForContext("Operation", operationName), logRepository);
     }
@@ -131,7 +131,7 @@ public class LogService : ILogService
     /// 创建一个带有用户上下文的日志服务
     /// </summary>
     public static ILogService ForUser(long userId, string? userName = null,
-        IBaseRepository<LogEntry>? logRepository = null)
+        IBaseRepository<LogEntry,long>? logRepository = null)
     {
         var logger = Log.Logger.ForContext("UserId", userId);
 
@@ -147,7 +147,7 @@ public class LogService : ILogService
     /// 创建一个带有请求上下文的日志服务
     /// </summary>
     public static ILogService ForRequest(string path, string method, string? clientIp = null,
-        IBaseRepository<LogEntry>? logRepository = null)
+        IBaseRepository<LogEntry,long>? logRepository = null)
     {
         var logger = Log.Logger
             .ForContext("RequestPath", path)

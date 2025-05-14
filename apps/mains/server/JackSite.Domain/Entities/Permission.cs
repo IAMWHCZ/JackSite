@@ -1,6 +1,6 @@
 namespace JackSite.Domain.Entities;
 
-public sealed class Permission : BaseEntity, ISoftDeletable
+public sealed class Permission : Entity, ISoftDeletable
 {
     [Required]
     [MaxLength(50)]

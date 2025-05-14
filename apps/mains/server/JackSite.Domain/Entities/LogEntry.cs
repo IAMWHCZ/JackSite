@@ -3,7 +3,7 @@ namespace JackSite.Domain.Entities;
 /// <summary>
 /// 系统日志实体
 /// </summary>
-public class LogEntry:BaseEntity
+public class LogEntry:Entity
 {
 
     /// <summary>

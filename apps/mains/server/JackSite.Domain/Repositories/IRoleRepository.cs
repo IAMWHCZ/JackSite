@@ -2,7 +2,7 @@ using JackSite.Domain.Entities;
 
 namespace JackSite.Domain.Repositories;
 
-public interface IRoleRepository : IBaseRepository<Role>
+public interface IRoleRepository : IBaseRepository<Role,long>
 {
     Task<Role?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
     Task<IEnumerable<UserBasic>> GetRoleUsersAsync(long roleId, CancellationToken cancellationToken = default);

@@ -1,18 +1,20 @@
 namespace JackSite.Infrastructure.Repositories;
 
-public class BaseRepository<TEntity>(ApplicationDbContext dbContext) : IBaseRepository<TEntity>
-    where TEntity : BaseEntity
+public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext) 
+    : IBaseRepository<TEntity,TId>
+    where TEntity : BaseEntity<TId>
+    where TId : notnull
 {
     private readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();
 
     #region 查询方法
 
-    public async Task<TEntity?> GetByIdAsync(long id, CancellationToken cancellationToken = default)
+    public async Task<TEntity?> GetByIdAsync(TId id, CancellationToken cancellationToken = default)
     {
         return await _dbSet.FindAsync([id], cancellationToken);
     }
 
-    public async Task<IEnumerable<TEntity>> GetByIdsAsync(IEnumerable<long> ids, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TEntity>> GetByIdsAsync(IEnumerable<TId> ids, CancellationToken cancellationToken = default)
     {
         return await _dbSet.Where(e => ids.Contains(e.Id)).ToListAsync(cancellationToken);
     }
@@ -73,11 +75,11 @@ public class BaseRepository<TEntity>(ApplicationDbContext dbContext) : IBaseRepo
     }
 
     public async Task<TEntity?> GetByIdWithIncludesAsync(
-        long id,
+        TId id,
         IEnumerable<Expression<Func<TEntity, object>>> includes,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.Where(e => e.Id == id);
+        var query = _dbSet.Where(e => EqualityComparer<TId>.Default.Equals(e.Id, id));
         query = includes.Aggregate(query, (current, include) => current.Include(include));
         return await query.FirstOrDefaultAsync(cancellationToken);
     }
@@ -120,7 +122,7 @@ public class BaseRepository<TEntity>(ApplicationDbContext dbContext) : IBaseRepo
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdatePartialAsync(long id, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default)
+    public async Task UpdatePartialAsync(TId id, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default)
     {
         var entity = await GetByIdAsync(id, cancellationToken);
         if (entity == null)
@@ -166,7 +168,7 @@ public class BaseRepository<TEntity>(ApplicationDbContext dbContext) : IBaseRepo
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(long id, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(TId id, CancellationToken cancellationToken = default)
     {
         var entity = await GetByIdAsync(id, cancellationToken);
         if (entity != null)
@@ -182,7 +184,7 @@ public class BaseRepository<TEntity>(ApplicationDbContext dbContext) : IBaseRepo
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteRangeAsync(IEnumerable<long> ids, CancellationToken cancellationToken = default)
+    public async Task DeleteRangeAsync(IEnumerable<TId> ids, CancellationToken cancellationToken = default)
     {
         var entities = await _dbSet.Where(e => ids.Contains(e.Id)).ToListAsync(cancellationToken);
         _dbSet.RemoveRange(entities);
@@ -205,9 +207,9 @@ public class BaseRepository<TEntity>(ApplicationDbContext dbContext) : IBaseRepo
         return await _dbSet.AnyAsync(predicate, cancellationToken);
     }
 
-    public async Task<bool> ExistsByIdAsync(long id, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistsByIdAsync(TId id, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.AnyAsync(e => e.Id == id, cancellationToken);
+        return await _dbSet.AnyAsync(e => EqualityComparer<TId>.Default.Equals(e.Id, id), cancellationToken);
     }
 
     #endregion

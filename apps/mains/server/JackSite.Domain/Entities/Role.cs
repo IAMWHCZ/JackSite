@@ -1,5 +1,5 @@
 namespace JackSite.Domain.Entities;
-public class Role : BaseEntity, ISoftDeletable, IAggregateRoot
+public class Role : Entity, ISoftDeletable, IAggregateRoot
 {
     [Required]
     [MaxLength(50)]

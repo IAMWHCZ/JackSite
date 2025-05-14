@@ -1,42 +1,116 @@
+using System.Net.Mail;
 using JackSite.Domain.Enums;
 using JackSite.Domain.Services;
 
 namespace JackSite.Infrastructure.Services;
 
-public class EmailService(IBaseRepository<EmailRecord> emailRepository) : IEmailService
+public class EmailService(IBaseRepository<EmailRecord,Guid> emailRepository) : IEmailService
 {
-    public Task SendEmailAsync(string to, string message)
+
+    public async Task SendEmailAsync(string to, string message)
     {
-        throw new NotImplementedException();
+        var emailRecord = new EmailRecord
+        {
+            Receiver = to,
+            Message = message,
+            Status = EmailStatus.Pending
+        };
+
+        await emailRepository.AddAsync(emailRecord);
+        await SendEmail(emailRecord);
     }
 
-    public Task SendEmailWithSubjectAsync(string to, string subject, string message)
+    public async Task SendEmailWithSubjectAsync(string to, string subject, string message)
     {
-        throw new NotImplementedException();
+        var emailRecord = new EmailRecord
+        {
+            Receiver = to,
+            Message = message,
+            Subject = subject,
+            SentDate = DateTime.UtcNow,
+            Status = EmailStatus.Pending
+        };
+
+        await emailRepository.AddAsync(emailRecord);
+        await SendEmail(emailRecord);
     }
 
-    public Task SendBulkEmailsAsync(List<string> toList, string message)
+    public async Task SendBulkEmailsAsync(List<string> toList, string message)
     {
-        throw new NotImplementedException();
+        foreach (var to in toList)
+        {
+            var emailRecord = new EmailRecord
+            {
+                Receiver = to,
+                Message = message,
+                Subject = "Bulk Email",
+                SentDate = DateTime.UtcNow,
+                Status = EmailStatus.Pending
+            };
+
+            await emailRepository.AddAsync(emailRecord);
+            await SendEmail(emailRecord);
+        }
     }
 
-    public Task SendHtmlEmailAsync(string to, string htmlContent)
+    public async Task SendHtmlEmailAsync(string to, string htmlContent)
     {
-        throw new NotImplementedException();
+        var emailRecord = new EmailRecord
+        {
+            Receiver = to,
+            Message = htmlContent,
+            Subject = "HTML Email",
+            SentDate = DateTime.UtcNow,
+            Status = EmailStatus.Pending,
+            IsHtml = true
+        };
+
+        await emailRepository.AddAsync(emailRecord);
+        await SendEmail(emailRecord);
     }
 
-    public Task<bool> ValidateEmailAsync(string email)
+    public async Task<bool> ValidateEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var mailAddress = new MailAddress(email);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
-    public Task<string> GetEmailStatusAsync(string emailId)
+    public async Task<string> GetEmailStatusAsync(Guid emailId)
     {
-        throw new NotImplementedException();
+        var emailRecord = await emailRepository.GetByIdAsync(emailId);
+        return emailRecord?.Status.ToString() ?? "Not Found";
     }
 
-    public Task SetEmailPriorityAsync(string to, string message, EmailPriorityType priority)
+    public async Task SetEmailPriorityAsync(string to, string message, EmailPriorityType priority)
     {
-        throw new NotImplementedException();
+        var emailRecord = new EmailRecord
+        {
+            Receiver = to,
+            Message = message,
+            Subject = "Priority Email",
+            SentDate = DateTime.UtcNow,
+            Status = EmailStatus.Pending,
+            Priority = priority
+        };
+
+        await emailRepository.AddAsync(emailRecord);
+        await SendEmail(emailRecord);
+    }
+
+    private async Task SendEmail(EmailRecord emailRecord)
+    {
+        // Here you would implement the actual email sending logic
+        // For example, using SMTP or a third-party email service
+
+        // Update the status to Sent after sending
+        emailRecord.Status = EmailStatus.Sending;
+        await emailRepository.UpdateAsync(emailRecord);
     }
 }

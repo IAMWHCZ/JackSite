@@ -1,6 +1,6 @@
 namespace JackSite.Domain.Base;
 
-public class SoftDeleteEntity:BaseEntity
+public class SoftDeleteEntity:Entity
 {
     public bool IsDeleted { get; set; }
 

@@ -4,7 +4,9 @@ namespace JackSite.Domain.Repositories;
 /// 基础仓储接口
 /// </summary>
 /// <typeparam name="TEntity">实体类型</typeparam>
-public interface IBaseRepository<TEntity> where TEntity : class 
+public interface IBaseRepository<TEntity, TId> 
+    where TEntity : class
+    where TId : notnull
 {
     /// <summary>
     /// 根据ID获取实体
@@ -12,7 +14,7 @@ public interface IBaseRepository<TEntity> where TEntity : class
     /// <param name="id">实体ID</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>实体或null</returns>
-    Task<TEntity?> GetByIdAsync(long id, CancellationToken cancellationToken = default);
+    Task<TEntity?> GetByIdAsync(TId id, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// 根据ID集合获取实体集合
@@ -20,7 +22,7 @@ public interface IBaseRepository<TEntity> where TEntity : class
     /// <param name="ids">ID集合</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>实体集合</returns>
-    Task<IEnumerable<TEntity>> GetByIdsAsync(IEnumerable<long> ids, CancellationToken cancellationToken = default);
+    Task<IEnumerable<TEntity>> GetByIdsAsync(IEnumerable<TId> ids, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// 获取所有实体
@@ -103,7 +105,7 @@ public interface IBaseRepository<TEntity> where TEntity : class
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>包含关联实体的实体或null</returns>
     Task<TEntity?> GetByIdWithIncludesAsync(
-        long id,
+        TId id,
         IEnumerable<Expression<Func<TEntity, object>>> includes,
         CancellationToken cancellationToken = default);
     
@@ -143,7 +145,7 @@ public interface IBaseRepository<TEntity> where TEntity : class
     /// <param name="id">实体ID</param>
     /// <param name="propertyValues">要更新的属性及其值</param>
     /// <param name="cancellationToken">取消令牌</param>
-    Task UpdatePartialAsync(long id, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default);
+    Task UpdatePartialAsync(TId id, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// 根据条件部分更新实体
@@ -166,7 +168,7 @@ public interface IBaseRepository<TEntity> where TEntity : class
     /// </summary>
     /// <param name="id">实体ID</param>
     /// <param name="cancellationToken">取消令牌</param>
-    Task DeleteAsync(long id, CancellationToken cancellationToken = default);
+    Task DeleteAsync(TId id, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// 批量删除实体
@@ -180,7 +182,7 @@ public interface IBaseRepository<TEntity> where TEntity : class
     /// </summary>
     /// <param name="ids">ID集合</param>
     /// <param name="cancellationToken">取消令牌</param>
-    Task DeleteRangeAsync(IEnumerable<long> ids, CancellationToken cancellationToken = default);
+    Task DeleteRangeAsync(IEnumerable<TId> ids, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// 根据条件删除实体
@@ -204,7 +206,7 @@ public interface IBaseRepository<TEntity> where TEntity : class
     /// <param name="id">实体ID</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>是否存在</returns>
-    Task<bool> ExistsByIdAsync(long id, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByIdAsync(TId id, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// 获取符合条件的实体数量

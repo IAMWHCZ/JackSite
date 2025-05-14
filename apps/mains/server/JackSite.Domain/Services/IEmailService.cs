@@ -47,7 +47,7 @@ public interface IEmailService
     /// </summary>
     /// <param name="emailId">邮件的唯一标识符。</param>
     /// <returns>表示邮件状态的字符串任务。</returns>
-    Task<string> GetEmailStatusAsync(string emailId);
+    Task<string> GetEmailStatusAsync(Guid emailId);
 
     /// <summary>
     /// 异步发送邮件并设置优先级。

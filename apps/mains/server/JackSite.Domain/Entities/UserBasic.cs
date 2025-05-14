@@ -1,6 +1,6 @@
 namespace JackSite.Domain.Entities;
 
-public class UserBasic : BaseEntity, ISoftDeletable, IAggregateRoot
+public class UserBasic : Entity, ISoftDeletable, IAggregateRoot
 {
     // 基本属性
     [Required]

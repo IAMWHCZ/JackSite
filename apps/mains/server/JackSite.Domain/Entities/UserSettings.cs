@@ -1,6 +1,6 @@
 namespace JackSite.Domain.Entities;
 
-public class UserSettings : BaseEntity
+public class UserSettings : Entity
 {
     [Required]
     public long UserId { get; private set; }

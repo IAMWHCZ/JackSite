@@ -30,7 +30,7 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         // 注册通用仓储
-        services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
 
         // 自动注册所有特定仓储
         var assembly = Assembly.GetExecutingAssembly();
@@ -40,16 +40,16 @@ public static class ServiceCollectionExtensions
             .Where(type => !type.IsAbstract && type is { IsInterface: false, IsGenericType: false }
                                             && type.GetInterfaces().Any(i =>
                                                 i.IsGenericType && i.GetGenericTypeDefinition() ==
-                                                typeof(IBaseRepository<>)))
+                                                typeof(IBaseRepository<,>)))
             .ToList();
 
         foreach (var repositoryType in repositoryTypes)
         {
             // 获取该仓储实现的所有接口
             var implementedInterfaces = repositoryType.GetInterfaces()
-                .Where(i => i != typeof(IBaseRepository<>)
+                .Where(i => i != typeof(IBaseRepository<,>)
                             && i.IsGenericType
-                            && i.GetGenericTypeDefinition() == typeof(IBaseRepository<>));
+                            && i.GetGenericTypeDefinition() == typeof(IBaseRepository<,>));
 
             foreach (var interfaceType in implementedInterfaces)
             {
@@ -59,8 +59,8 @@ public static class ServiceCollectionExtensions
 
             // 获取该仓储实现的其他自定义接口
             var customInterfaces = repositoryType.GetInterfaces()
-                .Where(i => i != typeof(IBaseRepository<>)
-                            && (!i.IsGenericType || i.GetGenericTypeDefinition() != typeof(IBaseRepository<>)));
+                .Where(i => i != typeof(IBaseRepository<,>)
+                            && (!i.IsGenericType || i.GetGenericTypeDefinition() != typeof(IBaseRepository<,>)));
 
             foreach (var interfaceType in customInterfaces)
             {

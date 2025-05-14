@@ -8,7 +8,7 @@ namespace JackSite.Infrastructure.Services;
 public class UserService(
     IUserBasicRepository userRepository,
     IRoleRepository roleRepository,
-    IBaseRepository<UserRole> userRoleRepository,
+    IBaseRepository<UserRole,long> userRoleRepository,
     IUnitOfWork unitOfWork)
     : IUserService
 {

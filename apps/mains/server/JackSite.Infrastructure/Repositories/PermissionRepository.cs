@@ -3,7 +3,7 @@ using JackSite.Domain.Entities;
 namespace JackSite.Infrastructure.Repositories;
 
 public class PermissionRepository(ApplicationDbContext dbContext)
-    : BaseRepository<Permission>(dbContext), IPermissionRepository
+    : BaseRepository<Permission,long>(dbContext), IPermissionRepository
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
 
