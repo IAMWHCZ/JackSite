@@ -1,6 +1,4 @@
-﻿using JackSite.Identity.Server.Entities.Bases;
+﻿namespace JackSite.Identity.Server.Entities.Scopes;
 
-namespace JackSite.Identity.Server.Entities.Scopes;
-
-public class ScopeProperty:BaseProprietyEntity;
+public class ScopeProperty : BaseProprietyEntity;
 

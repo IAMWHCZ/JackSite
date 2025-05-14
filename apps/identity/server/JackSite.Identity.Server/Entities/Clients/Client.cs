@@ -1,6 +1,3 @@
-using JackSite.Identity.Server.Entities.Bases;
-using JackSite.Identity.Server.Enums;
-
 namespace JackSite.Identity.Server.Entities.Clients
 {
     public class Client : BaseEntity

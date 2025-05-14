@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
-namespace JackSite.Identity.Server.Entities.Users
+﻿namespace JackSite.Identity.Server.Entities.Users
 {
     public class IdentityUser
     {

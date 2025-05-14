@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using JackSite.Identity.Server.Entities.Bases;
-using Microsoft.EntityFrameworkCore;
-
 namespace JackSite.Identity.Server.Entities.Scopes
 {
     public class ScopeRecommendationDefine : BaseEntity

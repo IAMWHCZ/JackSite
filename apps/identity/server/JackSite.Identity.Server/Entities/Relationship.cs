@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using JackSite.Identity.Server.Enums;
-using Microsoft.EntityFrameworkCore;
-
-namespace JackSite.Identity.Server.Entities
+﻿namespace JackSite.Identity.Server.Entities
 {
     [Index(nameof(UserId), IsUnique = true)]
     public class Relationship
@@ -36,7 +32,7 @@ namespace JackSite.Identity.Server.Entities
 
         [Required]
         [Comment("关系类型")]
-        public RelationshipType Type { get; set; }
+        public byte Type { get; set; }
         
         [Required]
         public DateTime UpdateAt { get; set; } = DateTime.UtcNow;

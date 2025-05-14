@@ -1,9 +1,6 @@
-﻿using JackSite.Identity.Server.Entities.Bases;
-using JackSite.Identity.Server.Entities.Users;
-
-namespace JackSite.Identity.Server.Entities.Sources
+namespace JackSite.Identity.Server.Entities.Sources.Identity
 {
-    public class Source:BaseEntity
+     public class IdentitySource:BaseEntity
     {
         public string SourceName { get; set; } = default!;
         public string DisplayName { get; set; } = default!;

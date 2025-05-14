@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-
-namespace JackSite.Identity.Server.Entities
+﻿namespace JackSite.Identity.Server.Entities
 {
     public class Email
     {

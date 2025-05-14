@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JackSite.Identity.Server.Entities.Scopes;
-using JackSite.Identity.Server.Enums;
-
 namespace JackSite.Identity.Server.Entities.Clients
 {
     public class ClientBasic
