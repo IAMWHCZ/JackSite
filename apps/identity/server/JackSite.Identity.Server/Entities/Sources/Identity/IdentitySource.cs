@@ -9,6 +9,7 @@ namespace JackSite.Identity.Server.Entities.Sources.Identity
         public bool IsShowInDoc { get; set; }
         public bool IsRequired { get; set; }
         public bool IsEmphasize { get; set; }
-        public ICollection<UserClaim>? UserClaims { get; set; }
+        public virtual ICollection<UserClaim>? UserClaims { get; set; }
+        public virtual ICollection<BaseProprietyEntity>? IdentitySourceProperties { get; set; }
     }
 }

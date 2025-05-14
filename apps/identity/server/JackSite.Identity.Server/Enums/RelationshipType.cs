@@ -17,6 +17,32 @@ public static class RelationshipType
 
     }
 
+    internal static class Source
+    {
+        public enum IdentitySource : byte
+        {
+            [Description("IdentitySourcePropriety关联")]
+            IdentitySourcePropriety,
+            [Description("IdentitySourceUserClaims关联")]
+            IdentitySourceUserClaim
+        }
+
+        public enum ApiResource : byte
+        {
+            [Description("ApiResourceKeys关联")]
+            ApiResourceKeys,
+            [Description("ApiResourceProperties关联")]
+            ApiResourceProperties,
+            [Description("ApiResourceUserClaims关联")]
+            ApiResourceUserClaims,
+            [Description("ApiResourceScopes关联")]
+            ApiResourceScopes,
+            [Description("ApiResourceSigningAlgorithm关联")]
+            ApiResourceSigningAlgorithm
+        }
+
+    }
+
     public enum Client : byte
     {
         [Description("ClientToken关联")]
@@ -30,7 +56,9 @@ public static class RelationshipType
         [Description("ClientScope关联")]
         ClientScope,
         [Description("ClientTokenSigningAlgorithm关联")]
-        ClientTokenSigningAlgorithm
+        ClientTokenSigningAlgorithm,
+        [Description("ClientKey关联")]
+        ClientKey
     }
 
 }

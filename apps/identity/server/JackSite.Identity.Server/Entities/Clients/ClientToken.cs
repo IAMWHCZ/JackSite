@@ -15,8 +15,8 @@
         public string ClientDefinePrefix { get; private set; } = "client_";
         public string? MainPartSlat { get; private set; }
         public ICollection<ClientCrossPolicy> ClientCrossPolicies { get; private set; }
-        public ICollection<ClientTokenDefine> ClientTokenDefine { get; private set; }
-        public ICollection<ClientTokenSigningAlgorithm> AllowedIdentityTokenSigningAlgorithms { get; private set; }
+        public ICollection<BaseProprietyEntity> ClientTokenDefine { get; private set; }
+        public ICollection<SigningAlgorithm> AllowedIdentityTokenSigningAlgorithms { get; private set; }
 
         private ClientToken()
         {
@@ -100,7 +100,7 @@
             ClientCrossPolicies.Remove(policy);
         }
 
-        public void AddClientTokenDefine(ClientTokenDefine tokenDefine)
+        public void AddClientTokenDefine(BaseProprietyEntity tokenDefine)
         {
             if (ClientTokenDefine.Any(td => td.Id == tokenDefine.Id))
             {
@@ -119,7 +119,7 @@
             ClientTokenDefine.Remove(tokenDefine);
         }
 
-        public void AddAllowedIdentityTokenSigningAlgorithm(ClientTokenSigningAlgorithm algorithm)
+        public void AddAllowedIdentityTokenSigningAlgorithm(SigningAlgorithm algorithm)
         {
             if (AllowedIdentityTokenSigningAlgorithms.Any(a => a.Id == algorithm.Id))
             {

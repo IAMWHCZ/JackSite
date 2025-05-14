@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace JackSite.Identity.Server.Entities.Scopes;
+﻿namespace JackSite.Identity.Server.Entities.Scopes;
 
 public class Scope
 {
@@ -18,6 +16,10 @@ public class Scope
     [Comment("显示名称")]
     public string? DisplayName { get; set; }
 
+    public bool IsEnable { get; set; }
+
+    public bool IsShowInDoc { get; set; }
+
     [Required]
     [Comment("是否必需")]
     public bool IsRequired { get; set; }
@@ -25,5 +27,9 @@ public class Scope
     [Required]
     [Comment("是否强调")]
     public bool IsEmphasize { get; set; }
+
+    public virtual ICollection<BaseProprietyEntity>? ScopeProperties { get; set; }
+
+    public virtual ICollection<UserClaim>? ScopeUserClaims { get; set; }
 }
 
