@@ -9,12 +9,13 @@ public static class RelationshipType
         [Description("Scope属性关联")]
         ScopeProperty = 1,
 
-        [Description("Scope用户声明关联")]
+        [Description("Scope用户声明关联")]  
         ScopeUserDefine,
     }
     public enum RoleType : byte
     {
-
+        [Description("用户角色关联")]
+        UserRole
     }
 
     internal static class Source

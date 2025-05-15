@@ -1,13 +1,12 @@
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-// Import the generated route tree
 import { routeTree } from './routeTree.gen'
-import './styles.css'
-import reportWebVitals from './libs/reportWebVitals.ts'
-import { ReactQueryDevtoolsHelper } from './helper/ReactQueryDevtoolsHelper.tsx'
+import '@/theme/global.scss'
+import reportWebVitals from '@/libs/reportWebVitals.ts'
+import { ReactQueryDevtoolsHelper } from '@/helper/ReactQueryDevtoolsHelper.tsx'
+import { StrictMode } from 'react'
 
-// Create a new router instance
 const router = createRouter({
   routeTree,
   context: {},
@@ -17,7 +16,6 @@ const router = createRouter({
   defaultPreloadStaleTime: 0,
 })
 
-// Register the router instance for type safety
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router
@@ -29,12 +27,12 @@ const rootElement = document.getElementById('app')
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtoolsHelper />
-      <RouterProvider router={router} />
-    </QueryClientProvider>,
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtoolsHelper />
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </StrictMode>,
   )
 }
-
 reportWebVitals()
-
