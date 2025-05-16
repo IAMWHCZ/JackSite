@@ -1,6 +1,4 @@
-﻿using JackSite.Identity.Server.Entities.Bases;
-
-namespace JackSite.Identity.Server.Entities.Users
+﻿namespace JackSite.Identity.Server.Entities.Users
 {
     public class UserClaim:BaseEntity
     {

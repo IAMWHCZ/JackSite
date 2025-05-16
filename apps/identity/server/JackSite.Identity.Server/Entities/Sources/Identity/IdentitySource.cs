@@ -1,9 +1,6 @@
-﻿using JackSite.Identity.Server.Entities.Bases;
-using JackSite.Identity.Server.Entities.Users;
-
-namespace JackSite.Identity.Server.Entities.Sources
+namespace JackSite.Identity.Server.Entities.Sources.Identity
 {
-    public class Source:BaseEntity
+     public class IdentitySource:BaseEntity
     {
         public string SourceName { get; set; } = default!;
         public string DisplayName { get; set; } = default!;
@@ -12,6 +9,7 @@ namespace JackSite.Identity.Server.Entities.Sources
         public bool IsShowInDoc { get; set; }
         public bool IsRequired { get; set; }
         public bool IsEmphasize { get; set; }
-        public ICollection<UserClaim>? UserClaims { get; set; }
+        public virtual ICollection<UserClaim>? UserClaims { get; set; }
+        public virtual ICollection<BaseProprietyEntity>? IdentitySourceProperties { get; set; }
     }
 }

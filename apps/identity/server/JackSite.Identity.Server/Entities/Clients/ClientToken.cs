@@ -1,7 +1,4 @@
-﻿using JackSite.Identity.Server.Entities.Bases;
-using JackSite.Identity.Server.Enums;
-
-namespace JackSite.Identity.Server.Entities.Clients
+﻿namespace JackSite.Identity.Server.Entities.Clients
 {
     public class ClientToken : BaseEntity
     {
@@ -18,8 +15,8 @@ namespace JackSite.Identity.Server.Entities.Clients
         public string ClientDefinePrefix { get; private set; } = "client_";
         public string? MainPartSlat { get; private set; }
         public ICollection<ClientCrossPolicy> ClientCrossPolicies { get; private set; }
-        public ICollection<ClientTokenDefine> ClientTokenDefine { get; private set; }
-        public ICollection<ClientTokenSigningAlgorithm> AllowedIdentityTokenSigningAlgorithms { get; private set; }
+        public ICollection<BaseProprietyEntity> ClientTokenDefine { get; private set; }
+        public ICollection<SigningAlgorithm> AllowedIdentityTokenSigningAlgorithms { get; private set; }
 
         private ClientToken()
         {
@@ -103,7 +100,7 @@ namespace JackSite.Identity.Server.Entities.Clients
             ClientCrossPolicies.Remove(policy);
         }
 
-        public void AddClientTokenDefine(ClientTokenDefine tokenDefine)
+        public void AddClientTokenDefine(BaseProprietyEntity tokenDefine)
         {
             if (ClientTokenDefine.Any(td => td.Id == tokenDefine.Id))
             {
@@ -122,7 +119,7 @@ namespace JackSite.Identity.Server.Entities.Clients
             ClientTokenDefine.Remove(tokenDefine);
         }
 
-        public void AddAllowedIdentityTokenSigningAlgorithm(ClientTokenSigningAlgorithm algorithm)
+        public void AddAllowedIdentityTokenSigningAlgorithm(SigningAlgorithm algorithm)
         {
             if (AllowedIdentityTokenSigningAlgorithms.Any(a => a.Id == algorithm.Id))
             {

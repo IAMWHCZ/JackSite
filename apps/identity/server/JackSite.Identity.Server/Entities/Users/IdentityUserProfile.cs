@@ -1,7 +1,3 @@
-using JackSite.Identity.Server.Enums;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-
 namespace JackSite.Identity.Server.Entities.Users
 {
     public class IdentityUserProfile

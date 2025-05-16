@@ -1,7 +1,4 @@
-﻿using JackSite.Identity.Server.Entities.Users;
-using Microsoft.EntityFrameworkCore;
-
-namespace JackSite.Identity.Server.Data
+﻿namespace JackSite.Identity.Server.Data
 {
     public partial class IdentityDbContext
     {

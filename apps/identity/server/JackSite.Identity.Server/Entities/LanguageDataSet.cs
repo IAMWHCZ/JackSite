@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using JackSite.Identity.Server.Enums;
-using Microsoft.EntityFrameworkCore;
-
-namespace JackSite.Identity.Server.Entities;
+﻿namespace JackSite.Identity.Server.Entities;
 
 public class LanguageDataSet
 {

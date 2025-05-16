@@ -1,10 +1,14 @@
-﻿using JackSite.Identity.Server.Configuration;
-using Microsoft.EntityFrameworkCore;
-
-namespace JackSite.Identity.Server.Data
+﻿namespace JackSite.Identity.Server.Data
 {
     public partial class IdentityDbContext(DbContextOptions<IdentityDbContext> options) : DbContext(options)
     {
+
+        public DbSet<BaseProprietyEntity> Proprieties { get; set; }
+
+        public DbSet<BaseKeyEntity> BaseKeyEntity { get; set; }
+
+        public DbSet<SigningAlgorithm> SigningAlgorithm { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base

@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JackSite.Identity.Server.Entities.Scopes;
-using JackSite.Identity.Server.Enums;
-
 namespace JackSite.Identity.Server.Entities.Clients
 {
     public class ClientBasic
@@ -29,14 +22,10 @@ namespace JackSite.Identity.Server.Entities.Clients
 
         public bool IsBrowserTokenAccess { get; set; }
 
-        public ICollection<ClientRedirectUri>? ClientRedirectUris { get; set; }
-
-        public ICollection<ClientAuthorizationCategory>? ClientAuthorizationCategories { get; set; }
-
-        public ICollection<ClientKey>? ClientKeys { get; set; }
-
-        public ICollection<ClientPropriety>? ClientProprieties { get; set; }
-
-        public ICollection<Scope>? Scopes { get; set; }
+        public virtual ICollection<ClientRedirectUri>? ClientRedirectUris { get; set; }
+        public virtual ICollection<ClientAuthorizationCategory>? ClientAuthorizationCategories { get; set; }
+        public virtual ICollection<BaseKeyEntity>? ClientKeys { get; set; }
+        public virtual ICollection<BaseProprietyEntity>? ClientProprieties { get; set; }
+        public virtual ICollection<Scope>? Scopes { get; set; }
     }
 }

@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-
 namespace JackSite.Identity.Server.Entities.Users
 {
     public class IdentityUserSecurity

@@ -1,6 +1,6 @@
 ﻿namespace JackSite.Identity.Server.Entities.Clients
 {
-    public class ClientTokenSigningAlgorithm
+    public class SigningAlgorithm
     {
         public int Id { get; set; }
 
