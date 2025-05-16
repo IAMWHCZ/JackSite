@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\mains\server\JackSite.Shared\JackSite.Shared.csproj" />
+      <ProjectReference Include="..\..\..\master\server\JackSite.Shared\JackSite.Shared.csproj" />
       <ProjectReference Include="..\JackSite.Identity.ServiceDefaults\JackSite.Identity.ServiceDefaults.csproj" />
     </ItemGroup>
 

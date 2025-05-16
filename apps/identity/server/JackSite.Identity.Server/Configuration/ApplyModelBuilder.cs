@@ -1,6 +1,4 @@
 ﻿using JackSite.Shared.Extensions;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace JackSite.Identity.Server.Configuration
 {
