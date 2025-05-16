@@ -72,7 +72,11 @@ app.UseLogContext();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(opt =>
+    {
+        opt.Title = "JackSite API Docs";
+        opt.Layout = ScalarLayout.Modern;
+    });
 }
 
 // 使用自定义的启动方法

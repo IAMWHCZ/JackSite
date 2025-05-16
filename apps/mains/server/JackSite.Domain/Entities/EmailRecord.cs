@@ -1,8 +1,7 @@
 namespace JackSite.Domain.Entities;
 
-public class EmailRecord
+public class EmailRecord() :BaseEntity<Guid>(id:Guid.NewGuid())
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
     public string Message { get; set; } = null!;
     public string Subject { get; set; } = "No Subject";
     

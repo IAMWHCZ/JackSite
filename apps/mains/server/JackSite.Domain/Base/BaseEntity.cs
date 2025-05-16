@@ -24,7 +24,7 @@ public abstract class BaseEntity<TId>(TId id)
     // 添加领域事件
     public void AddDomainEvent(IDomainEvent domainEvent)
     {
-        _domainEvents ??= new List<IDomainEvent>();
+        _domainEvents ??= [];
         _domainEvents.Add(domainEvent);
     }
     

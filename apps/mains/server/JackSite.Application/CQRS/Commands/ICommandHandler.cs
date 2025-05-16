@@ -16,6 +16,8 @@ public interface ICommandHandler<in TCommand, TResult> where TCommand : ICommand
     Task<TResult> Handle(TCommand command, CancellationToken cancellationToken);
 }
 
+
+
 /// <summary>
 /// 无返回值命令处理器接口
 /// </summary>

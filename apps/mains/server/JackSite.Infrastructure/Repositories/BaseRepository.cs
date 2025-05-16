@@ -16,22 +16,22 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
 
     public async Task<IEnumerable<TEntity>> GetByIdsAsync(IEnumerable<TId> ids, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.Where(e => ids.Contains(e.Id)).ToListAsync(cancellationToken);
+        return await _dbSet.AsNoTracking().Where(e => ids.Contains(e.Id)).ToListAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbSet.ToListAsync(cancellationToken);
+        return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.Where(predicate).ToListAsync(cancellationToken);
+        return await _dbSet.AsNoTracking().Where(predicate).ToListAsync(cancellationToken);
     }
 
     public async Task<TEntity?> FindOneAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.FirstOrDefaultAsync(predicate, cancellationToken);
+        return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate, cancellationToken);
     }
 
     public async Task<IEnumerable<TEntity>> FindAsync(
@@ -39,7 +39,7 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.Where(predicate);
+        var query = _dbSet.Where(predicate).AsNoTracking();
         return await orderBy(query).ToListAsync(cancellationToken);
     }
 
@@ -48,7 +48,7 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
         IEnumerable<Expression<Func<TEntity, object>>> includes,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.Where(predicate);
+        var query = _dbSet.Where(predicate).AsNoTracking();
         query = includes.Aggregate(query, (current, include) => current.Include(include));
         return await query.ToListAsync(cancellationToken);
     }
@@ -59,7 +59,7 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
         IEnumerable<Expression<Func<TEntity, object>>> includes,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.Where(predicate);
+        var query = _dbSet.Where(predicate).AsNoTracking();
         query = includes.Aggregate(query, (current, include) => current.Include(include));
         return await orderBy(query).ToListAsync(cancellationToken);
     }
@@ -69,7 +69,7 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
         IEnumerable<Expression<Func<TEntity, object>>> includes,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.Where(predicate);
+        var query = _dbSet.Where(predicate).AsNoTracking();
         query = includes.Aggregate(query, (current, include) => current.Include(include));
         return await query.FirstOrDefaultAsync(cancellationToken);
     }
@@ -79,7 +79,7 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
         IEnumerable<Expression<Func<TEntity, object>>> includes,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbSet.Where(e => EqualityComparer<TId>.Default.Equals(e.Id, id));
+        var query = _dbSet.Where(e => EqualityComparer<TId>.Default.Equals(e.Id, id)).AsNoTracking();
         query = includes.Aggregate(query, (current, include) => current.Include(include));
         return await query.FirstOrDefaultAsync(cancellationToken);
     }
@@ -204,12 +204,12 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
 
     public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.AnyAsync(predicate, cancellationToken);
+        return await _dbSet.AsNoTracking().AnyAsync(predicate, cancellationToken);
     }
 
     public async Task<bool> ExistsByIdAsync(TId id, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.AnyAsync(e => EqualityComparer<TId>.Default.Equals(e.Id, id), cancellationToken);
+        return await _dbSet.AsNoTracking().AnyAsync(e => EqualityComparer<TId>.Default.Equals(e.Id, id), cancellationToken);
     }
 
     #endregion
@@ -219,13 +219,13 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
     public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default)
     {
         return predicate == null
-            ? await _dbSet.CountAsync(cancellationToken)
-            : await _dbSet.CountAsync(predicate, cancellationToken);
+            ? await _dbSet.AsNoTracking().CountAsync(cancellationToken)
+            : await _dbSet.AsNoTracking().CountAsync(predicate, cancellationToken);
     }
 
     public async Task<int> CountAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbSet.CountAsync(cancellationToken);
+        return await _dbSet.AsNoTracking().CountAsync(cancellationToken);
     }
 
     #endregion
@@ -239,15 +239,15 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         CancellationToken cancellationToken = default)
     {
-        var query = predicate == null ? _dbSet : _dbSet.Where(predicate);
-        var totalCount = await query.CountAsync(cancellationToken);
+        var query = predicate == null ? _dbSet : _dbSet.Where(predicate).AsNoTracking();
+        var totalCount = await query.AsNoTracking().CountAsync(cancellationToken);
 
         if (orderBy != null)
         {
             query = orderBy(query);
         }
 
-        var items = await query.Skip(skip).Take(take).ToListAsync(cancellationToken);
+        var items = await query.AsNoTracking().Skip(skip).Take(take).ToListAsync(cancellationToken);
         return (items, totalCount);
     }
 
@@ -259,8 +259,8 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
         IEnumerable<Expression<Func<TEntity, object>>>? includes = null,
         CancellationToken cancellationToken = default)
     {
-        var query = predicate == null ? _dbSet : _dbSet.Where(predicate);
-        var totalCount = await query.CountAsync(cancellationToken);
+        var query = predicate == null ? _dbSet : _dbSet.Where(predicate).AsNoTracking();
+        var totalCount = await query.AsNoTracking().CountAsync(cancellationToken);
 
         if (includes != null)
         {
@@ -282,12 +282,12 @@ public class BaseRepository<TEntity, TId>(ApplicationDbContext dbContext)
 
     public IQueryable<TEntity> Query()
     {
-        return _dbSet;
+        return _dbSet.AsNoTracking();
     }
 
     public IQueryable<TEntity> QueryWithIncludes(IEnumerable<Expression<Func<TEntity, object>>> includes)
     {
-        return includes.Aggregate(_dbSet.AsQueryable(), (current, include) => current.Include(include));
+        return includes.Aggregate(_dbSet.AsQueryable(), (current, include) => current.Include(include)).AsNoTracking();
     }
 
     #endregion

@@ -1,19 +1,18 @@
-using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using System.Reflection;
-
 namespace JackSite.Http.Configuration;
 
 public static class ConfigureStartUp
 {
-    public static async Task ApplicationRunAsync(this WebApplication app, CancellationToken cancellationToken)
+    public static async Task ApplicationRunAsync(
+        this WebApplication app, 
+        CancellationToken cancellationToken
+        )
     {
-        // 使用静态 Log 类而不是 ILogService
         var env = app.Environment;
         var appName = Assembly.GetEntryAssembly()?.GetName().Name ?? "JackSite.Http";
         var version = Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "1.0.0";
 
-        // 记录应用程序启动信息
+        app.RegisterModules(typeof(Program).Assembly);
+        
         Log.Information(
             "应用程序 {ApplicationName} v{Version} 正在启动 - 环境: {Environment}",
             appName,

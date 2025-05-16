@@ -62,10 +62,6 @@ public class UserBasic : Entity, ISoftDeletable, IAggregateRoot
     [Required]
     public UserStatus Status { get; private set; } = UserStatus.Normal;
     
-    // 导航属性
-    private readonly List<UserRole> _userRoles = [];
-    public virtual IReadOnlyCollection<UserRole> UserRoles => _userRoles.AsReadOnly();
-    
     public virtual UserProfile? UserProfile { get; private set; }
     
     public virtual UserSettings? UserSettings { get; private set; }
@@ -119,23 +115,6 @@ public class UserBasic : Entity, ISoftDeletable, IAggregateRoot
             
         PasswordHash = newPasswordHash;
         Salt = newSalt;
-    }
-    
-    public void AddRole(Role role)
-    {
-        ArgumentNullException.ThrowIfNull(role);
-
-        if (_userRoles.Any(ur => ur.RoleId == role.Id))
-            return; // 用户已拥有该角色
-            
-        _userRoles.Add(new UserRole(this.Id, role.Id));
-    }
-    
-    public void RemoveRole(long roleId)
-    {
-        var userRole = _userRoles.FirstOrDefault(ur => ur.RoleId == roleId);
-        if (userRole != null)
-            _userRoles.Remove(userRole);
     }
     
     // ISoftDeletable接口实现

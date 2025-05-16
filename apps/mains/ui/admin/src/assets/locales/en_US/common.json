@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Dashboard",
-    "gateway": "Gateway Config"
+    "user": "User Management"
   },
   "tooltip": {
     "theme": "Switch to {{mode}} theme",

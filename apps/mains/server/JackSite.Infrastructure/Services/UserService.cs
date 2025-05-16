@@ -7,8 +7,6 @@ namespace JackSite.Infrastructure.Services;
 
 public class UserService(
     IUserBasicRepository userRepository,
-    IRoleRepository roleRepository,
-    IBaseRepository<UserRole,long> userRoleRepository,
     IUnitOfWork unitOfWork)
     : IUserService
 {
@@ -75,54 +73,9 @@ public class UserService(
         {
             return false;
         }
-
-        var role = await roleRepository.GetByIdAsync(roleId, cancellationToken);
-        if (role == null)
-        {
-            return false;
-        }
-
-        // 使用领域行为添加角色
-        user.AddRole(role);
         
-        // 使用工作单元模式保存
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return true;
-    }
-
-    public async Task<bool> RemoveRoleFromUserAsync(long userId, long roleId,
-        CancellationToken cancellationToken = default)
-    {
-        // 查找用户角色关系
-        var userRole = await userRoleRepository.FindOneAsync(
-            ur => ur.UserId == userId && ur.RoleId == roleId,
-            cancellationToken);
-
-        if (userRole == null)
-        {
-            return false; // 用户没有该角色
-        }
-
-        // 移除用户角色关系
-        await userRoleRepository.DeleteAsync(userRole, cancellationToken);
-        return true;
-    }
-
-    public async Task<IEnumerable<Role>> GetUserRolesAsync(long userId, CancellationToken cancellationToken = default)
-    {
-        return await userRepository.GetUserRolesAsync(userId, cancellationToken);
-    }
-
-    public async Task<IEnumerable<Permission>> GetUserPermissionsAsync(long userId,
-        CancellationToken cancellationToken = default)
-    {
-        return await userRepository.GetUserPermissionsAsync(userId, cancellationToken);
-    }
-
-    public async Task<bool> HasPermissionAsync(long userId, string permissionCode,
-        CancellationToken cancellationToken = default)
-    {
-        return await userRepository.HasPermissionAsync(userId, permissionCode, cancellationToken);
     }
 
     #region 辅助方法

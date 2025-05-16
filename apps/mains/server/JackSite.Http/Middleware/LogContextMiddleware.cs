@@ -1,5 +1,3 @@
-using JackSite.Infrastructure.Logging;
-
 namespace JackSite.Http.Middleware;
 
 /// <summary>

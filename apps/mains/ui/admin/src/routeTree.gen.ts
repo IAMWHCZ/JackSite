@@ -15,7 +15,6 @@ import { Route as UserImport } from './routes/user'
 import { Route as SignatureImport } from './routes/signature'
 import { Route as RolesImport } from './routes/roles'
 import { Route as MonitorImport } from './routes/monitor'
-import { Route as GatewayImport } from './routes/gateway'
 import { Route as DiagramImport } from './routes/diagram'
 import { Route as BlogImport } from './routes/blog'
 import { Route as IndexImport } from './routes/index'
@@ -43,12 +42,6 @@ const RolesRoute = RolesImport.update({
 const MonitorRoute = MonitorImport.update({
   id: '/monitor',
   path: '/monitor',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const GatewayRoute = GatewayImport.update({
-  id: '/gateway',
-  path: '/gateway',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,13 +88,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiagramImport
       parentRoute: typeof rootRoute
     }
-    '/gateway': {
-      id: '/gateway'
-      path: '/gateway'
-      fullPath: '/gateway'
-      preLoaderRoute: typeof GatewayImport
-      parentRoute: typeof rootRoute
-    }
     '/monitor': {
       id: '/monitor'
       path: '/monitor'
@@ -139,7 +125,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
   '/diagram': typeof DiagramRoute
-  '/gateway': typeof GatewayRoute
   '/monitor': typeof MonitorRoute
   '/roles': typeof RolesRoute
   '/signature': typeof SignatureRoute
@@ -150,7 +135,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
   '/diagram': typeof DiagramRoute
-  '/gateway': typeof GatewayRoute
   '/monitor': typeof MonitorRoute
   '/roles': typeof RolesRoute
   '/signature': typeof SignatureRoute
@@ -162,7 +146,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
   '/diagram': typeof DiagramRoute
-  '/gateway': typeof GatewayRoute
   '/monitor': typeof MonitorRoute
   '/roles': typeof RolesRoute
   '/signature': typeof SignatureRoute
@@ -175,7 +158,6 @@ export interface FileRouteTypes {
     | '/'
     | '/blog'
     | '/diagram'
-    | '/gateway'
     | '/monitor'
     | '/roles'
     | '/signature'
@@ -185,7 +167,6 @@ export interface FileRouteTypes {
     | '/'
     | '/blog'
     | '/diagram'
-    | '/gateway'
     | '/monitor'
     | '/roles'
     | '/signature'
@@ -195,7 +176,6 @@ export interface FileRouteTypes {
     | '/'
     | '/blog'
     | '/diagram'
-    | '/gateway'
     | '/monitor'
     | '/roles'
     | '/signature'
@@ -207,7 +187,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BlogRoute: typeof BlogRoute
   DiagramRoute: typeof DiagramRoute
-  GatewayRoute: typeof GatewayRoute
   MonitorRoute: typeof MonitorRoute
   RolesRoute: typeof RolesRoute
   SignatureRoute: typeof SignatureRoute
@@ -218,7 +197,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BlogRoute: BlogRoute,
   DiagramRoute: DiagramRoute,
-  GatewayRoute: GatewayRoute,
   MonitorRoute: MonitorRoute,
   RolesRoute: RolesRoute,
   SignatureRoute: SignatureRoute,
@@ -238,7 +216,6 @@ export const routeTree = rootRoute
         "/",
         "/blog",
         "/diagram",
-        "/gateway",
         "/monitor",
         "/roles",
         "/signature",
@@ -253,9 +230,6 @@ export const routeTree = rootRoute
     },
     "/diagram": {
       "filePath": "diagram.tsx"
-    },
-    "/gateway": {
-      "filePath": "gateway.tsx"
     },
     "/monitor": {
       "filePath": "monitor.tsx"

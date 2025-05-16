@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "首页",
-    "gateway": "网关配置"
+    "user": "用户管理"
   },
   "tooltip": {
     "theme": "切换到{{mode}}主题",
