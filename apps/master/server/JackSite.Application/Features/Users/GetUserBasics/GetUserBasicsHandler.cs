@@ -2,9 +2,9 @@ using JackSite.Application.CQRS.Commands;
 using JackSite.Domain.Services;
 
 /// <summary>
-/// GetUsers 命令处理器
+/// GetUserBasics 命令处理器
 /// </summary>
-public class GetUsersHandler : ICommandHandler<GetUsersCommand, bool>
+public class GetUsersHandler : ICommandHandler<GetUserBasicsCommand, bool>
 {
     private readonly ILogService _logger;
 
@@ -13,7 +13,7 @@ public class GetUsersHandler : ICommandHandler<GetUsersCommand, bool>
         _logger = logger.ForContext<GetUsersHandler>();
     }
 
-    public async Task<bool> Handle(GetUsersCommand command, CancellationToken cancellationToken)
+    public async Task<bool> Handle(GetUserBasicsCommand command, CancellationToken cancellationToken)
     {
         try
         {
@@ -23,7 +23,7 @@ public class GetUsersHandler : ICommandHandler<GetUsersCommand, bool>
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "GetUsers 命令处理失败");
+            _logger.Error(ex, "GetUserBasics 命令处理失败");
             return false;
         }
     }

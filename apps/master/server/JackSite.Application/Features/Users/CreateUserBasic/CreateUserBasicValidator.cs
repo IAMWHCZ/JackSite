@@ -2,7 +2,7 @@ using JackSite.Domain.Repositories;
 
 namespace JackSite.Application.Features.Users.CreateUser;
 
-public class CreateUserValidator:AbstractValidator<CreateUserCommand>
+public class CreateUserValidator:AbstractValidator<CreateUserBasicCommand>
 {
     public CreateUserValidator(IUserBasicRepository userBasicRepository)
     {

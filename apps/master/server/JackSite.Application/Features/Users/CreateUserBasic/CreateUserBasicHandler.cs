@@ -1,19 +1,28 @@
 using System.Security.Cryptography;
 using System.Text;
+using JackSite.Domain.Entities;
 using JackSite.Domain.Repositories;
+using JackSite.Domain.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace JackSite.Application.Features.Users.CreateUser;
 
-public class CreateUserHandler(IUserBasicRepository userBasicRepository):ICommandHandler<CreateUserCommand>
+public class CreateUserHandler(
+    IUserService userService
+) : ICommandHandler<CreateUserBasicCommand, CreateUserResponse>
 {
-    public async Task<Unit> Handle(CreateUserCommand command, CancellationToken cancellationToken)
+    public async Task<CreateUserResponse> Handle(CreateUserBasicCommand basicCommand, CancellationToken cancellationToken)
     {
-        var password = string.IsNullOrEmpty(command.Password) ? Generate(14) : command.Password;
+        var password = string.IsNullOrEmpty(basicCommand.Password) ? Generate(14) : basicCommand.Password;
+        var user = await userService.RegisterAsync(basicCommand.UserName, basicCommand.Email, password, cancellationToken);
 
-        return Unit.Value;
+        return new CreateUserResponse(
+            user.Id,
+            password
+        );
     }
-    
-     private const string UppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    private const string UppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private const string LowercaseChars = "abcdefghijklmnopqrstuvwxyz";
     private const string DigitChars = "0123456789";
     private const string SpecialChars = "!@#$%^&*(),.?\":{}|<>";
@@ -21,7 +30,7 @@ public class CreateUserHandler(IUserBasicRepository userBasicRepository):IComman
     // 生成随机密码
     private static string Generate(int length = 12)
     {
-        if (length < 8 || length > 20)
+        if (length is < 8 or > 20)
         {
             throw new ArgumentException("密码长度必须在 8 到 20 个字符之间。");
         }
@@ -38,9 +47,9 @@ public class CreateUserHandler(IUserBasicRepository userBasicRepository):IComman
 
         // 填充剩余字符
         rng.GetBytes(randomBytes);
-        for (int i = 4; i < length; i++)
+        for (var i = 4; i < length; i++)
         {
-            char randomChar = GetRandomChar(UppercaseChars + LowercaseChars + DigitChars + SpecialChars, rng);
+            var randomChar = GetRandomChar(UppercaseChars + LowercaseChars + DigitChars + SpecialChars, rng);
             passwordBuilder.Append(randomChar);
         }
 
@@ -69,11 +78,10 @@ public class CreateUserHandler(IUserBasicRepository userBasicRepository):IComman
         var randomBytes = new byte[array.Length];
         rng.GetBytes(randomBytes);
 
-        for (int i = array.Length - 1; i > 0; i--)
+        for (var i = array.Length - 1; i > 0; i--)
         {
-            int j = randomBytes[i] % (i + 1);
+            var j = randomBytes[i] % (i + 1);
             (array[i], array[j]) = (array[j], array[i]);
         }
     }
-
 }
