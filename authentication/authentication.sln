@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{FFE73569-33B2-4348-8ECE-737B6DA50F73}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{0EFA9C82-3671-46A0-A841-FC3AFA6E06F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JackSite.Authentication.UI", "core\JackSite.Authentication.UI\JackSite.Authentication.UI.csproj", "{C2E649B1-9B28-4739-B5A5-56D96858152F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{146F7397-0F7B-425E-A104-261832A0859B}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JackSite.Authentication.AppHost", "JackSite.Authentication.AppHost\JackSite.Authentication.AppHost.csproj", "{4677A730-4E0D-4348-8085-F04D4A40322E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JackSite.Authentication.ServiceDefaults", "JackSite.Authentication.ServiceDefaults\JackSite.Authentication.ServiceDefaults.csproj", "{690E77D7-033E-43F9-80FD-AB56B49B71C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C2E649B1-9B28-4739-B5A5-56D96858152F} = {0EFA9C82-3671-46A0-A841-FC3AFA6E06F8}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2E649B1-9B28-4739-B5A5-56D96858152F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2E649B1-9B28-4739-B5A5-56D96858152F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2E649B1-9B28-4739-B5A5-56D96858152F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2E649B1-9B28-4739-B5A5-56D96858152F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4677A730-4E0D-4348-8085-F04D4A40322E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4677A730-4E0D-4348-8085-F04D4A40322E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4677A730-4E0D-4348-8085-F04D4A40322E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4677A730-4E0D-4348-8085-F04D4A40322E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{690E77D7-033E-43F9-80FD-AB56B49B71C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{690E77D7-033E-43F9-80FD-AB56B49B71C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{690E77D7-033E-43F9-80FD-AB56B49B71C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{690E77D7-033E-43F9-80FD-AB56B49B71C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

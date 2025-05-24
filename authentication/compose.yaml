@@ -1,0 +1,7 @@
+﻿services:
+  jacksite.authentication.ui:
+    image: jacksite.authentication.ui
+    build:
+      context: .
+      dockerfile: core/JackSite.Authentication.UI/Dockerfile
+
