@@ -1,6 +1,6 @@
 namespace JackSite.Application.Features.Users.CreateUser;
 
-public record CreateUserCommand(
+public record CreateUserBasicCommand(
     string UserName,
     string Email,
     string? Password

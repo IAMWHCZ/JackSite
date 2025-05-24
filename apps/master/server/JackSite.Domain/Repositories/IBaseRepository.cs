@@ -4,7 +4,8 @@ namespace JackSite.Domain.Repositories;
 /// 基础仓储接口
 /// </summary>
 /// <typeparam name="TEntity">实体类型</typeparam>
-public interface IBaseRepository<TEntity, TId> 
+/// <typeparam name="TId"></typeparam>
+public interface IBaseRepository<TEntity, in TId> 
     where TEntity : class
     where TId : notnull
 {

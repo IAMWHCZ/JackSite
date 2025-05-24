@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace JackSite.Application.Features.Users.CreateUser;
 
-public class CreateUserHandler(
+public class CreateUserBasicHandler(
     IUserService userService
 ) : ICommandHandler<CreateUserBasicCommand, CreateUserResponse>
 {

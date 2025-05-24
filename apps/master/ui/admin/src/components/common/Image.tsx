@@ -43,8 +43,8 @@ const ErrorContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   padding: theme.spacing(2),
-  backgroundColor: theme.palette.mode === 'light' 
-    ? theme.palette.grey[100] 
+  backgroundColor: theme.palette.mode === 'light'
+    ? theme.palette.grey[100]
     : theme.palette.grey[900],
   color: theme.palette.error.main,
   width: '100%',

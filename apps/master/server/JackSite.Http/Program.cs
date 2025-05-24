@@ -4,12 +4,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-builder.Services.AddApplication();
+builder.Services
+    .AddApplication()
+    .AddInfrastructure(configuration)
+    .AddOpenApi()
+    .AddEndpoints();
 
 // 配置Serilog
 builder.ConfigureSerilog(configuration);
-
-builder.Services.AddInfrastructure(configuration);
 
 var app = builder.Build();
 

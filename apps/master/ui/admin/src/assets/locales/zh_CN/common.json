@@ -1,7 +1,25 @@
 {
   "nav": {
+    "home": "系统总览",
+    "user": "用户管理",
+    "role": "角色管理",
+    "blog": "博客管理",
+    "monitor": "系统监控",
+    "diagram": "图表管理",
+    "signature": "签名管理",
+    "file": "文件管理",
+    "log": "系统日志"
+  },
+  "breadcrumb":{
     "home": "首页",
-    "user": "用户管理"
+    "user": "用户管理",
+    "role": "角色管理",
+    "blog": "博客管理",
+    "monitor": "系统监控",
+    "diagram": "图表管理",
+    "signature": "签名管理",
+    "file": "文件管理",
+    "log": "系统日志"
   },
   "tooltip": {
     "theme": "切换到{{mode}}主题",

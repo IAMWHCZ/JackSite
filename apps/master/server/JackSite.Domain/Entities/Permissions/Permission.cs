@@ -1,3 +1,5 @@
+using JackSite.Domain.Entities.Roles;
+
 namespace JackSite.Domain.Entities.Permissions;
 
 public class Permission : Entity
@@ -20,7 +22,7 @@ public class Permission : Entity
     public bool IsSystem { get; private set; } = false;
     
     // 导航属性
-    public ICollection<RolePermission> RolePermissions { get; private set; } = new List<RolePermission>();
+    public ICollection<RolePermission> RolePermissions { get; private set; } = [];
     
     // 私有构造函数供EF Core使用
     private Permission() { }

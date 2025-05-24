@@ -1,7 +1,25 @@
 {
   "nav": {
     "home": "Dashboard",
-    "user": "User Management"
+    "user": "User",
+    "role": "Role",
+    "blog": "Blog",
+    "monitor": "Monitor",
+    "diagram": "Diagram",
+    "signature": "Signature",
+    "file": "File",
+    "log": "Log"
+  },
+  "breadcrumb":{
+    "home": "Home",
+    "user": "User",
+    "role": "Role",
+    "blog": "Blog",
+    "monitor": "Monitor",
+    "diagram": "Diagram",
+    "signature": "Signature",
+    "file": "File",
+    "log": "Log"
   },
   "tooltip": {
     "theme": "Switch to {{mode}} theme",

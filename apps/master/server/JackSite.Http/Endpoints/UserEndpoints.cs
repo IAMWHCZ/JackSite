@@ -1,15 +1,16 @@
 using JackSite.Http.Modules;
-using MediatR;
 
 namespace JackSite.Http.Endpoints;
 
-public class UserEndpoints(ISender sender):EndpointModule
+public class UserEndpoints:EndpointModule
 {
     public override void AddRoutes(IEndpointRouteBuilder endpoints)
     {
+        var group = endpoints.MapGroup("/api/users").WithTags("Users");
+
         endpoints.MapGet("/api/users", async () =>
         {
-            
+            return "test";
         });
     }
 }

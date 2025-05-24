@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+using JackSite.Domain.Base;
 
 namespace JackSite.Domain.Services;
 
@@ -7,6 +7,11 @@ namespace JackSite.Domain.Services;
 /// </summary>
 public interface IRequestHeaderService
 {
+    /// <summary>
+    /// 获取或设置基础请求头参数
+    /// </summary>
+    BaseHeaderParams HeaderParams { get; }
+    
     /// <summary>
     /// 获取请求头中的参数值
     /// </summary>

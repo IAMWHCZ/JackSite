@@ -1,18 +1,10 @@
-using System.Threading.Tasks;
 using JackSite.Domain.Services;
-using Microsoft.AspNetCore.Http;
+using JackSite.Infrastructure.Services;
 
 namespace JackSite.Http.Middleware;
 
-public class HeaderParamsMiddleware
+public class HeaderParamsMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public HeaderParamsMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
     public async Task InvokeAsync(HttpContext context, IRequestHeaderService requestHeaderService)
     {
         // 确保在每个请求开始时刷新请求头参数
@@ -21,6 +13,6 @@ public class HeaderParamsMiddleware
             service.RefreshHeaderParams();
         }
 
-        await _next(context);
+        await next(context);
     }
 }

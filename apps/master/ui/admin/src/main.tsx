@@ -9,45 +9,67 @@ import '@/lib/i18n';
 import { Toaster } from 'react-hot-toast';
 import { DialogsProvider } from '@toolpad/core/useDialogs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { zhCN, enUS } from 'date-fns/locale';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/en';
 import { useTranslation } from 'react-i18next';
+import { StrictMode, Suspense } from 'react';
+import { ModernAppSkeleton } from './components/loading/ModernSkeleton';
 
-const router = createRouter({ routeTree })
+// 创建查询客户端
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 1000 * 60 * 5, // 5分钟
+            retry: 1,
+        },
+    },
+});
 
+// 创建路由
+const router = createRouter({
+    routeTree,
+    defaultPreload: 'intent',
+    defaultPreloadStaleTime: 1000 * 60 * 5, // 5分钟
+});
+
+// 声明类型扩展
 declare module '@tanstack/react-router' {
     interface Register {
-        router: typeof router
+        router: typeof router;
     }
 }
 
-const queryClient = new QueryClient()
-
-// 创建一个包装组件来处理动态区域设置
+// 本地化日期选择器提供者
 const LocalizedProvider = ({ children }: { children: React.ReactNode }) => {
     const { i18n } = useTranslation();
-    
-    // 根据当前语言选择区域设置
-    const locale = i18n.language === 'zh' ? zhCN : enUS;
-    
+    const locale = i18n.language === 'zh' ? 'zh-cn' : 'en';
+    // 设置 dayjs 语言
+    dayjs.locale(locale);
+
     return (
-        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={locale}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
             {children}
         </LocalizationProvider>
     );
 };
 
+// 使用 React 19 的 createRoot API
 createRoot(document.getElementById('root')!).render(
-    <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-            <DocumentTitle />
-            <LocalizedProvider>
-                <DialogsProvider>
-                    <RouterProvider router={router} />
-                </DialogsProvider>
-            </LocalizedProvider>
-            <Toaster />
-        </ThemeProvider>
-    </QueryClientProvider>
-)
-
+    <StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <ThemeProvider>
+                <DocumentTitle />
+                <LocalizedProvider>
+                    <DialogsProvider>
+                        <Suspense fallback={<ModernAppSkeleton />}>
+                            <RouterProvider router={router} />
+                        </Suspense>
+                    </DialogsProvider>
+                </LocalizedProvider>
+                <Toaster />
+            </ThemeProvider>
+        </QueryClientProvider>
+    </StrictMode >
+);

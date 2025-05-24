@@ -1,6 +1,4 @@
-using System;
 using System.Security.Cryptography;
-using Microsoft.Extensions.Options;
 
 namespace JackSite.Infrastructure.Security;
 
@@ -18,11 +16,6 @@ public class VerificationCodeOptions
     /// 验证码字符集，默认为数字
     /// </summary>
     public string CharacterSet { get; set; } = "0123456789";
-
-    /// <summary>
-    /// 验证码有效期（分钟），默认为30分钟
-    /// </summary>
-    public int ExpirationMinutes { get; set; } = 30;
 }
 
 /// <summary>
@@ -124,73 +117,5 @@ public class VerificationCodeGenerator
     public static string GenerateAlphanumeric(int length = 6)
     {
         return Generate(length, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
-    }
-
-    /// <summary>
-    /// 创建验证码结果，包含验证码和过期时间
-    /// </summary>
-    /// <returns>验证码结果</returns>
-    /// <remarks>
-    /// 此方法生成验证码并设置其过期时间，便于后续验证。
-    /// </remarks>
-    public VerificationCodeResult CreateCodeResult()
-    {
-        var code = Generate();
-        var expirationTime = DateTime.UtcNow.AddMinutes(_options.ExpirationMinutes);
-        return new VerificationCodeResult(code, expirationTime);
-    }
-}
-
-/// <summary>
-/// 验证码结果
-/// </summary>
-/// <remarks>
-/// 此类包含生成的验证码和其过期时间。
-/// </remarks>
-public class VerificationCodeResult
-{
-    /// <summary>
-    /// 验证码
-    /// </summary>
-    public string Code { get; }
-
-    /// <summary>
-    /// 过期时间（UTC）
-    /// </summary>
-    public DateTime ExpirationTime { get; }
-
-    /// <summary>
-    /// 初始化验证码结果
-    /// </summary>
-    /// <param name="code">验证码</param>
-    /// <param name="expirationTime">过期时间</param>
-    public VerificationCodeResult(string code, DateTime expirationTime)
-    {
-        Code = code;
-        ExpirationTime = expirationTime;
-    }
-
-    /// <summary>
-    /// 检查验证码是否已过期
-    /// </summary>
-    /// <returns>如果验证码已过期，则返回true；否则返回false</returns>
-    public bool IsExpired()
-    {
-        return DateTime.UtcNow > ExpirationTime;
-    }
-
-    /// <summary>
-    /// 验证提供的代码是否匹配且未过期
-    /// </summary>
-    /// <param name="inputCode">用户输入的验证码</param>
-    /// <returns>如果验证码匹配且未过期，则返回true；否则返回false</returns>
-    public bool Validate(string inputCode)
-    {
-        if (IsExpired())
-        {
-            return false;
-        }
-
-        return string.Equals(Code, inputCode, StringComparison.Ordinal);
     }
 }

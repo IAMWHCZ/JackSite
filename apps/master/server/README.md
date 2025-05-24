@@ -5,6 +5,12 @@
 dotnet tool install --global dotnet-ef
 ```
 
+## 删除数据库迁移
+```bash
+# 在 JackSite.Infrastructure 项目目录下运行
+dotnet ef database drop --startup-project ../JackSite.Http/JackSite.Http.csproj
+```
+
 ## 创建迁移
 ```bash
 # 在 JackSite.Infrastructure 项目目录下运行

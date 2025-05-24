@@ -10,7 +10,7 @@ public static class ConfigureStartUp
         var env = app.Environment;
         var appName = Assembly.GetEntryAssembly()?.GetName().Name ?? "JackSite.Http";
         var version = Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "1.0.0";
-
+        
         app.RegisterModules(typeof(Program).Assembly);
         
         Log.Information(

@@ -8,4 +8,3 @@ global using JackSite.Http.Configuration;
 global using Microsoft.AspNetCore.Hosting.Server;
 global using Microsoft.AspNetCore.Hosting.Server.Features;
 global using System.Reflection;
-global using JackSite.Http.Modules;

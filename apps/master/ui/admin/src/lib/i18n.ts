@@ -5,6 +5,8 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 // 导入翻译文件
 import zhCommon from '@/assets/locales/zh_CN/common.json';
 import enCommon from '@/assets/locales/en_US/common.json';
+import zhLogin from '@/assets/locales/zh_CN/login.json';
+import enLogin from '@/assets/locales/en_US/login.json';
 
 i18n.use(LanguageDetector)
     .use(initReactI18next)
@@ -12,9 +14,11 @@ i18n.use(LanguageDetector)
         resources: {
             zh: {
                 common: zhCommon,
+                login: zhLogin
             },
             en: {
                 common: enCommon,
+                login: enLogin
             },
         },
         fallbackLng: 'zh',

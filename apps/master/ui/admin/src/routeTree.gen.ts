@@ -11,55 +11,82 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as UserImport } from './routes/user'
-import { Route as SignatureImport } from './routes/signature'
-import { Route as RolesImport } from './routes/roles'
-import { Route as MonitorImport } from './routes/monitor'
-import { Route as DiagramImport } from './routes/diagram'
-import { Route as BlogImport } from './routes/blog'
+import { Route as LoginImport } from './routes/login'
+import { Route as AppImport } from './routes/_app'
 import { Route as IndexImport } from './routes/index'
+import { Route as appUserImport } from './routes/(app)/user'
+import { Route as appSignatureImport } from './routes/(app)/signature'
+import { Route as appRoleImport } from './routes/(app)/role'
+import { Route as appMonitorImport } from './routes/(app)/monitor'
+import { Route as appLogImport } from './routes/(app)/log'
+import { Route as appFileImport } from './routes/(app)/file'
+import { Route as appDiagramImport } from './routes/(app)/diagram'
+import { Route as appBlogImport } from './routes/(app)/blog'
 
 // Create/Update Routes
 
-const UserRoute = UserImport.update({
-  id: '/user',
-  path: '/user',
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
 
-const SignatureRoute = SignatureImport.update({
-  id: '/signature',
-  path: '/signature',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const RolesRoute = RolesImport.update({
-  id: '/roles',
-  path: '/roles',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const MonitorRoute = MonitorImport.update({
-  id: '/monitor',
-  path: '/monitor',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DiagramRoute = DiagramImport.update({
-  id: '/diagram',
-  path: '/diagram',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const BlogRoute = BlogImport.update({
-  id: '/blog',
-  path: '/blog',
+const AppRoute = AppImport.update({
+  id: '/_app',
   getParentRoute: () => rootRoute,
 } as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const appUserRoute = appUserImport.update({
+  id: '/(app)/user',
+  path: '/user',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const appSignatureRoute = appSignatureImport.update({
+  id: '/(app)/signature',
+  path: '/signature',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const appRoleRoute = appRoleImport.update({
+  id: '/(app)/role',
+  path: '/role',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const appMonitorRoute = appMonitorImport.update({
+  id: '/(app)/monitor',
+  path: '/monitor',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const appLogRoute = appLogImport.update({
+  id: '/(app)/log',
+  path: '/log',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const appFileRoute = appFileImport.update({
+  id: '/(app)/file',
+  path: '/file',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const appDiagramRoute = appDiagramImport.update({
+  id: '/(app)/diagram',
+  path: '/diagram',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const appBlogRoute = appBlogImport.update({
+  id: '/(app)/blog',
+  path: '/blog',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -74,46 +101,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/blog': {
-      id: '/blog'
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AppImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/(app)/blog': {
+      id: '/(app)/blog'
       path: '/blog'
       fullPath: '/blog'
-      preLoaderRoute: typeof BlogImport
+      preLoaderRoute: typeof appBlogImport
       parentRoute: typeof rootRoute
     }
-    '/diagram': {
-      id: '/diagram'
+    '/(app)/diagram': {
+      id: '/(app)/diagram'
       path: '/diagram'
       fullPath: '/diagram'
-      preLoaderRoute: typeof DiagramImport
+      preLoaderRoute: typeof appDiagramImport
       parentRoute: typeof rootRoute
     }
-    '/monitor': {
-      id: '/monitor'
+    '/(app)/file': {
+      id: '/(app)/file'
+      path: '/file'
+      fullPath: '/file'
+      preLoaderRoute: typeof appFileImport
+      parentRoute: typeof rootRoute
+    }
+    '/(app)/log': {
+      id: '/(app)/log'
+      path: '/log'
+      fullPath: '/log'
+      preLoaderRoute: typeof appLogImport
+      parentRoute: typeof rootRoute
+    }
+    '/(app)/monitor': {
+      id: '/(app)/monitor'
       path: '/monitor'
       fullPath: '/monitor'
-      preLoaderRoute: typeof MonitorImport
+      preLoaderRoute: typeof appMonitorImport
       parentRoute: typeof rootRoute
     }
-    '/roles': {
-      id: '/roles'
-      path: '/roles'
-      fullPath: '/roles'
-      preLoaderRoute: typeof RolesImport
+    '/(app)/role': {
+      id: '/(app)/role'
+      path: '/role'
+      fullPath: '/role'
+      preLoaderRoute: typeof appRoleImport
       parentRoute: typeof rootRoute
     }
-    '/signature': {
-      id: '/signature'
+    '/(app)/signature': {
+      id: '/(app)/signature'
       path: '/signature'
       fullPath: '/signature'
-      preLoaderRoute: typeof SignatureImport
+      preLoaderRoute: typeof appSignatureImport
       parentRoute: typeof rootRoute
     }
-    '/user': {
-      id: '/user'
+    '/(app)/user': {
+      id: '/(app)/user'
       path: '/user'
       fullPath: '/user'
-      preLoaderRoute: typeof UserImport
+      preLoaderRoute: typeof appUserImport
       parentRoute: typeof rootRoute
     }
   }
@@ -123,84 +178,116 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/blog': typeof BlogRoute
-  '/diagram': typeof DiagramRoute
-  '/monitor': typeof MonitorRoute
-  '/roles': typeof RolesRoute
-  '/signature': typeof SignatureRoute
-  '/user': typeof UserRoute
+  '': typeof AppRoute
+  '/login': typeof LoginRoute
+  '/blog': typeof appBlogRoute
+  '/diagram': typeof appDiagramRoute
+  '/file': typeof appFileRoute
+  '/log': typeof appLogRoute
+  '/monitor': typeof appMonitorRoute
+  '/role': typeof appRoleRoute
+  '/signature': typeof appSignatureRoute
+  '/user': typeof appUserRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/blog': typeof BlogRoute
-  '/diagram': typeof DiagramRoute
-  '/monitor': typeof MonitorRoute
-  '/roles': typeof RolesRoute
-  '/signature': typeof SignatureRoute
-  '/user': typeof UserRoute
+  '': typeof AppRoute
+  '/login': typeof LoginRoute
+  '/blog': typeof appBlogRoute
+  '/diagram': typeof appDiagramRoute
+  '/file': typeof appFileRoute
+  '/log': typeof appLogRoute
+  '/monitor': typeof appMonitorRoute
+  '/role': typeof appRoleRoute
+  '/signature': typeof appSignatureRoute
+  '/user': typeof appUserRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/blog': typeof BlogRoute
-  '/diagram': typeof DiagramRoute
-  '/monitor': typeof MonitorRoute
-  '/roles': typeof RolesRoute
-  '/signature': typeof SignatureRoute
-  '/user': typeof UserRoute
+  '/_app': typeof AppRoute
+  '/login': typeof LoginRoute
+  '/(app)/blog': typeof appBlogRoute
+  '/(app)/diagram': typeof appDiagramRoute
+  '/(app)/file': typeof appFileRoute
+  '/(app)/log': typeof appLogRoute
+  '/(app)/monitor': typeof appMonitorRoute
+  '/(app)/role': typeof appRoleRoute
+  '/(app)/signature': typeof appSignatureRoute
+  '/(app)/user': typeof appUserRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | ''
+    | '/login'
     | '/blog'
     | '/diagram'
+    | '/file'
+    | '/log'
     | '/monitor'
-    | '/roles'
+    | '/role'
     | '/signature'
     | '/user'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | ''
+    | '/login'
     | '/blog'
     | '/diagram'
+    | '/file'
+    | '/log'
     | '/monitor'
-    | '/roles'
+    | '/role'
     | '/signature'
     | '/user'
   id:
     | '__root__'
     | '/'
-    | '/blog'
-    | '/diagram'
-    | '/monitor'
-    | '/roles'
-    | '/signature'
-    | '/user'
+    | '/_app'
+    | '/login'
+    | '/(app)/blog'
+    | '/(app)/diagram'
+    | '/(app)/file'
+    | '/(app)/log'
+    | '/(app)/monitor'
+    | '/(app)/role'
+    | '/(app)/signature'
+    | '/(app)/user'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BlogRoute: typeof BlogRoute
-  DiagramRoute: typeof DiagramRoute
-  MonitorRoute: typeof MonitorRoute
-  RolesRoute: typeof RolesRoute
-  SignatureRoute: typeof SignatureRoute
-  UserRoute: typeof UserRoute
+  AppRoute: typeof AppRoute
+  LoginRoute: typeof LoginRoute
+  appBlogRoute: typeof appBlogRoute
+  appDiagramRoute: typeof appDiagramRoute
+  appFileRoute: typeof appFileRoute
+  appLogRoute: typeof appLogRoute
+  appMonitorRoute: typeof appMonitorRoute
+  appRoleRoute: typeof appRoleRoute
+  appSignatureRoute: typeof appSignatureRoute
+  appUserRoute: typeof appUserRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BlogRoute: BlogRoute,
-  DiagramRoute: DiagramRoute,
-  MonitorRoute: MonitorRoute,
-  RolesRoute: RolesRoute,
-  SignatureRoute: SignatureRoute,
-  UserRoute: UserRoute,
+  AppRoute: AppRoute,
+  LoginRoute: LoginRoute,
+  appBlogRoute: appBlogRoute,
+  appDiagramRoute: appDiagramRoute,
+  appFileRoute: appFileRoute,
+  appLogRoute: appLogRoute,
+  appMonitorRoute: appMonitorRoute,
+  appRoleRoute: appRoleRoute,
+  appSignatureRoute: appSignatureRoute,
+  appUserRoute: appUserRoute,
 }
 
 export const routeTree = rootRoute
@@ -214,34 +301,50 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/blog",
-        "/diagram",
-        "/monitor",
-        "/roles",
-        "/signature",
-        "/user"
+        "/_app",
+        "/login",
+        "/(app)/blog",
+        "/(app)/diagram",
+        "/(app)/file",
+        "/(app)/log",
+        "/(app)/monitor",
+        "/(app)/role",
+        "/(app)/signature",
+        "/(app)/user"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/blog": {
-      "filePath": "blog.tsx"
+    "/_app": {
+      "filePath": "_app.tsx"
     },
-    "/diagram": {
-      "filePath": "diagram.tsx"
+    "/login": {
+      "filePath": "login.tsx"
     },
-    "/monitor": {
-      "filePath": "monitor.tsx"
+    "/(app)/blog": {
+      "filePath": "(app)/blog.tsx"
     },
-    "/roles": {
-      "filePath": "roles.tsx"
+    "/(app)/diagram": {
+      "filePath": "(app)/diagram.tsx"
     },
-    "/signature": {
-      "filePath": "signature.tsx"
+    "/(app)/file": {
+      "filePath": "(app)/file.tsx"
     },
-    "/user": {
-      "filePath": "user.tsx"
+    "/(app)/log": {
+      "filePath": "(app)/log.tsx"
+    },
+    "/(app)/monitor": {
+      "filePath": "(app)/monitor.tsx"
+    },
+    "/(app)/role": {
+      "filePath": "(app)/role.tsx"
+    },
+    "/(app)/signature": {
+      "filePath": "(app)/signature.tsx"
+    },
+    "/(app)/user": {
+      "filePath": "(app)/user.tsx"
     }
   }
 }

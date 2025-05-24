@@ -20,6 +20,7 @@ public static class ModuleRegistrar
             {
                 // 创建模块路由组
                 var routeGroup = app.MapGroup("/");
+                
                 module.AddRoutes(routeGroup);
                 
                 Log.Debug("已注册API模块: {ModuleName}", moduleType.Name);

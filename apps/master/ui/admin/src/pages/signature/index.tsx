@@ -1,5 +1,5 @@
 export const SignaturePage = () => {
     return (
-        <div>index</div>
+        <div>SignaturePage</div>
     )
 }

@@ -1,3 +1,5 @@
+using JackSite.Domain.Entities.Permissions;
+
 namespace JackSite.Domain.Entities.Roles;
 
 public class RolePermission : Entity

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JackSite.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,6 +36,49 @@ namespace JackSite.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_logs", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "permissions",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    code = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    description = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true),
+                    is_system = table.Column<bool>(type: "boolean", nullable: false),
+                    create_by = table.Column<long>(type: "bigint", nullable: false),
+                    create_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    update_by = table.Column<long>(type: "bigint", nullable: false),
+                    update_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_permissions", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "roles",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    description = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true),
+                    is_default = table.Column<bool>(type: "boolean", nullable: false),
+                    is_system = table.Column<bool>(type: "boolean", nullable: false),
+                    is_active = table.Column<bool>(type: "boolean", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    deleted_on_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    create_by = table.Column<long>(type: "bigint", nullable: false),
+                    create_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    update_by = table.Column<long>(type: "bigint", nullable: false),
+                    update_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_roles", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,6 +114,36 @@ namespace JackSite.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "role_permissions",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    role_id = table.Column<long>(type: "bigint", nullable: false),
+                    permission_id = table.Column<long>(type: "bigint", nullable: false),
+                    create_by = table.Column<long>(type: "bigint", nullable: false),
+                    create_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    update_by = table.Column<long>(type: "bigint", nullable: false),
+                    update_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_role_permissions", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_role_permissions_permissions_permission_id",
+                        column: x => x.permission_id,
+                        principalTable: "permissions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_role_permissions_roles_role_id",
+                        column: x => x.role_id,
+                        principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "user_profiles",
                 columns: table => new
                 {
@@ -97,6 +170,36 @@ namespace JackSite.Infrastructure.Migrations
                     table.PrimaryKey("pk_user_profiles", x => x.id);
                     table.ForeignKey(
                         name: "fk_user_profiles_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_roles",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<long>(type: "bigint", nullable: false),
+                    role_id = table.Column<long>(type: "bigint", nullable: false),
+                    create_by = table.Column<long>(type: "bigint", nullable: false),
+                    create_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    update_by = table.Column<long>(type: "bigint", nullable: false),
+                    update_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_user_roles", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_user_roles_roles_role_id",
+                        column: x => x.role_id,
+                        principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_user_roles_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -170,10 +273,30 @@ namespace JackSite.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "ix_role_permissions_permission_id",
+                table: "role_permissions",
+                column: "permission_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_role_permissions_role_id",
+                table: "role_permissions",
+                column: "role_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_user_profiles_user_id",
                 table: "user_profiles",
                 column: "user_id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_roles_role_id",
+                table: "user_roles",
+                column: "role_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_roles_user_id",
+                table: "user_roles",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_user_security_logs_user_id",
@@ -194,13 +317,25 @@ namespace JackSite.Infrastructure.Migrations
                 name: "logs");
 
             migrationBuilder.DropTable(
+                name: "role_permissions");
+
+            migrationBuilder.DropTable(
                 name: "user_profiles");
+
+            migrationBuilder.DropTable(
+                name: "user_roles");
 
             migrationBuilder.DropTable(
                 name: "user_security_logs");
 
             migrationBuilder.DropTable(
                 name: "user_settings");
+
+            migrationBuilder.DropTable(
+                name: "permissions");
+
+            migrationBuilder.DropTable(
+                name: "roles");
 
             migrationBuilder.DropTable(
                 name: "users");

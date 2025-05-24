@@ -4,13 +4,13 @@ using JackSite.Domain.Services;
 /// <summary>
 /// GetUserBasics 命令处理器
 /// </summary>
-public class GetUsersHandler : ICommandHandler<GetUserBasicsCommand, bool>
+public class GetUserBasicsHandler : ICommandHandler<GetUserBasicsCommand, bool>
 {
     private readonly ILogService _logger;
 
-    public GetUsersHandler(ILogService logger)
+    public GetUserBasicsHandler(ILogService logger)
     {
-        _logger = logger.ForContext<GetUsersHandler>();
+        _logger = logger.ForContext<GetUserBasicsHandler>();
     }
 
     public async Task<bool> Handle(GetUserBasicsCommand command, CancellationToken cancellationToken)

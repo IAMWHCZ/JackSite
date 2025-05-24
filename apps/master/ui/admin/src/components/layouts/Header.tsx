@@ -21,8 +21,9 @@ import { useTranslation } from "react-i18next";
 export const Header = () => {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { isSideBarCollapsed, setSideBarCollapsed } = useSystemStore();
+  const { isSideBarCollapsed, setSideBarCollapsed, breadcrumb } = useSystemStore();
   const { t } = useTranslation();
+
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -38,7 +39,7 @@ export const Header = () => {
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.primary,
         boxShadow: 1,
-        width: `calc(100% - ${isSideBarCollapsed ? 64 : 240}px)`,
+        width: `calc(100% - ${isSideBarCollapsed ? 84 : 240}px)`,
         marginLeft: isSideBarCollapsed ? "64px" : "240px",
         transition: "width 0.2s ease-in-out, margin-left 0.2s ease-in-out",
         zIndex: theme.zIndex.drawer + 1,
@@ -57,13 +58,12 @@ export const Header = () => {
         </Tooltip>
 
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          {t('header.title')}
+          {t(`breadcrumb.${breadcrumb}`)}
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <ThemeToggle />
           <LanguageToggle />
-
           <Tooltip title={t('tooltip.account')}>
             <IconButton onClick={handleMenu} size="small" sx={{ ml: 2 }}>
               <Avatar sx={{ width: 32, height: 32 }}>A</Avatar>

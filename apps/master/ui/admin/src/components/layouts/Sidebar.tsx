@@ -9,14 +9,15 @@ import {
     Tooltip,
 } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
-import { Image } from '../common/Image';
 import { useSystemStore } from '@/stores/system';
 import { navItems } from '@/config/route';
 import { useTranslation } from 'react-i18next';
 import { Airplay } from 'lucide-react';
+import { Logo } from '../Logo';
+
 
 const DRAWER_WIDTH = 240;
-const COLLAPSED_WIDTH = 64;
+const COLLAPSED_WIDTH = 84;
 
 const sidebarStyle = {
     backgroundColor: 'black',
@@ -70,10 +71,20 @@ export const Sidebar = () => {
                     overflow: 'hidden',
                 }}
             >
-                <Image width={40} height={40} src="/logo.png" alt="logo" />
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        transition: 'transform 0.3s ease-in-out',
+                        transform: isSideBarCollapsed ? 'scale(0.85)' : 'scale(1)',
+                    }}
+                >
+                    <Logo />
+                </Box>
                 {!isSideBarCollapsed && (
                     <span className="text-white text-xl">JACKSITE</span>
-                )}
+                )
+                }
             </Box>
 
             <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.12)' }} />
@@ -84,7 +95,9 @@ export const Sidebar = () => {
                     <ListItem key={labelKey} disablePadding>
                         {!isSideBarCollapsed ? (
                             <ListItemButton
-                                onClick={() => navigate({ to: path })}
+                                onClick={() =>
+                                    navigate({ to: path })
+                                }
                                 sx={{
                                     ...menuItemStyle,
                                     minHeight: 48,
@@ -130,7 +143,9 @@ export const Sidebar = () => {
                                 disableInteractive
                             >
                                 <ListItemButton
-                                    onClick={() => navigate({ to: path })}
+                                    onClick={() =>
+                                        navigate({ to: path })
+                                    }
                                     sx={{
                                         ...menuItemStyle,
                                         minHeight: 48,

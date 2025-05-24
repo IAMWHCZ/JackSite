@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore.Storage;
+using ITransaction = JackSite.Domain.Base.ITransaction;
 
 namespace JackSite.Infrastructure.Data;
 

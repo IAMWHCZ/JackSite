@@ -1,10 +1,11 @@
+using JackSite.Application.Features.Users.CreateUser;
 using JackSite.Domain.Repositories;
 
-namespace JackSite.Application.Features.Users.CreateUser;
+namespace JackSite.Application.Features.Users.CreateUserBasic;
 
-public class CreateUserValidator:AbstractValidator<CreateUserBasicCommand>
+public class CreateUserBasicValidator:AbstractValidator<CreateUserBasicCommand>
 {
-    public CreateUserValidator(IUserBasicRepository userBasicRepository)
+    public CreateUserBasicValidator(IUserBasicRepository userBasicRepository)
     {
         RuleFor(x => x.Email)
             .EmailAddress()

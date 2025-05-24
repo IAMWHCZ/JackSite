@@ -1,6 +1,6 @@
 namespace JackSite.Application.Features.Users.GetUser;
 
-public class GetUserQuery
+public class GetUserBasicQuery
 {
     
 }

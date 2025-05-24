@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using Serilog.Formatting.Compact;
 using Serilog.Sinks.SystemConsole.Themes;
-
 namespace JackSite.Infrastructure.Logging;
 
 public static class SerilogExtensions

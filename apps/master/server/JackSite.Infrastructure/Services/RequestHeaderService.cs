@@ -1,41 +1,38 @@
-using System;
-using JackSite.Domain.Services;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+using JackSite.Domain.Enums;
 
 namespace JackSite.Infrastructure.Services;
 
 /// <summary>
 /// 请求头参数服务实现
 /// </summary>
-public class RequestHeaderService : IRequestHeaderService
+public class RequestHeaderService(
+    IHttpContextAccessor httpContextAccessor,
+    ILogService logger)
+    : IRequestHeaderService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogService _logger;
+    private readonly ILogService _logger = logger.ForContext<RequestHeaderService>();
+    
+    private BaseHeaderParams? _headerParams;
 
-    public RequestHeaderService(
-        IHttpContextAccessor httpContextAccessor,
-        ILogService logger)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _logger = logger.ForContext<RequestHeaderService>();
-    }
+    /// <inheritdoc />
+    public BaseHeaderParams HeaderParams =>
+        // 懒加载模式，只在第一次访问时初始化
+        _headerParams ??= new BaseHeaderParams
+        {
+            Language = GetHeaderValue("Accept-Language",LanguageType.Chinese),
+            UserId = GetHeaderValue<long>("UserId",(long)0),
+            UserName = GetHeaderValue("UserName") ?? string.Empty,
+            Email = GetHeaderValue("Email") ?? string.Empty
+        };
 
     /// <inheritdoc />
     public string? GetHeaderValue(string headerName)
     {
-        var context = _httpContextAccessor.HttpContext;
-        if (context == null)
-        {
-            _logger.Warning("尝试获取请求头 {HeaderName} 时HttpContext为空", headerName);
-            return null;
-        }
-
-        if (context.Request.Headers.TryGetValue(headerName, out var values))
-        {
-            return values.ToString();
-        }
-
+        var context = httpContextAccessor.HttpContext;
+        if (context != null)
+            return context.Request.Headers.TryGetValue(headerName, out var values) ? values.ToString() : null;
+        _logger.Warning("尝试获取请求头 {HeaderName} 时HttpContext为空", headerName);
         return null;
     }
 
@@ -54,7 +51,7 @@ public class RequestHeaderService : IRequestHeaderService
         }
         catch (Exception ex)
         {
-            _logger.Warning(ex, "将请求头 {HeaderName} 的值 {HeaderValue} 转换为类型 {TargetType} 失败",
+            _logger.Warning(ex.Message, "将请求头 {HeaderName} 的值 {HeaderValue} 转换为类型 {TargetType} 失败",
                 headerName, value, typeof(T).Name);
             return defaultValue;
         }
@@ -63,7 +60,7 @@ public class RequestHeaderService : IRequestHeaderService
     /// <inheritdoc />
     public string? GetClientIpAddress()
     {
-        var context = _httpContextAccessor.HttpContext;
+        var context = httpContextAccessor.HttpContext;
         if (context == null)
         {
             return null;
@@ -79,18 +76,29 @@ public class RequestHeaderService : IRequestHeaderService
 
         // 尝试从X-Real-IP获取
         var realIp = GetHeaderValue("X-Real-IP");
-        if (!string.IsNullOrEmpty(realIp))
-        {
-            return realIp;
-        }
-
-        // 使用连接远程IP
-        return context.Connection.RemoteIpAddress?.ToString();
+        return !string.IsNullOrEmpty(realIp) ? realIp :
+            // 使用连接远程IP
+            context.Connection.RemoteIpAddress?.ToString();
     }
 
     /// <inheritdoc />
     public string? GetUserAgent()
     {
         return GetHeaderValue("User-Agent");
+    }
+    
+    /// <summary>
+    /// 刷新请求头参数
+    /// </summary>
+    public void RefreshHeaderParams()
+    {
+        _headerParams = new BaseHeaderParams
+        {
+            Language = GetHeaderValue("Accept-Language",LanguageType.Chinese),
+            UserId = GetHeaderValue<long>("UserId",0),
+            UserName = GetHeaderValue("UserName") ?? string.Empty,
+            Email = GetHeaderValue("Email") ?? string.Empty
+            // 可以添加更多从请求头获取的参数
+        };
     }
 }

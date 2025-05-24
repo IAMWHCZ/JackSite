@@ -8,7 +8,7 @@ public interface IEmailService
     /// <param name="to">收件人邮箱地址。</param>
     /// <param name="message">邮件正文内容。</param>
     /// <returns>表示异步操作的任务。</returns>
-    Task SendEmailAsync(string to, string message);
+    Task SendEmailAsync(string to, string message,SendEmailType type);
 
     /// <summary>
     /// 异步发送带主题的邮件。
@@ -17,31 +17,27 @@ public interface IEmailService
     /// <param name="subject">邮件主题。</param>
     /// <param name="message">邮件正文内容。</param>
     /// <returns>表示异步操作的任务。</returns>
-    Task SendEmailWithSubjectAsync(string to, string subject, string message);
+    Task SendEmailWithSubjectAsync(string to, string subject, string message,SendEmailType type);
 
     /// <summary>
     /// 异步批量发送相同内容的邮件。
     /// </summary>
     /// <param name="toList">收件人邮箱地址列表。</param>
     /// <param name="message">邮件正文内容。</param>
+    /// <param name="type"></param>
     /// <returns>表示异步操作的任务。</returns>
-    Task SendBulkEmailsAsync(List<string> toList, string message);
+    Task SendBulkEmailsAsync(List<string> toList, string message,SendEmailType type);
 
     /// <summary>
     /// 异步发送 HTML 格式的邮件。
     /// </summary>
     /// <param name="to">收件人邮箱地址。</param>
+    /// <param name="subject">邮件主题。</param>
     /// <param name="htmlContent">HTML 格式的邮件正文。</param>
+    /// <param name="type"></param>
     /// <returns>表示异步操作的任务。</returns>
-    Task SendHtmlEmailAsync(string to, string htmlContent);
-
-    /// <summary>
-    /// 异步验证邮箱地址格式是否合法。
-    /// </summary>
-    /// <param name="email">待验证的邮箱地址。</param>
-    /// <returns>表示验证结果的布尔值任务。</returns>
-    Task<bool> ValidateEmailAsync(string email);
-
+    Task SendHtmlEmailAsync(string to, string htmlContent, SendEmailType type);
+    
     /// <summary>
     /// 异步获取指定邮件的发送状态。
     /// </summary>

@@ -2,7 +2,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 
 export const Footer = () => {
   const theme = useTheme();
-  
+
   return (
     <Box
       component="footer"
@@ -15,7 +15,7 @@ export const Footer = () => {
       }}
     >
       <Typography variant="body2" color="text.secondary" align="center">
-        © {new Date().getFullYear()} Your Company Name. All rights reserved.
+        © {new Date().getFullYear()} ZhuoCheng-(JackCheng). All rights reserved.
       </Typography>
     </Box>
   );

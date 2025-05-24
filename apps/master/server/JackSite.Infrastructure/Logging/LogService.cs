@@ -1,8 +1,6 @@
-using JackSite.Domain.Services;
 using Serilog.Context;
-using Serilog.Events;
-using System.Text.Json;
 using ILogger = Serilog.ILogger;
+using LogEventLevel = JackSite.Domain.Enums.LogEventLevel;
 
 namespace JackSite.Infrastructure.Logging;
 
@@ -181,7 +179,7 @@ public class LogService : ILogService
             // 创建日志条目
             var logEntry = new LogEntry
             {
-                Level = (Domain.Enums.LogEventLevel)level,
+                Level = level,
                 Message = message,
                 Exception = exception?.ToString(),
                 Timestamp = DateTime.UtcNow,
@@ -205,7 +203,7 @@ public class LogService : ILogService
             var properties = new Dictionary<string, object?>();
 
             // 添加结构化属性
-            for (int i = 0; i < propertyValues.Length; i += 2)
+            for (var i = 0; i < propertyValues.Length; i += 2)
             {
                 if (i + 1 < propertyValues.Length && propertyValues[i] is string key)
                 {
@@ -231,7 +229,7 @@ public class LogService : ILogService
     /// <summary>
     /// 获取源上下文
     /// </summary>
-    private string? GetSourceContext()
+    private static string? GetSourceContext()
     {
         return GetPropertyValue<string>("SourceContext");
     }

@@ -1,13 +1,14 @@
-using System.Security.Cryptography;
-using System.Text;
-using JackSite.Domain.Entities;
-using JackSite.Domain.Services;
-
 namespace JackSite.Infrastructure.Services;
 
 public class UserService(
     IUserBasicRepository userRepository,
-    IUnitOfWork unitOfWork)
+    IUnitOfWork unitOfWork,
+    IPasswordHasher passwordHasher,
+    ICacheService cacheService,
+    IEmailService emailService,
+    IEmailTemplateService emailTemplateService,
+    IRequestHeaderService requestHeaderService
+)
     : IUserService
 {
     public async Task<UserBasic?> AuthenticateAsync(string username, string password,
@@ -20,9 +21,13 @@ public class UserService(
             return null;
         }
 
-        var passwordHash = HashPassword(password, user.Salt);
+        // 使用新的密码哈希器验证密码
+        var isPasswordValid = passwordHasher.VerifyPassword(
+            password,
+            user.PasswordHash,
+            user.Salt);
 
-        return user.PasswordHash == passwordHash ? user : null;
+        return isPasswordValid ? user : null;
     }
 
     public async Task<UserBasic> RegisterAsync(string username, string email, string password,
@@ -41,13 +46,12 @@ public class UserService(
             throw new InvalidOperationException($"Email '{email}' is already registered.");
         }
 
-        // 创建新用户
-        var salt = GenerateSalt();
-        var passwordHash = HashPassword(password, salt);
+        // 使用新的密码哈希器创建密码哈希
+        var hashResult = passwordHasher.HashPassword(password);
 
         // 使用领域构造函数创建用户实体
-        var user = new UserBasic(username, email, passwordHash, salt);
-        
+        var user = new UserBasic(username, email, hashResult.Hash, hashResult.Salt);
+
         // 使用工作单元模式保存
         using var transaction = await unitOfWork.BeginTransactionAsync(cancellationToken);
         try
@@ -64,6 +68,39 @@ public class UserService(
         }
     }
 
+    public async Task SendVerificationEmailAsync(UserBasic user, SendEmailType type,
+        CancellationToken cancellationToken = default)
+    {
+        var @params = requestHeaderService.HeaderParams;
+
+        var key = $"{user.Email}-{type}";
+
+        var code = await cacheService.GetOrCreateAsync(key,
+            () => Task.FromResult(VerificationCodeGenerator.GenerateNumeric()),
+            TimeSpan.FromMinutes(30),
+            TimeSpan.FromMinutes(30),
+            cancellationToken);
+
+        var message = await emailTemplateService.GetEmailTemplateAsync(type.ToEmailTemplateType(),
+            @params.Language.ToString(), new Dictionary<string, string>
+            {
+                { "VerificationCode", code }
+            });
+
+        await emailService.SendHtmlEmailAsync(user.Email, message, type);
+    }
+
+    public async Task<bool> VerifyEmailAsync(string email, string code, SendEmailType type,
+        CancellationToken cancellationToken = default)
+    {
+        var key = $"{email}-{type}";
+        var exists = await cacheService.ExistsAsync(key, cancellationToken);
+        if (!exists) return exists;
+        var token = await cacheService.GetAsync<string>(email, cancellationToken);
+        return token == code;
+    }
+
+
     public async Task<bool> AssignRoleToUserAsync(long userId, long roleId,
         CancellationToken cancellationToken = default)
     {
@@ -73,28 +110,8 @@ public class UserService(
         {
             return false;
         }
-        
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return true;
     }
-
-    #region 辅助方法
-
-    private static string GenerateSalt()
-    {
-        var saltBytes = new byte[16];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(saltBytes);
-        return Convert.ToBase64String(saltBytes);
-    }
-
-    private static string HashPassword(string password, string salt)
-    {
-        var passwordWithSalt = password + salt;
-        var passwordBytes = Encoding.UTF8.GetBytes(passwordWithSalt);
-        var hashBytes = SHA256.HashData(passwordBytes);
-        return Convert.ToBase64String(hashBytes);
-    }
-
-    #endregion
 }

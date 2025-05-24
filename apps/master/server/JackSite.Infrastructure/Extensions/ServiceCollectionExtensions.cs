@@ -9,7 +9,8 @@ public static class ServiceCollectionExtensions
             .AddRepositories()
             .AddServices()
             .AddInterceptors()
-            .AddHybridCache(configuration);  // 添加混合缓存服务
+            .AddHybridCache(configuration)  // 添加混合缓存服务
+            .AddHttpContextAccessor();      // 添加 HttpContextAccessor
 
         return services;
     }
@@ -31,10 +32,10 @@ public static class ServiceCollectionExtensions
     {
         // 注册通用仓储
         services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
-
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
         // 自动注册所有特定仓储
         var assembly = Assembly.GetExecutingAssembly();
-
+        
         // 获取所有实现了IBaseRepository<>接口的非抽象类
         var repositoryTypes = assembly.GetTypes()
             .Where(type => !type.IsAbstract && type is { IsInterface: false, IsGenericType: false }
