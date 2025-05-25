@@ -4,9 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-var app = builder.Build();
-
 builder.Services.AddInfrastructure(configuration);
+
+var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 
