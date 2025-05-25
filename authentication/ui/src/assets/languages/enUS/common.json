@@ -1,0 +1,22 @@
+{
+  "appName": "JackSite Authentication System",
+  "home": "Home",
+  "dashboard": "Dashboard",
+  "profile": "Profile",
+  "settings": "Settings",
+  "signOut": "Sign Out",
+  "language": "Language",
+  "selectLanguage": "Select Language",
+  "notifications": "Notifications",
+  "openUserMenu": "Open user menu",
+  "openMainMenu": "Open main menu",
+  "myAccount": "My Account",
+  "toggleTheme": "Toggle theme",
+  "darkMode": "Dark Mode",
+  "lightMode": "Light Mode",
+  "pageNotFound": "Page Not Found",
+  "pageNotFoundMessage": "The page you requested does not exist or has been removed.",
+  "backToHome": "Back to Home",
+  "welcomeTitle": "Welcome to Authentication System",
+  "welcomeMessage": "This is a secure and efficient authentication system that provides reliable identity verification services for your applications."
+}

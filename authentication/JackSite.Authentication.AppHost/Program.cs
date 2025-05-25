@@ -1,3 +1,17 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.Build().Run();
+var mysql = builder
+    .AddMySql("jacksite-authentication")
+    .WithVolume("jacksite-auth-data", "/var/lib/mysql")
+    .WithEnvironment("MYSQL_ROOT_PASSWORD", "Cz18972621866!")
+    .WithEnvironment("MYSQL_DATABASE", "JackSiteAuthenticationDB")
+    .WithEndpoint(name: "mysql", port: 3306, targetPort: 3306)
+    .WithLifetime(ContainerLifetime.Persistent);
+
+var db = mysql.AddDatabase("JackSiteAuthenticationDB");
+
+builder.AddProject("JackSiteAuthenticationUI", "../core/JackSite.Authentication.Domain.UI/JackSite.Authentication.Domain.UI.csproj")
+    .WithReference(db)
+    .WaitFor(db);
+
+    await builder.Build().RunAsync();

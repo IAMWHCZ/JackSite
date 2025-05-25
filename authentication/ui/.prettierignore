@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+*.gen.ts
+*.gen.tsx
+public
+pnpm-lock.yaml

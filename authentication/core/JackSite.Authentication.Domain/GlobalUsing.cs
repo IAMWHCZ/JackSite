@@ -1,0 +1,10 @@
+﻿global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using System.ComponentModel;
+global using System.Globalization;
+global using JackSite.Authentication.Enums; 
+global using JackSite.Domain.Common;
+global using JackSite.Authentication.Base;
+global using JackSite.Authentication.ValueObjects;
+global using JackSite.Authentication.Entities.UserGroups;
+global using System.Linq.Expressions;

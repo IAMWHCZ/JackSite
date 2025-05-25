@@ -1,0 +1,22 @@
+{
+  "appName": "JickSite 统一认证系统",
+  "home": "首页",
+  "dashboard": "控制台",
+  "profile": "个人资料",
+  "settings": "设置",
+  "signOut": "退出登录",
+  "language": "语言",
+  "selectLanguage": "选择语言",
+  "notifications": "通知",
+  "openUserMenu": "打开用户菜单",
+  "openMainMenu": "打开主菜单",
+  "myAccount": "我的账户",
+  "toggleTheme": "切换主题",
+  "darkMode": "深色模式",
+  "lightMode": "浅色模式",
+  "pageNotFound": "页面未找到",
+  "pageNotFoundMessage": "您请求的页面不存在或已被移除。",
+  "backToHome": "返回首页",
+  "welcomeTitle": "欢迎使用认证系统",
+  "welcomeMessage": "这是一个安全、高效的认证系统，为您的应用提供可靠的身份验证服务。"
+}
