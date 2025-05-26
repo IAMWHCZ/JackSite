@@ -1,9 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using JackSite.Authentication.Base;
-
 namespace JackSite.Authentication.Entities.Localization;
-
 public class Translation : Entity
 {
     [Required]

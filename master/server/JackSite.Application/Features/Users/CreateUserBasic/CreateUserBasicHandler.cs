@@ -1,11 +1,9 @@
 using System.Security.Cryptography;
 using System.Text;
-using JackSite.Domain.Entities;
-using JackSite.Domain.Repositories;
+using JackSite.Application.Features.Users.CreateUser;
 using JackSite.Domain.Services;
-using Microsoft.Extensions.Configuration;
 
-namespace JackSite.Application.Features.Users.CreateUser;
+namespace JackSite.Application.Features.Users.CreateUserBasic;
 
 public class CreateUserBasicHandler(
     IUserService userService

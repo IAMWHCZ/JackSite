@@ -7,4 +7,6 @@ public class Role:Entity
     public string? Description { get; set; }
 
     public virtual ICollection<UserGroup>? UserGroups { get; set; }
+
+    public virtual ICollection<RoleReference>? RoleReferences { get; set; }
 }

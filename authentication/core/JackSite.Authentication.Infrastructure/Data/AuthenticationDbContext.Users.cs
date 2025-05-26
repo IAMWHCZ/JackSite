@@ -1,15 +1,15 @@
-using JackSite.Authentication.Entities.Users;
-using Microsoft.EntityFrameworkCore;
+using JackSite.Authentication.Entities.UserGroups;
 
 namespace JackSite.Authentication.Infrastructure.Data;
-
 public partial class AuthenticationDbContext
 {
-    public DbSet<UserBasic> UserBasics { get; set; } = null!;
-    public DbSet<UserProfile> UserProfiles { get; set; } = null!;
-    public DbSet<UserSettings> UserSettings { get; set; } = null!;
-    public DbSet<UserSecurityLog> UserSecurityLogs { get; set; } = null!;
-    
+    public DbSet<UserBasic>? UserBasics { get; set; } = null!;
+    public DbSet<UserProfile>? UserProfiles { get; set; } = null!;
+    public DbSet<UserSettings>? UserSettings { get; set; } = null!;
+    public DbSet<UserSecurityLog>? UserSecurityLogs { get; set; } = null!;
+    public DbSet<UserGroup>? UserGroups { get; set; } = null!;
+    public DbSet<UserGroupReference>? UserGroupReferences { get; set; } = null!;
+
     private static void ConfigureUserEntities(ModelBuilder modelBuilder)
     {
         // 配置 UserBasic 实体

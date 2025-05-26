@@ -6,3 +6,5 @@ global using JackSite.Authentication.Repositories;
 global using System.Linq.Expressions;
 global using JackSite.Authentication.Infrastructure.Repositories;
 global using Microsoft.Extensions.DependencyInjection;
+global using JackSite.Authentication.Entities.Actions;
+global using JackSite.Shared.Extensions;

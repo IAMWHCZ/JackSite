@@ -8,3 +8,5 @@ global using JackSite.Authentication.Base;
 global using JackSite.Authentication.ValueObjects;
 global using JackSite.Authentication.Entities.UserGroups;
 global using System.Linq.Expressions;
+global using JackSite.Authentication.Entities.Actions;
+global using JackSite.Authentication.Entities.Resources;

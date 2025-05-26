@@ -4,7 +4,7 @@ namespace JackSite.Authentication.Infrastructure.Data;
 
 public partial class AuthenticationDbContext
 {
-    internal DbSet<NavigationMenu> NavigationMenus { get; set; } = null!;
+    public DbSet<NavigationMenu>? NavigationMenus { get; set; } = null!;
     
     private static void ConfigureUiEntities(ModelBuilder modelBuilder)
     {

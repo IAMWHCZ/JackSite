@@ -1,13 +1,48 @@
 using JackSite.Authentication.Infrastructure.Extensions;
+using Serilog;
+using JackSite.Authentication.WebAPI.Configs;
+using Scalar.AspNetCore;
 
-var builder = WebApplication.CreateBuilder(args);
+try
+{
+    var builder = WebApplication.CreateBuilder(args);
+    
+    builder.ApplySerilog();
 
-var configuration = builder.Configuration;
+    var configuration = builder.Configuration;
 
-builder.Services.AddInfrastructure(configuration);
+    builder.Services.AddInfrastructure(configuration);
 
-var app = builder.Build();
+    builder.Services.AddOpenApi();
+    
+    builder.Services.AddHealthChecks();
 
-app.MapGet("/", () => "Hello World!");
+    var app = builder.Build();
 
-app.Run();
+    app.UseSerilogConfig();
+    
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+        app.MapOpenApi();
+        app.MapScalarApiReference(cfg =>
+        {
+            cfg.Title = "JackSite Authentication API";
+        });
+    }
+    else
+    {
+        app.UseExceptionHandler("/error");
+        app.UseHsts();
+    }
+
+    await app.RunAsync();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
