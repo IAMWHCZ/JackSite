@@ -1,5 +1,7 @@
-﻿namespace JackSite.Authentication.Application;
-
-public class GlobalUsing
-{
-}
+﻿global using MediatR;
+global using FluentValidation;
+global using System.Text.Json;
+global using JackSite.Authentication.Application.Attributes;
+global using JackSite.Authentication.Application.CQRS;
+global using JackSite.Authentication.Interfaces.Services;
+global using Microsoft.Extensions.Logging;

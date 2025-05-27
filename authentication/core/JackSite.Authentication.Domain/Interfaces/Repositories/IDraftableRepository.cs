@@ -1,4 +1,4 @@
-namespace JackSite.Authentication.Repositories;
+namespace JackSite.Authentication.Interfaces.Repositories;
 
 /// <summary>
 /// 可草稿化实体的仓储接口

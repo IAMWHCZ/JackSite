@@ -1,3 +1,6 @@
+using JackSite.Authentication.Infrastructure.Services;
+using JackSite.Authentication.Interfaces.Repositories;
+using JackSite.Authentication.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using Minio;
 
@@ -9,7 +12,24 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddAllRepositories()
-            .AddEntityFrameworkCore(configuration);
+            .AddEntityFrameworkCore(configuration)
+            .AddRedisCache(configuration);
+        
+        return services;
+    }
+
+    private static IServiceCollection AddRedisCache(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("Redis")!;
+            options.InstanceName = "JackSiteAuthenticationDB";
+        });
+
+        services.AddHybridCache();
+
+        services.AddScoped<ICacheService, CacheService>();
+        
         return services;
     }
 

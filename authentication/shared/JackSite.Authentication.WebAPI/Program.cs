@@ -1,41 +1,38 @@
-using JackSite.Authentication.Infrastructure.Extensions;
-using Serilog;
-using JackSite.Authentication.WebAPI.Configs;
-using Scalar.AspNetCore;
+using JackSite.Authentication.WebAPI.Middlewares;
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
-    
+
     builder.ApplySerilog();
 
     var configuration = builder.Configuration;
 
-    builder.Services.AddInfrastructure(configuration);
-
-    builder.Services.AddOpenApi();
-    
-    builder.Services.AddHealthChecks();
+    builder.Services
+        .AddInfrastructure(configuration)
+        .AddApplication()
+        .AddOpenApi()
+        .AddHealthChecks();
 
     var app = builder.Build();
 
     app.UseSerilogConfig();
+    app.UseExceptionHandling();
+    
     
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
         app.MapOpenApi();
-        app.MapScalarApiReference(cfg =>
-        {
-            cfg.Title = "JackSite Authentication API";
-        });
-    }
-    else
-    {
-        app.UseExceptionHandler("/error");
-        app.UseHsts();
+        app.MapScalarApiReference(cfg => { cfg.Title = "JackSite Authentication API"; });
     }
 
+    if (app.Environment.IsProduction())
+    {
+        app.UseHttpsRedirection();
+        app.UseHsts();      
+    }
+    
     await app.RunAsync();
 }
 catch (Exception ex)

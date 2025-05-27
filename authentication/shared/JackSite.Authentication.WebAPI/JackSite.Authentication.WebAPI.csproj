@@ -14,6 +14,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\core\JackSite.Authentication.Application\JackSite.Authentication.Application.csproj" />
+      <ProjectReference Include="..\..\core\JackSite.Authentication.Domain\JackSite.Authentication.Domain.csproj" />
+      <ProjectReference Include="..\..\core\JackSite.Authentication.Infrastructure\JackSite.Authentication.Infrastructure.csproj" />
+      <ProjectReference Include="..\JackSite.Authentication.Application\JackSite.Authentication.Application.csproj" />
       <ProjectReference Include="..\JackSite.Authentication.Infrastructure\JackSite.Authentication.Infrastructure.csproj" />
     </ItemGroup>
 

@@ -1,3 +1,6 @@
+using JackSite.Authentication.Infrastructure.Transactions;
+using JackSite.Authentication.Interfaces.Repositories;
+
 namespace JackSite.Authentication.Infrastructure.Repositories;
 
 /// <summary>
@@ -144,5 +147,76 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
             .ToListAsync();
             
         return (items, totalCount);
+    }
+    
+    /// <summary>
+    /// 开始事务
+    /// </summary>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>事务对象</returns>
+    public virtual async Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
+        return new EfTransaction(transaction);
+    }
+    
+    /// <summary>
+    /// 在事务中执行操作
+    /// </summary>
+    /// <typeparam name="TResult">结果类型</typeparam>
+    /// <param name="action">要执行的操作</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>操作结果</returns>
+    public virtual async Task<TResult> ExecuteInTransactionAsync<TResult>(Func<Task<TResult>> action, CancellationToken cancellationToken = default)
+    {
+        // 如果已经在事务中，直接执行操作
+        if (dbContext.Database.CurrentTransaction != null)
+        {
+            return await action();
+        }
+        
+        // 创建执行策略
+        var strategy = dbContext.Database.CreateExecutionStrategy();
+        
+        // 使用执行策略执行事务
+        return await strategy.ExecuteAsync(async () =>
+        {
+            using var transaction = await BeginTransactionAsync(cancellationToken);
+            try
+            {
+                var result = await action();
+                await transaction.CommitAsync(cancellationToken);
+                return result;
+            }
+            catch
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+        });
+    }
+    
+    /// <summary>
+    /// 在事务中执行操作
+    /// </summary>
+    /// <param name="action">要执行的操作</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    public virtual async Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken cancellationToken = default)
+    {
+        await ExecuteInTransactionAsync(async () =>
+        {
+            await action();
+            return true;
+        }, cancellationToken);
+    }
+    
+    /// <summary>
+    /// 保存更改
+    /// </summary>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>影响的行数</returns>
+    public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return await dbContext.SaveChangesAsync(cancellationToken);
     }
 }

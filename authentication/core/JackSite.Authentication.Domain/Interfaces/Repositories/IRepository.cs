@@ -1,4 +1,7 @@
-namespace JackSite.Authentication.Repositories;
+using System.Linq.Expressions;
+using JackSite.Authentication.Base;
+
+namespace JackSite.Authentication.Interfaces.Repositories;
 
 /// <summary>
 /// 通用仓储接口
@@ -69,4 +72,34 @@ public interface IRepository<TEntity> where TEntity : Entity
         int pageSize, 
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null);
+        
+    /// <summary>
+    /// 开始事务
+    /// </summary>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>事务对象</returns>
+    Task<ITransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// 在事务中执行操作
+    /// </summary>
+    /// <typeparam name="TResult">结果类型</typeparam>
+    /// <param name="action">要执行的操作</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>操作结果</returns>
+    Task<TResult> ExecuteInTransactionAsync<TResult>(Func<Task<TResult>> action, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// 在事务中执行操作
+    /// </summary>
+    /// <param name="action">要执行的操作</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// 保存更改
+    /// </summary>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>影响的行数</returns>
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
