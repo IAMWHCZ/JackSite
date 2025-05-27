@@ -1,8 +1,14 @@
 {
   "appName": "JickSite 统一认证系统",
-  "home": "首页",
-  "dashboard": "控制台",
-  "profile": "个人资料",
+  "navigation": {
+    "home": "首页",
+    "account": "系统用户",
+    "role": "用户角色",
+    "resource": "系统资源",
+    "authorization": "认证配置",
+    "user-group": "用户组配置",
+    "profile": "个人资料"
+  },
   "settings": "设置",
   "signOut": "退出登录",
   "language": "语言",

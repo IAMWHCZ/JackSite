@@ -15,15 +15,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import '@/fonts/styles/Navigation.css'
+import '@/fonts/styles/Navigation.css';
+import { NavigationItems, type NavigationItemProp } from '@/configs/navigation';
 
 export const Navigation = () => {
   const { t } = useTranslation('common');
   const { theme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedKey, setSelectedKey] = useState<NavigationItemProp['key']>(1); // 管理当前选中的
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleItemClick = (key: NavigationItemProp['key']) => {
+    setSelectedKey(key);
   };
 
   const isDark = theme === 'dark';
@@ -42,7 +48,7 @@ export const Navigation = () => {
             <Link to="/" className="flex flex-shrink-0 items-center">
               <span
                 className={cn(
-                  'ml-2 text-xl font-bold app-title', 
+                  'app-title ml-2 text-xl font-bold',
                   isDark ? 'text-white' : 'text-gray-800'
                 )}
               >
@@ -51,39 +57,22 @@ export const Navigation = () => {
             </Link>
 
             <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
-              <Link
-                to="/"
-                className={cn(
-                  'rounded-md px-3 py-2 text-sm font-medium',
-                  isDark
-                    ? 'bg-gray-800 text-white hover:bg-gray-700'
-                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                )}
-              >
-                {t('home', '首页')}
-              </Link>
-              <Link
-                to="/"
-                className={cn(
-                  'rounded-md px-3 py-2 text-sm font-medium',
-                  isDark
-                    ? 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                )}
-              >
-                {t('dashboard', '控制台')}
-              </Link>
-              <Link
-                to="/profile"
-                className={cn(
-                  'rounded-md px-3 py-2 text-sm font-medium',
-                  isDark
-                    ? 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                )}
-              >
-                {t('profile', '个人资料')}
-              </Link>
+              {NavigationItems.map(item => (
+                <Link
+                  onClick={() => handleItemClick(item.key)}
+                  key={item.key}
+                  to={item.to}
+                  className={cn(
+                    'rounded-md px-3 py-2 text-sm font-medium',
+                    item.key === selectedKey &&
+                      (isDark
+                        ? 'bg-gray-800 text-white hover:bg-gray-700'
+                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200')
+                  )}
+                >
+                  {t(item.label)}
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -146,7 +135,7 @@ export const Navigation = () => {
                   }
                 >
                   <User className="mr-2 h-4 w-4" />
-                  <span>{t('profile', '个人资料')}</span>
+                  <span>{t('navigation.profile', '个人资料')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className={

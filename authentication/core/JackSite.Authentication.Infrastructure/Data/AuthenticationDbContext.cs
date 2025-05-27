@@ -11,7 +11,6 @@ public partial class AuthenticationDbContext(DbContextOptions<AuthenticationDbCo
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyNamingConventions();
         // 配置所有实体
-        ConfigureUiEntities(modelBuilder);
         ConfigureUserEntities(modelBuilder);
         ConfigurePermissionEntities(modelBuilder);
     }
