@@ -106,7 +106,7 @@ public partial class AuthenticationDbContext
             // 配置与 ActionBasic 的多对多关系
             entity.HasMany(p => p.ActionBasics)
                 .WithMany()
-                .UsingEntity(j => j.ToTable("PermissionPolicyActions"));
+                .UsingEntity(j => j.ToTable("permission_policy_actions"));
             
             // 配置与 PermissionPolicyCondition 的一对多关系
             entity.HasMany(p => p.PermissionPolicyConditions)

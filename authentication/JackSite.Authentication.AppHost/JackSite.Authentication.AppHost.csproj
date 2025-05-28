@@ -15,4 +15,8 @@
         <PackageReference Include="Aspire.Hosting.MySql" Version="9.3.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\shared\JackSite.Authentication.WebAPI\JackSite.Authentication.WebAPI.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -3,19 +3,13 @@
 /// <summary>
 /// 命令接口 - 不返回结果
 /// </summary>
-public interface ICommand : IRequest<Unit>
-{
-    DateTime Timestamp { get; }
-}
+public interface ICommand : IRequest<Unit>;
 
 /// <summary>
 /// 命令接口 - 返回结果
 /// </summary>
 /// <typeparam name="TResult">命令执行后返回的结果类型</typeparam>
-public interface ICommand<out TResult> : IRequest<TResult>
-{
-    DateTime Timestamp { get; }
-}
+public interface ICommand<out TResult> : IRequest<TResult>;
 
 /// <summary>
 /// 命令处理器接口 - 不返回结果

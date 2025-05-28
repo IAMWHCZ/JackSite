@@ -11,7 +11,7 @@ var mysql = builder
 
 var db = mysql.AddDatabase("JackSiteAuthenticationDB");
 
-builder.AddProject("JackSiteAuthenticationWebAPI",
-    "../core/JackSite.Authentication.WebAPI/JackSite.Authentication.WebAPI.csproj");
+builder.AddProject<Projects.JackSite_Authentication_WebAPI>("auth-api")
+    .WithReference(db);
 
 await builder.Build().RunAsync();
