@@ -1,7 +1,14 @@
-﻿namespace JackSite.Authentication.PermissionServer.Helpers
+﻿using System.Net.Http;
+
+namespace JackSite.Authentication.PermissionServer.Helpers
 {
-    public class HttpClientHelper
+    public static class HttpClientHelper
     {
-        
+        public static HttpClient HttpClient { get; set; }
+
+        static HttpClientHelper()
+        {
+            HttpClient = new HttpClient();
+        }
     }
 }
