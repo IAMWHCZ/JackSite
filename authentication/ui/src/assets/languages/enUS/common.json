@@ -1,8 +1,14 @@
 {
   "appName": "JackSite Authentication System",
-  "home": "Home",
-  "dashboard": "Dashboard",
-  "profile": "Profile",
+  "navigation": {
+    "home": "Home",
+    "account": "Account",
+    "role": "Role",
+    "resource": "Resource",
+    "authorization": "Authorization",
+    "user-group": "User Group",
+    "profile": "Profile"
+  },
   "settings": "Settings",
   "signOut": "Sign Out",
   "language": "Language",
