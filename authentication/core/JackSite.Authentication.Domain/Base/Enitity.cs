@@ -1,3 +1,5 @@
+using JackSite.Authentication.Common;
+
 namespace JackSite.Authentication.Base;
 
 public abstract class Entity : BaseEntity<long>

@@ -1,3 +1,5 @@
+using JackSite.Authentication.Common;
+using JackSite.Authentication.Infrastructure.Options;
 using JackSite.Authentication.Infrastructure.Services;
 using JackSite.Authentication.Interfaces.Repositories;
 using JackSite.Authentication.Interfaces.Services;
@@ -10,7 +12,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        var snowflakeIdOption = new SnowflakeIdOption();
+        configuration.GetSection("SnowflakeId").Bind(snowflakeIdOption);
+        
         services
+            .AddSingleton(new SnowflakeIdGenerator(snowflakeIdOption.MachineId,snowflakeIdOption.DatacenterId))
             .AddAllRepositories()
             .AddEntityFrameworkCore(configuration)
             .AddRedisCache(configuration);

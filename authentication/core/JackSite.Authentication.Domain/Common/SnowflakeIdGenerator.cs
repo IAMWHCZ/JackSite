@@ -1,8 +1,8 @@
-namespace JackSite.Domain.Common;
+namespace JackSite.Authentication.Common;
 
 public class SnowflakeIdGenerator
 {
-    private static readonly DateTime Epoch = new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    public static readonly DateTime Epoch = new(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     private readonly Lock _lock = new();
     private readonly long _machineId;
     private readonly long _datacenterId;
