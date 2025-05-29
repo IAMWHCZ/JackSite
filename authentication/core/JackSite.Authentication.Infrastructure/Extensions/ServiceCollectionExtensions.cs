@@ -13,10 +13,12 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var snowflakeIdOption = new SnowflakeIdOption();
+        var mongoDbOption = new MongoDbOption();
         configuration.GetSection("SnowflakeId").Bind(snowflakeIdOption);
-        
+        configuration.GetSection("MongoDB").Bind(mongoDbOption);
         services
             .AddSingleton(new SnowflakeIdGenerator(snowflakeIdOption.MachineId,snowflakeIdOption.DatacenterId))
+            .AddSingleton<MongoDbContext>()
             .AddAllRepositories()
             .AddEntityFrameworkCore(configuration)
             .AddRedisCache(configuration);
