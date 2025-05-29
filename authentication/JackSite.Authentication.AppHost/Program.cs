@@ -9,9 +9,19 @@ var mysql = builder
     .WithEndpoint(name: "mysql", port: 3306, targetPort: 3306)
     .WithLifetime(ContainerLifetime.Persistent);
 
+var seq = builder.AddSeq("seq")
+    .ExcludeFromManifest()
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithEnvironment("ACCEPT_EULA", "Y")
+    .WithDataVolume()
+    .ExcludeFromManifest()
+    .WithLifetime(ContainerLifetime.Persistent);;
+
 var db = mysql.AddDatabase("JackSiteAuthenticationDB");
 
 builder.AddProject<Projects.JackSite_Authentication_WebAPI>("auth-api")
-    .WithReference(db);
+    .WithReference(db)
+    .WithReference(seq)
+    .WaitFor(seq);
 
 await builder.Build().RunAsync();

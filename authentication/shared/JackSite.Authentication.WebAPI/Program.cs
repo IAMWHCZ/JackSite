@@ -24,7 +24,10 @@ try
     {
         app.UseDeveloperExceptionPage();
         app.MapOpenApi();
-        app.MapScalarApiReference(cfg => { cfg.Title = "JackSite Authentication API"; });
+        app.MapScalarApiReference(cfg =>
+        {
+            cfg.Title = "JackSite Authentication API";
+        });
     }
 
     if (app.Environment.IsProduction())
