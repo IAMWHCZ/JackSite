@@ -1,6 +1,3 @@
-using System.Linq.Expressions;
-using JackSite.Authentication.Base;
-
 namespace JackSite.Authentication.Interfaces.Repositories;
 
 /// <summary>
@@ -102,4 +99,54 @@ public interface IRepository<TEntity> where TEntity : Entity
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>影响的行数</returns>
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 获取首个满足条件的实体
+    /// </summary>
+    Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+
+    /// <summary>
+    /// 获取单个满足条件的实体（若有多个则抛异常）
+    /// </summary>
+    Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+
+    /// <summary>
+    /// 查询实体（返回IQueryable）
+    /// </summary>
+    IQueryable<TEntity> AsQueryable();
+
+    /// <summary>
+    /// 执行原生SQL命令
+    /// </summary>
+    Task<int> ExecuteSqlAsync(string sql, params object[] parameters);
+
+    /// <summary>
+    /// 通过原生SQL查询实体
+    /// </summary>
+    Task<List<TEntity>> FromSqlAsync(string sql, params object[] parameters);
+
+    /// <summary>
+    /// 判断是否为空
+    /// </summary>
+    Task<bool> IsEmptyAsync();
+
+    /// <summary>
+    /// 获取最大值
+    /// </summary>
+    Task<TResult?> MaxAsync<TResult>(Expression<Func<TEntity, TResult>> selector);
+
+    /// <summary>
+    /// 获取最小值
+    /// </summary>
+    Task<TResult?> MinAsync<TResult>(Expression<Func<TEntity, TResult>> selector);
+
+    /// <summary>
+    /// 获取所有主键ID
+    /// </summary>
+    Task<List<long>> GetAllIdsAsync();
+
+    /// <summary>
+    /// 创建或更新实体（主键存在则更新，否则创建）
+    /// </summary>
+    Task<TEntity> CreateOrUpdateAsync(TEntity entity);
 }

@@ -8,5 +8,5 @@ public class EmailRecipient:DraftableEntity
     
     public Guid EmailRecordId { get; set; }
     
-    public virtual EmailRecord EmailRecord { get; set; } = null!;
+    public virtual EmailBasic EmailBasic { get; set; } = null!;
 }

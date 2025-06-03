@@ -1,5 +1,4 @@
-using JackSite.Authentication.Infrastructure.Transactions;
-using JackSite.Authentication.Interfaces.Repositories;
+
 
 namespace JackSite.Authentication.Infrastructure.Repositories;
 
@@ -169,7 +168,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// <returns>操作结果</returns>
     public virtual async Task<TResult> ExecuteInTransactionAsync<TResult>(Func<Task<TResult>> action, CancellationToken cancellationToken = default)
     {
-        // 如果已经在事务中，直接执行操作
+        // 如果已经��事务中，直接执行操作
         if (dbContext.Database.CurrentTransaction != null)
         {
             return await action();
@@ -218,5 +217,94 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// 获取第一个满足条件的实体
+    /// </summary>
+    public virtual async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await DbSet.FirstOrDefaultAsync(predicate);
+    }
+
+    /// <summary>
+    /// 获取唯一满足条件的实体
+    /// </summary>
+    public virtual async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await DbSet.SingleOrDefaultAsync(predicate);
+    }
+
+    /// <summary>
+    /// 获取查询对象
+    /// </summary>
+    public virtual IQueryable<TEntity> AsQueryable()
+    {
+        return DbSet.AsQueryable();
+    }
+
+    /// <summary>
+    /// 执行SQL语句
+    /// </summary>
+    public virtual async Task<int> ExecuteSqlAsync(string sql, params object[] parameters)
+    {
+        return await dbContext.Database.ExecuteSqlRawAsync(sql, parameters);
+    }
+
+    /// <summary>
+    /// 从SQL语句获取实体列表
+    /// </summary>
+    public virtual async Task<List<TEntity>> FromSqlAsync(string sql, params object[] parameters)
+    {
+        return await DbSet.FromSqlRaw(sql, parameters).ToListAsync();
+    }
+
+    /// <summary>
+    /// 检查是否为空
+    /// </summary>
+    public virtual async Task<bool> IsEmptyAsync()
+    {
+        return !await DbSet.AnyAsync();
+    }
+
+    /// <summary>
+    /// 获取最大值
+    /// </summary>
+    public virtual async Task<TResult?> MaxAsync<TResult>(Expression<Func<TEntity, TResult>> selector)
+    {
+        return await DbSet.MaxAsync(selector);
+    }
+
+    /// <summary>
+    /// 获取最小值
+    /// </summary>
+    public virtual async Task<TResult?> MinAsync<TResult>(Expression<Func<TEntity, TResult>> selector)
+    {
+        return await DbSet.MinAsync(selector);
+    }
+
+    /// <summary>
+    /// 获取所有实体的ID
+    /// </summary>
+    public virtual async Task<List<long>> GetAllIdsAsync()
+    {
+        return await DbSet.Select(e => e.Id).ToListAsync();
+    }
+
+    /// <summary>
+    /// 创建或更新实体（主键存在则更新，否则创建）
+    /// </summary>
+    public virtual async Task<TEntity> CreateOrUpdateAsync(TEntity entity)
+    {
+        if (entity.Id == 0 || await DbSet.FindAsync(entity.Id) == null)
+        {
+            var entry = await DbSet.AddAsync(entity);
+            await dbContext.SaveChangesAsync();
+            return entry.Entity;
+        }
+
+        dbContext.Entry(entity).State = EntityState.Modified;
+        await dbContext.SaveChangesAsync();
+        return entity;
     }
 }

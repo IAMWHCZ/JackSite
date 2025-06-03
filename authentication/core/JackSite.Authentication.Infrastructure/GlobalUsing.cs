@@ -1,5 +1,7 @@
-﻿global using JackSite.Authentication.Entities.Users;
+﻿global using JackSite.Authentication.Interfaces.Repositories;
+global using JackSite.Authentication.Entities.Users;
 global using Microsoft.EntityFrameworkCore;
+global using JackSite.Authentication.Infrastructure.Transactions;
 global using JackSite.Authentication.Base;
 global using JackSite.Authentication.Infrastructure.Data;
 global using System.Linq.Expressions;
