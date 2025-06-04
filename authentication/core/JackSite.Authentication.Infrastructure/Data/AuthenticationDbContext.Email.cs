@@ -1,4 +1,5 @@
 using JackSite.Authentication.Entities.Emails;
+using Microsoft.EntityFrameworkCore;
 
 namespace JackSite.Authentication.Infrastructure.Data;
 
@@ -11,9 +12,96 @@ public partial class AuthenticationDbContext
     public DbSet<EmailContent>? EmailContents { get; set; }
 
     public DbSet<EmailRecipient>? EmailRecipients { get; set; }
+    
+    public DbSet<EmailTemplate>? EmailTemplates { get; set; }
 
     private static void ConfigureEmails(ModelBuilder modelBuilder)
     {
+        // 配置 EmailBasic 实体
+        modelBuilder.Entity<EmailBasic>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(256);
+
+            entity.Property(e => e.SenderEmail)
+                .IsRequired()
+                .HasMaxLength(256);
+
+            entity.Property(e => e.SenderName)
+                .HasMaxLength(128);
+
+            entity.Property(e => e.MessageId)
+                .HasMaxLength(256);
+
+            entity.Property(e => e.FailureReason)
+                .HasMaxLength(1024);
+
+            // 一对多关系：EmailBasic 到 EmailRecipient
+            entity.HasMany(e => e.EmailRecipients)
+                .WithOne(r => r.EmailBasic)
+                .HasForeignKey(r => r.EmailRecordId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // 一对多关系：EmailBasic 到 EmailAttachment
+            entity.HasMany(e => e.EmailAttachments)
+                .WithOne(a => a.EmailBasic)
+                .HasForeignKey(a => a.EmailRecordId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // 一对一关系：EmailBasic 到 EmailContent
+            entity.HasOne(e => e.EmailContent)
+                .WithOne(c => c.EmailBasic)
+                .HasForeignKey<EmailContent>(c => c.EmailId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+        
+        // 配置 EmailContent 实体
+        modelBuilder.Entity<EmailContent>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Subject)
+                .HasMaxLength(512);
+
+            entity.Property(e => e.Recipient)
+                .HasMaxLength(1024);
+
+            entity.Property(e => e.CC)
+                .HasMaxLength(1024);
+
+            entity.Property(e => e.BCC)
+                .HasMaxLength(1024);
+
+            entity.Property(e => e.TemplateId)
+                .HasMaxLength(128);
+
+            entity.Property(e => e.PreviewText)
+                .HasMaxLength(512);
+        });
+        
+        // 配置 EmailRecipient 实体
+        modelBuilder.Entity<EmailRecipient>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.RecipientEmail)
+                .IsRequired()
+                .HasMaxLength(256);
+
+            entity.Property(e => e.RecipientName)
+                .HasMaxLength(128);
+
+            entity.Property(e => e.TrackingId)
+                .HasMaxLength(128);
+
+            entity.Property(e => e.FailureReason)
+                .HasMaxLength(1024);
+        });
+        
+        // 配置 EmailAttachment 实体
         modelBuilder.Entity<EmailAttachment>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -22,80 +110,54 @@ public partial class AuthenticationDbContext
                 .IsRequired()
                 .HasMaxLength(256);
 
+            entity.Property(e => e.FileName)
+                .IsRequired()
+                .HasMaxLength(256);
+
             entity.Property(e => e.Description)
                 .HasMaxLength(512);
 
-            entity.Property(e => e.EmailRecordId)
-                .IsRequired();
+            entity.Property(e => e.ContentType)
+                .HasMaxLength(128);
 
-            entity.HasOne(e => e.EmailBasic)
-                .WithMany()
-                .HasForeignKey(e => e.EmailRecordId)
-                .OnDelete(DeleteBehavior.Cascade);
+            entity.Property(e => e.ContentId)
+                .HasMaxLength(128);
+
+            entity.Property(e => e.FileExtension)
+                .HasMaxLength(32);
+
+            entity.Property(e => e.StorageType)
+                .HasMaxLength(32);
         });
         
-        modelBuilder.Entity<EmailBasic>(entity =>
+        // 配置 EmailTemplate 实体
+        modelBuilder.Entity<EmailTemplate>(entity =>
         {
             entity.HasKey(e => e.Id);
-
-            entity.Property(e => e.Title)
+            
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(128);
+                
+            entity.Property(e => e.Description)
+                .HasMaxLength(512);
+                
+            entity.Property(e => e.Subject)
                 .IsRequired()
                 .HasMaxLength(256);
-
-            entity.Property(e => e.Type)
+                
+            entity.Property(e => e.Body)
                 .IsRequired();
-
-            entity.HasMany(e => e.EmailRecipients)
-                .WithOne()
-                .HasForeignKey(er => er.EmailRecordId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(e => e.EmailContent)
-                .WithMany()
-                .HasForeignKey(e => e.EmailContent)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(e => e.EmailAttachment)
-                .WithMany()
-                .HasForeignKey(e => e.EmailAttachment)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-        
-        modelBuilder.Entity<EmailContent>(entity =>
-        {
-            entity.HasKey(e => e.EmailId);
-
-            entity.Property(e => e.Content)
-                .IsRequired();
-
-            entity.HasOne(e => e.EmailBasic)
-                .WithOne(e => e.EmailContent)
-                .HasForeignKey<EmailBasic>(e => e.Id)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        modelBuilder.Entity<EmailBasic>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-
-            entity.Property(e => e.Title)
-                .IsRequired()
-                .HasMaxLength(256);
-
-            entity.Property(e => e.Type)
-                .IsRequired();
-
-            entity.HasMany(e => e.EmailRecipients)
-                .WithOne()
-                .HasForeignKey(r => r.EmailRecordId);
-
-            entity.HasOne(e => e.EmailContent)
-                .WithOne()
-                .HasForeignKey<EmailContent>(c => c.EmailId);
-
-            entity.HasOne(e => e.EmailAttachment)
-                .WithOne()
-                .HasForeignKey<EmailAttachment>(a => a.EmailRecordId);
+                
+            entity.Property(e => e.Parameters)
+                .HasMaxLength(1024);
+                
+            entity.Property(e => e.Category)
+                .HasMaxLength(64);
+                
+            // 添加唯一索引
+            entity.HasIndex(e => new { e.Name, e.Version })
+                .IsUnique();
         });
     }
 }

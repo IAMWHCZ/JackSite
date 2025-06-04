@@ -21,7 +21,8 @@ public static class ServiceCollectionExtensions
             .AddSingleton<MongoDbContext>()
             .AddAllRepositories()
             .AddEntityFrameworkCore(configuration)
-            .AddRedisCache(configuration);
+            .AddRedisCache(configuration)
+            .AddServices();
         
         return services;
     }
@@ -126,6 +127,14 @@ public static class ServiceCollectionExtensions
             .Build();
         });
         
+        return services;
+    }
+
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        // 添加服务
+        services.AddScoped<IEmailService, EmailService>();
+
         return services;
     }
 }

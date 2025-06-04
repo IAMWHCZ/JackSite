@@ -1,3 +1,4 @@
+using JackSite.Authentication.Enums.Emails;
 using JackSite.Domain.Enums;
 
 namespace JackSite.Authentication.Interfaces.Services;

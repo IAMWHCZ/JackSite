@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录确认 - JackSite</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .email-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .email-body {
+            padding: 30px;
+            color: #4a5568;
+        }
+        
+        .welcome-text {
+            font-size: 18px;
+            margin-bottom: 25px;
+            color: #2d3748;
+        }
+        
+        .login-details {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .login-details p {
+            margin: 8px 0;
+        }
+        
+        .login-details .detail-label {
+            font-weight: 600;
+            color: #2d3748;
+            display: inline-block;
+            width: 120px;
+        }
+        
+        .alert-message {
+            background-color: #FFF8E1;
+            border-left: 4px solid #FFC107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .action-button {
+            display: inline-block;
+            background: #4CAF50;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 500;
+            margin: 20px 0;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+        
+        .action-button:hover {
+            background: #2E7D32;
+        }
+        
+        .info-text {
+            font-size: 14px;
+            color: #718096;
+            margin: 20px 0;
+        }
+        
+        .email-footer {
+            padding: 20px 30px;
+            background: #f7fafc;
+            text-align: center;
+            color: #718096;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .social-links {
+            margin: 15px 0;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        
+        @media only screen and (max-width: 620px) {
+            .email-container {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .email-header, .email-body, .email-footer {
+                padding: 20px;
+            }
+            
+            .login-details .detail-label {
+                width: 100%;
+                display: block;
+                margin-bottom: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>JackSite 登录确认</h1>
+        </div>
+        
+        <div class="email-body">
+            <p class="welcome-text">亲爱的<strong>{{UserName}}</strong>，</p>
+            
+            <p>我们检测到您的账户刚刚登录成功。以下是本次登录的详细信息：</p>
+            
+            <div class="login-details">
+                <p><span class="detail-label">登录时间：</span>{{LoginTime}}</p>
+                <p><span class="detail-label">设备：</span>{{Device}}</p>
+                <p><span class="detail-label">浏览器：</span>{{Browser}}</p>
+                <p><span class="detail-label">IP地址：</span>{{IPAddress}}</p>
+                <p><span class="detail-label">位置：</span>{{Location}}</p>
+            </div>
+            
+            <div class="alert-message">
+                <p><strong>安全提醒：</strong>如果这不是您本人的登录操作，您的账户可能已被他人访问。</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="{{SecuritySettingsLink}}" class="action-button">查看账户安全设置</a>
+            </div>
+            
+            <p>如果您不认识此次登录，请立即<a href="{{ResetPasswordLink}}">重置密码</a>并联系我们的客户支持团队。</p>
+            
+            <p class="info-text">如果您有任何问题或需要帮助，请随时联系我们的客户支持团队：<a href="mailto:support@jacksite.com">support@jacksite.com</a></p>
+        </div>
+        
+        <div class="email-footer">
+            <div class="social-links">
+                <a href="https://twitter.com/jacksite">Twitter</a>
+                <a href="https://facebook.com/jacksite">Facebook</a>
+                <a href="https://instagram.com/jacksite">Instagram</a>
+            </div>
+            <p>&copy; <script>document.write(new Date().getFullYear().toString());</script> JackSite。保留所有权利。</p>
+            <p>
+                <small>此电子邮件是自动发送的，请勿回复。</small>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

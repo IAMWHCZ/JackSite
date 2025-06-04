@@ -1,4 +1,4 @@
-namespace JackSite.Authentication.Enums;
+namespace JackSite.Authentication.Enums.Emails;
 
 public enum EmailPriorityType
 {

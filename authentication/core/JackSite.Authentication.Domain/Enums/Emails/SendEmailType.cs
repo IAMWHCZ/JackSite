@@ -1,4 +1,4 @@
-namespace JackSite.Domain.Enums;
+namespace JackSite.Authentication.Enums.Emails;
 
 public enum SendEmailType : byte
 {
