@@ -75,14 +75,12 @@ public class EmailService(
             mailMessage.To.Add(to);
 
             // 添加抄送人
-            if (cc != null)
+            var enumerable = cc as string[] ?? cc.ToArray();
+            if (enumerable.Length > 0)
             {
-                foreach (var ccAddress in cc)
+                foreach (var ccAddress in enumerable.ToList().Where(ccAddress => !string.IsNullOrEmpty(ccAddress)))
                 {
-                    if (!string.IsNullOrEmpty(ccAddress))
-                    {
-                        mailMessage.CC.Add(ccAddress);
-                    }
+                    mailMessage.CC.Add(ccAddress);
                 }
             }
 
@@ -145,7 +143,7 @@ public class EmailService(
                 EmailId = email.Id,
                 IsHtml = isBodyHtml,
                 Recipient = to,
-                CC = cc != null ? string.Join(";", cc) : null,
+                CC = cc != null ? string.Join(";", enumerable) : null,
                 BCC = bcc != null ? string.Join(";", bcc) : null,
                 PlainTextContent = isBodyHtml ? body.StripHtml() : body
             };
@@ -162,7 +160,7 @@ public class EmailService(
             // 添加抄送人记录
             if (cc != null)
             {
-                foreach (var ccAddress in cc.Where(a => !string.IsNullOrEmpty(a)))
+                foreach (var ccAddress in enumerable.Where(a => !string.IsNullOrEmpty(a)))
                 {
                     email.EmailRecipients.Add(new EmailRecipient
                     {
