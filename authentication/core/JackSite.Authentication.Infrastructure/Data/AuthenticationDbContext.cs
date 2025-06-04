@@ -13,5 +13,6 @@ public partial class AuthenticationDbContext(DbContextOptions<AuthenticationDbCo
         // 配置所有实体
         ConfigureUserEntities(modelBuilder);
         ConfigurePermissionEntities(modelBuilder);
+        ConfigureEmails(modelBuilder);
     }
 }
