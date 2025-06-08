@@ -25,7 +25,9 @@ public class DraftableRepository<TEntity>(AuthenticationDbContext dbContext)
     /// </summary>
     public virtual async Task<List<TEntity>> GetAllPublishedAsync()
     {
-        return await DbSet.Where(e => !e.IsDraft).ToListAsync();
+        return await DbSet
+            .Where(e => !e.IsDraft)
+            .ToListAsync();
     }
 
     /// <summary>

@@ -8,7 +8,7 @@ public class EmailConfigInfo
     /// <summary>
     /// SMTP服务器地址
     /// </summary>
-    public string SmtpServer { get; set; } = string.Empty;
+    public string? SmtpServer { get; set; }
 
     /// <summary>
     /// SMTP端口

@@ -2,17 +2,21 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Sockets;
 using System.Text;
+using JackSite.Authentication.Abstractions.Repositories;
+using JackSite.Authentication.Abstractions.Services;
 using JackSite.Authentication.Entities.Emails;
 using JackSite.Authentication.Enums.Emails;
 using JackSite.Authentication.Exceptions;
 using JackSite.Authentication.Interfaces.Services;
 using JackSite.Authentication.ValueObjects;
+using Microsoft.Extensions.Configuration;
 
 namespace JackSite.Authentication.Infrastructure.Services;
 
 public class EmailService(
     ICacheService cacheService,
-    IRepository<EmailBasic> emailRepository
+    IRepository<EmailBasic> emailRepository,
+    IConfiguration configuration
 ) : IEmailService
 {
     public async Task SendEmailAsync(
@@ -25,7 +29,7 @@ public class EmailService(
     {
         try
         {
-            using var smtpClient = await GetSmtpClientAsync();
+            using var smtpClient = GetSmtpClient();
             var email = new EmailBasic
             {
                 Title = subject,
@@ -60,8 +64,8 @@ public class EmailService(
     {
         try
         {
-            var smtpClient = await GetSmtpClientAsync();
-            var config = await GetConfigInfoAsync();
+            using var smtpClient = GetSmtpClient();
+            var config = GetConfigInfo();
 
             var mailMessage = new MailMessage
             {
@@ -210,7 +214,7 @@ public class EmailService(
     {
         try
         {
-            var config = await GetConfigInfoAsync();
+            var config = GetConfigInfo();
             if (config == null)
             {
                 throw new EmailException("无法获取邮件配置信息");
@@ -256,28 +260,25 @@ public class EmailService(
         };
     }
 
-    public async Task<EmailConfigInfo> GetConfigInfoAsync()
+    public EmailConfigInfo GetConfigInfo()
     {
-        var configInfo = await cacheService.GetAsync<EmailConfigInfo>("EMAIL_CONFIG");
-        if (configInfo == null)
+        var emailConfigInfo = new EmailConfigInfo();
+        configuration.GetSection("Email").Bind(emailConfigInfo);
+
+        if (emailConfigInfo.SmtpServer is null)
         {
-            // 从数据库或配置系统获取邮件配置
-            // 这里作为示例，使用硬编码的配置
-            configInfo = new EmailConfigInfo
+            emailConfigInfo = new EmailConfigInfo
             {
-                SmtpServer = "smtp.example.com",
+                SmtpServer = "smtp-mail.outlook.com",
                 SmtpPort = 587,
-                UserName = "noreply@example.com",
-                Password = "yourpassword",
+                UserName = "cz2545481217@outlook.com",
+                Password = "Cz18972621866!@#",
                 DisplayName = "系统通知",
                 EnableSsl = true
-            };
-
-            // 将配置缓存一段时间
-            await cacheService.SetAsync("EMAIL_CONFIG", configInfo, TimeSpan.FromHours(1));
+            };    
         }
 
-        return configInfo;
+        return emailConfigInfo;
     }
 
     public async Task SendBulkEmailAsync(
@@ -287,17 +288,29 @@ public class EmailService(
         SendEmailType type,
         bool isBodyHtml = true)
     {
-        if (toList == null || !toList.Any())
+        var enumerable = toList as string[] ?? toList.ToArray();
+        if (toList == null || enumerable.Length == 0)
         {
             throw new ArgumentException("收件人列表不能为空", nameof(toList));
         }
 
-        var smtpClient = await GetSmtpClientAsync();
-        var config = await GetConfigInfoAsync();
+        using var smtpClient =  GetSmtpClient();
+        var config = GetConfigInfo();
         var success = new List<string>();
+        if (success == null)
+        {
+            var exception = new ArgumentNullException(nameof(success))
+            {
+                HelpLink = null,
+                HResult = 0,
+                Source = null
+            };
+            throw exception;
+        }
+
         var failed = new Dictionary<string, string>();
 
-        foreach (var to in toList)
+        foreach (var to in enumerable)
         {
             try
             {
@@ -393,11 +406,11 @@ public class EmailService(
         }
     }
 
-    public async Task<string> PreviewEmailAsync(string subject, string body, bool isBodyHtml = true)
+    public string PreviewEmailAsync(string subject, string body, bool isBodyHtml = true)
     {
         try
         {
-            var config = await GetConfigInfoAsync();
+            var config = GetConfigInfo();
 
             // 构建邮件预览HTML
             var preview = new StringBuilder();
@@ -457,9 +470,9 @@ public class EmailService(
         }
     }
 
-    private async Task<SmtpClient> GetSmtpClientAsync()
+    private SmtpClient GetSmtpClient()
     {
-        var config = await GetConfigInfoAsync();
+        var config = GetConfigInfo();
         var smtpClient = new SmtpClient(config.SmtpServer, config.SmtpPort)
         {
             Credentials = new NetworkCredential(config.UserName, config.Password),
@@ -480,7 +493,7 @@ public class EmailService(
     {
         try
         {
-            var config = await GetConfigInfoAsync();
+            var config = GetConfigInfo();
 
             // 创建邮件记录
             var email = new EmailBasic

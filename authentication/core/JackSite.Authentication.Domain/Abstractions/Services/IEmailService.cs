@@ -42,7 +42,7 @@ public interface IEmailService
     /// <summary>
     /// 获取邮箱配置信息
     /// </summary>
-    Task<EmailConfigInfo> GetConfigInfoAsync();
+    EmailConfigInfo GetConfigInfo();
 
     /// <summary>
     /// 批量发送邮件
@@ -52,7 +52,7 @@ public interface IEmailService
     /// <summary>
     /// 预览邮件内容（返回渲染后的HTML）
     /// </summary>
-    Task<string> PreviewEmailAsync(string subject, string body, bool isBodyHtml = true);
+    string PreviewEmailAsync(string subject, string body, bool isBodyHtml = true);
 
     /// <summary>
     /// 保存草稿

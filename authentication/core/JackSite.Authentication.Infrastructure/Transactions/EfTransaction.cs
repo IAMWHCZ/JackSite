@@ -37,6 +37,16 @@ public sealed class EfTransaction : ITransaction
         await _transaction.RollbackAsync(cancellationToken);
     }
 
+    public void Commit()
+    {
+        _transaction.Commit();
+    }
+
+    public void Rollback()
+    {
+        _transaction.Rollback();
+    }
+
     /// <summary>
     /// 释放资源
     /// </summary>

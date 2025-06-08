@@ -1,4 +1,4 @@
-
+using JackSite.Authentication.Abstractions.Repositories;
 
 namespace JackSite.Authentication.Infrastructure.Repositories;
 
@@ -16,7 +16,9 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<List<TEntity>> GetAllAsync()
     {
-        return await DbSet.ToListAsync();
+        return await DbSet
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     /// <summary>
@@ -24,7 +26,10 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        return await DbSet.Where(predicate).ToListAsync();
+        return await DbSet
+            .AsNoTracking()
+            .Where(predicate)
+            .ToListAsync();
     }
 
     /// <summary>
@@ -101,7 +106,9 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        return await DbSet.AnyAsync(predicate);
+        return await DbSet
+            .AsNoTracking()
+            .AnyAsync(predicate);
     }
 
     /// <summary>
@@ -111,43 +118,49 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     {
         if (predicate == null)
         {
-            return await DbSet.CountAsync();
+            return await DbSet
+                .AsNoTracking()
+                .CountAsync();
         }
-        
-        return await DbSet.CountAsync(predicate);
+
+        return await DbSet
+            .AsNoTracking()
+            .CountAsync(predicate);
     }
 
     /// <summary>
     /// 获取分页数据
     /// </summary>
     public virtual async Task<(List<TEntity> Items, int TotalCount)> GetPagedAsync(
-        int pageIndex, 
-        int pageSize, 
+        int pageIndex,
+        int pageSize,
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
     {
         IQueryable<TEntity> query = DbSet;
-        
+
         if (predicate != null)
         {
-            query = query.Where(predicate);
+            query = query
+                .AsNoTracking()
+                .Where(predicate);
         }
-        
+
         var totalCount = await query.CountAsync();
-        
+
         if (orderBy != null)
         {
             query = orderBy(query);
         }
-        
+
         var items = await query
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
-            
+
         return (items, totalCount);
     }
-    
+
     /// <summary>
     /// 开始事务
     /// </summary>
@@ -158,7 +171,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
         var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
         return new EfTransaction(transaction);
     }
-    
+
     /// <summary>
     /// 在事务中执行操作
     /// </summary>
@@ -166,17 +179,18 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// <param name="action">要执行的操作</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>操作结果</returns>
-    public virtual async Task<TResult> ExecuteInTransactionAsync<TResult>(Func<Task<TResult>> action, CancellationToken cancellationToken = default)
+    public virtual async Task<TResult> ExecuteInTransactionAsync<TResult>(Func<Task<TResult>> action,
+        CancellationToken cancellationToken = default)
     {
         // 如果已经��事务中，直接执行操作
         if (dbContext.Database.CurrentTransaction != null)
         {
             return await action();
         }
-        
+
         // 创建执行策略
         var strategy = dbContext.Database.CreateExecutionStrategy();
-        
+
         // 使用执行策略执行事务
         return await strategy.ExecuteAsync(async () =>
         {
@@ -194,13 +208,14 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
             }
         });
     }
-    
+
     /// <summary>
     /// 在事务中执行操作
     /// </summary>
     /// <param name="action">要执行的操作</param>
     /// <param name="cancellationToken">取消令牌</param>
-    public virtual async Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken cancellationToken = default)
+    public virtual async Task ExecuteInTransactionAsync(Func<Task> action,
+        CancellationToken cancellationToken = default)
     {
         await ExecuteInTransactionAsync(async () =>
         {
@@ -208,7 +223,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
             return true;
         }, cancellationToken);
     }
-    
+
     /// <summary>
     /// 保存更改
     /// </summary>
@@ -224,7 +239,9 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        return await DbSet.FirstOrDefaultAsync(predicate);
+        return await DbSet
+            .AsNoTracking()
+            .FirstOrDefaultAsync(predicate);
     }
 
     /// <summary>
@@ -232,7 +249,9 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
     {
-        return await DbSet.SingleOrDefaultAsync(predicate);
+        return await DbSet
+            .AsNoTracking()
+            .SingleOrDefaultAsync(predicate);
     }
 
     /// <summary>
@@ -240,7 +259,9 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual IQueryable<TEntity> AsQueryable()
     {
-        return DbSet.AsQueryable();
+        return DbSet
+            .AsQueryable()
+            .AsNoTracking();
     }
 
     /// <summary>
@@ -256,7 +277,10 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<List<TEntity>> FromSqlAsync(string sql, params object[] parameters)
     {
-        return await DbSet.FromSqlRaw(sql, parameters).ToListAsync();
+        return await DbSet
+            .FromSqlRaw(sql, parameters)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     /// <summary>
@@ -264,7 +288,9 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<bool> IsEmptyAsync()
     {
-        return !await DbSet.AnyAsync();
+        return !await DbSet
+            .AsNoTracking()
+            .AnyAsync();
     }
 
     /// <summary>
@@ -272,7 +298,9 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<TResult?> MaxAsync<TResult>(Expression<Func<TEntity, TResult>> selector)
     {
-        return await DbSet.MaxAsync(selector);
+        return await DbSet
+            .AsNoTracking()
+            .MaxAsync(selector);
     }
 
     /// <summary>
@@ -280,7 +308,9 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<TResult?> MinAsync<TResult>(Expression<Func<TEntity, TResult>> selector)
     {
-        return await DbSet.MinAsync(selector);
+        return await DbSet
+            .AsNoTracking()
+            .MinAsync(selector);
     }
 
     /// <summary>
@@ -288,7 +318,10 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<List<long>> GetAllIdsAsync()
     {
-        return await DbSet.Select(e => e.Id).ToListAsync();
+        return await DbSet
+            .AsNoTracking()
+            .Select(e => e.Id)
+            .ToListAsync();
     }
 
     /// <summary>
@@ -305,6 +338,240 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
 
         dbContext.Entry(entity).State = EntityState.Modified;
         await dbContext.SaveChangesAsync();
+        return entity;
+    }
+
+    public List<TEntity> GetAll()
+    {
+        return DbSet
+            .AsNoTracking()
+            .ToList();
+    }
+
+    public List<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
+    {
+        return DbSet
+            .AsNoTracking()
+            .Where(predicate)
+            .ToList();
+    }
+
+    public TEntity? GetById(long id)
+    {
+        return DbSet
+            .Find(id);
+    }
+
+    public TEntity Add(TEntity entity)
+    {
+        var entry = DbSet.Add(entity);
+        dbContext.SaveChanges();
+        return entry.Entity;
+    }
+
+    public IEnumerable<TEntity> AddRange(IEnumerable<TEntity> entities)
+    {
+        var entitiesToAdd = entities as TEntity[] ?? entities.ToArray();
+        DbSet.AddRange(entitiesToAdd);
+        dbContext.SaveChanges();
+        return entitiesToAdd;
+    }
+
+    public TEntity Update(TEntity entity)
+    {
+        dbContext.Entry(entity).State = EntityState.Modified;
+        dbContext.SaveChanges();
+        return entity;
+    }
+
+    public void Delete(TEntity entity)
+    {
+        DbSet.Remove(entity);
+        dbContext.SaveChanges();
+    }
+
+    public void DeleteById(long id)
+    {
+        var entity = GetById(id);
+        if (entity != null)
+        {
+            Delete(entity);
+        }
+    }
+
+    public void DeleteRange(IEnumerable<TEntity> entities)
+    {
+        DbSet.RemoveRange(entities);
+        dbContext.SaveChanges();
+    }
+
+    public bool Exists(Expression<Func<TEntity, bool>> predicate)
+    {
+        return DbSet
+            .AsNoTracking()
+            .Any(predicate);
+    }
+
+    public int Count(Expression<Func<TEntity, bool>>? predicate = null)
+    {
+        if (predicate == null)
+        {
+            return DbSet
+                .AsNoTracking()
+                .Count();
+        }
+
+        return DbSet
+            .AsNoTracking()
+            .Count(predicate);
+    }
+
+    public (List<TEntity> Items, int TotalCount) GetPaged(
+        int pageIndex,
+        int pageSize,
+        Expression<Func<TEntity, bool>>? predicate = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
+    {
+        IQueryable<TEntity> query = DbSet;
+
+        if (predicate != null)
+        {
+            query = query
+                .AsNoTracking()
+                .Where(predicate);
+        }
+
+        var totalCount = query.Count();
+
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+        }
+
+        var items = query
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return (items, totalCount);
+    }
+
+    public ITransaction BeginTransaction()
+    {
+        var transaction = dbContext.Database.BeginTransaction();
+        return new EfTransaction(transaction);
+    }
+
+    public TResult ExecuteInTransaction<TResult>(Func<TResult> action)
+    {
+        // 如果已经在事务中，直接执行操作
+        if (dbContext.Database.CurrentTransaction != null)
+        {
+            return action();
+        }
+
+        // 创建执行策略
+        var strategy = dbContext.Database.CreateExecutionStrategy();
+
+        // 使用执行策略执行事务
+        return strategy.Execute(() =>
+        {
+            using var transaction = BeginTransaction();
+            try
+            {
+                var result = action();
+                transaction.Commit();
+                return result;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        });
+    }
+
+    public void ExecuteInTransaction(Action action)
+    {
+        ExecuteInTransaction(() =>
+        {
+            action();
+            return true;
+        });
+    }
+
+    public int SaveChanges()
+    {
+        return dbContext.SaveChanges();
+    }
+
+    public TEntity? FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
+    {
+        return DbSet
+            .AsNoTracking()
+            .FirstOrDefault(predicate);
+    }
+
+    public TEntity? SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
+    {
+        return DbSet
+            .AsNoTracking()
+            .SingleOrDefault(predicate);
+    }
+
+    public int ExecuteSql(string sql, params object[] parameters)
+    {
+        return dbContext.Database.ExecuteSqlRaw(sql, parameters);
+    }
+
+    public List<TEntity> FromSql(string sql, params object[] parameters)
+    {
+        return DbSet
+            .FromSqlRaw(sql, parameters)
+            .AsNoTracking()
+            .ToList();
+    }
+
+    public bool IsEmpty()
+    {
+        return !DbSet
+            .AsNoTracking()
+            .Any();
+    }
+
+    public TResult? Max<TResult>(Expression<Func<TEntity, TResult>> selector)
+    {
+        return DbSet
+            .AsNoTracking()
+            .Max(selector);
+    }
+
+    public TResult? Min<TResult>(Expression<Func<TEntity, TResult>> selector)
+    {
+        return DbSet
+            .AsNoTracking()
+            .Min(selector);
+    }
+
+    public List<long> GetAllIds()
+    {
+        return DbSet
+            .AsNoTracking()
+            .Select(e => e.Id)
+            .ToList();
+    }
+
+    public TEntity CreateOrUpdate(TEntity entity)
+    {
+        if (entity.Id == 0 || DbSet.Find(entity.Id) == null)
+        {
+            var entry = DbSet.Add(entity);
+            dbContext.SaveChanges();
+            return entry.Entity;
+        }
+
+        dbContext.Entry(entity).State = EntityState.Modified;
+        dbContext.SaveChanges();
         return entity;
     }
 }

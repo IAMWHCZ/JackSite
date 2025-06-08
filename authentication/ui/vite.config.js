@@ -19,6 +19,13 @@ export default defineConfig({
   },
   server: {
     port: 6066,
-    host:'0.0.0.0'
+    host:'0.0.0.0',
+    watch:{
+        ignored: [
+        '**/node_modules/**',
+        '**/.vscode/chrome-debug-profile/**',
+        '**/.vscode/edge-debug-profile/**'
+      ]
+    }
   },
 });

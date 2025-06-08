@@ -16,26 +16,23 @@ try
 
     var app = builder.Build();
 
-    app.UseSerilogConfig();
-    app.UseExceptionHandling();
-    
-    
+    app.UseSerilogConfig()
+        .UseExceptionHandling();
+
+
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
         app.MapOpenApi();
-        app.MapScalarApiReference(cfg =>
-        {
-            cfg.Title = "JackSite Authentication API";
-        });
+        app.MapScalarApiReference(cfg => { cfg.Title = "JackSite Authentication API"; });
     }
 
     if (app.Environment.IsProduction())
     {
-        app.UseHttpsRedirection();
-        app.UseHsts();      
+        app.UseHttpsRedirection()
+            .UseHsts();
     }
-    
+
     await app.RunAsync();
 }
 catch (Exception ex)

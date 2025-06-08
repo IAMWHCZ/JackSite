@@ -1,18 +1,26 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import commonZh from '@/assets/languages/zhCN/common.json';
-import commonEn from '@/assets/languages/enUs/common.json';
+import commonCN from '@/assets/languages/zhCN/common.json';
+import commonEN from '@/assets/languages/enUs/common.json';
+import LoginCN from '@/assets/languages/zhCN/login.json';
+import LoginEN from '@/assets/languages/enUs/login.json';
+import RegisterEN from '@/assets/languages/enUs/register.json';
+import RegisterCN from '@/assets/languages/zhCN/register.json';
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
       zh: {
-        common: commonZh,
+        common: commonCN,
+        login: LoginCN,
+        register: RegisterCN
       },
       en: {
-        common: commonEn,
+        common: commonEN,
+        login: LoginEN,
+        register: RegisterEN
       },
     },
     fallbackLng: 'zh',

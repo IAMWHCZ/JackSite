@@ -1,3 +1,5 @@
+using JackSite.Authentication.Abstractions.Services;
+
 namespace JackSite.Authentication.Application.Behaviors;
 
 /// <summary>

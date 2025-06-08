@@ -16,4 +16,7 @@ public interface ITransaction : IDisposable
     /// </summary>
     /// <param name="cancellationToken">取消令牌</param>
     Task RollbackAsync(CancellationToken cancellationToken = default);
+    
+    void Commit();
+    void Rollback();
 }

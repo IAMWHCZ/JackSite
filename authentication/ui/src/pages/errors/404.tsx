@@ -12,7 +12,7 @@ export function NotFoundPage() {
   return (
     <div className={cn(
       "min-h-screen w-full flex items-center justify-center",
-      isDark ? "bg-gray-900" : "bg-gray-50"
+      isDark ? "bg-gray-900" : "white"
     )}>
       <div className="w-full max-w-6xl px-4 flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20">
         {/* 左侧：大号404 */}

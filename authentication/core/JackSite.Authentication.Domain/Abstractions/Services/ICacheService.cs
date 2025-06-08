@@ -1,4 +1,4 @@
-﻿namespace JackSite.Authentication.Interfaces.Services;
+﻿namespace JackSite.Authentication.Abstractions.Services;
 
 /// <summary>
 /// 缓存服务接口

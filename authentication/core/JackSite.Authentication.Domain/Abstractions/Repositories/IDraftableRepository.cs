@@ -1,3 +1,5 @@
+using JackSite.Authentication.Abstractions.Repositories;
+
 namespace JackSite.Authentication.Interfaces.Repositories;
 
 /// <summary>

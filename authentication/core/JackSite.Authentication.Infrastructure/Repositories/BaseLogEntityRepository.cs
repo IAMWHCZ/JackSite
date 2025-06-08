@@ -1,18 +1,16 @@
-using JackSite.Authentication.Base;
-using JackSite.Authentication.Interfaces.Repositories;
-using JackSite.Authentication.Infrastructure.Repositories;
-
 namespace JackSite.Authentication.Infrastructure.Repositories;
 
 /// <summary>
 /// BaseLogEntity 仓储实现
 /// </summary>
-public class BaseLogEntityRepository(AuthenticationDbContext dbContext)
+public sealed class BaseLogEntityRepository(AuthenticationDbContext dbContext)
     : Repository<BaseLogEntity>(dbContext), IBaseLogEntityRepository
 {
     public async Task<int> CountByStatusCodeAsync(int statusCode)
     {
-        return await DbSet.CountAsync(x => x.StatusCode == statusCode);
+        return await DbSet
+            .AsNoTracking()
+            .CountAsync(x => x.StatusCode == statusCode);
     }
 
     public async Task<List<BaseLogEntity>> GetRecentExceptionsAsync(int count)

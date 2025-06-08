@@ -1,3 +1,4 @@
+using JackSite.Authentication.Abstractions.Repositories;
 using JackSite.Authentication.Base;
 
 namespace JackSite.Authentication.Interfaces.Repositories;

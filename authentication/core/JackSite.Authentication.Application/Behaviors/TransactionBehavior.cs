@@ -1,3 +1,4 @@
+using JackSite.Authentication.Abstractions.Repositories;
 using JackSite.Authentication.Application.CQRS;
 using JackSite.Authentication.Base;
 using JackSite.Authentication.Interfaces.Repositories;
