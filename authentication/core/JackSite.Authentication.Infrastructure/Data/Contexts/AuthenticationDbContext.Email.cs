@@ -1,7 +1,6 @@
 using JackSite.Authentication.Entities.Emails;
-using Microsoft.EntityFrameworkCore;
 
-namespace JackSite.Authentication.Infrastructure.Data;
+namespace JackSite.Authentication.Infrastructure.Data.Contexts;
 
 public partial class AuthenticationDbContext
 {

@@ -1,12 +1,14 @@
+using JackSite.Authentication.Abstractions;
 using JackSite.Authentication.Abstractions.Repositories;
 using JackSite.Authentication.Abstractions.Services;
 using JackSite.Authentication.Common;
+using JackSite.Authentication.Infrastructure.Data.Contexts;
 using JackSite.Authentication.Infrastructure.Options;
 using JackSite.Authentication.Infrastructure.Services;
-using JackSite.Authentication.Interfaces.Repositories;
 using JackSite.Authentication.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using Minio;
+using AuthenticationDbContext = JackSite.Authentication.Infrastructure.Data.Contexts.AuthenticationDbContext;
 
 namespace JackSite.Authentication.Infrastructure.Extensions;
 
@@ -53,6 +55,8 @@ public static class ServiceCollectionExtensions
             opt.UseMySQL(configuration.GetConnectionString("MySQL")!);
         });
 
+        services.AddScoped<IApplicationDbInitializer,ApplicationDbInitializer>();
+        
         return services;
     }
 
@@ -136,7 +140,7 @@ public static class ServiceCollectionExtensions
     {
         // 添加服务
         services.AddScoped<IEmailService, EmailService>();
-
+        services.AddScoped<ICorsOriginCacheService, CorsOriginCacheService>();
         return services;
     }
 }

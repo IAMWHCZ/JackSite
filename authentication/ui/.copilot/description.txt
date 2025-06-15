@@ -1,0 +1,97 @@
+项目提示词
+
+项目名称: JackSite Authentication System (统一认证系统)
+
+技术栈: React 19 + TypeScript + TanStack Router + Tailwind CSS 4.0 + i18n + Radix UI
+
+项目描述: 这是一个现代化的统一认证系统前端项目，具有以下特点：
+
+核心功能
+🌐 多语言支持: 中文/英文双语切换，使用 react-i18next + i18next-browser-languagedetector
+🎨 主题切换: 深色/浅色模式，支持系统主题检测
+📱 响应式设计: 移动端友好的自适应布局，使用 Tailwind CSS 4.0
+🔐 认证管理: 用户、角色、资源、权限管理
+🚀 现代路由: 基于 TanStack Router 的类型安全路由
+🧪 测试驱动: 集成 Vitest + Testing Library + jsdom
+📊 性能监控: Web Vitals 性能指标收集
+
+技术栈详细说明
+前端框架: React 19 (最新版本)
+路由管理: TanStack Router v1.114.3 + Router DevTools
+UI组件库: Radix UI (Dropdown Menu, Select, Slot)
+样式框架: Tailwind CSS 4.0 + tw-animate-css 动画库
+状态管理: React Context + Hooks
+国际化: i18next + react-i18next + 浏览器语言检测
+工具函数: 
+  - clsx + tailwind-merge: 条件样式合并
+  - class-variance-authority: 组件变体管理
+测试框架: Vitest + Testing Library + jsdom
+代码质量: ESLint + Prettier + TypeScript 严格模式
+
+项目结构
+src/
+├── assets/languages/     # 国际化资源文件 (i18next)
+├── components/          # 可复用组件 (基于Radix UI)
+│   ├── ui/             # 基础UI组件 (Button, Input, Select等)
+│   ├── ThemeToggle/    # 主题切换组件
+│   └── LanguageSelector/ # 语言选择器
+├── contexts/           # React上下文 (主题、标题管理)
+├── layouts/           # 布局组件 (Navigation)
+├── pages/            # 页面组件 (404错误页等)
+├── routes/           # TanStack Router 路由定义
+├── lib/              # 工具函数 (cn, 配置文件)
+├── __tests__/        # 测试文件
+├── styles.css        # 全局样式 (Tailwind + CSS变量)
+└── main.tsx          # 应用入口
+
+设计系统
+组件库: Radix UI 无障碍组件 (@radix-ui/react-*)
+样式方案: Tailwind CSS 4.0 + CSS变量主题系统
+动画库: tw-animate-css (Tailwind动画扩展)
+图标: Lucide React 图标库
+字体: Google Fonts (Poppins)
+样式工具: clsx + tailwind-merge + class-variance-authority
+
+开发规范
+TypeScript 5.7+ 严格模式
+React 19 函数式组件 + Hooks
+使用 cn() 工具函数处理条件样式 (tailwind-merge)
+组件变体使用 class-variance-authority (cva)
+遵循 React 19 最佳实践
+ESLint + Prettier 代码规范
+无障碍性 (jsx-a11y插件)
+测试驱动开发 (Vitest + Testing Library)
+
+开发工具配置
+构建工具: Vite 6.1+ 
+代码检查: ESLint 8.57 + 多个插件
+代码格式: Prettier + prettier-plugin-tailwindcss
+测试环境: Vitest + jsdom + Testing Library
+性能监控: Web Vitals
+
+常用命令
+npm run dev - 开发模式 (支持热重载)
+npm run build - 生产构建
+npm run preview - 预览构建结果
+npm run test - 运行测试
+npm run lint - 代码检查
+npx @tanstack/router-cli generate - 生成路由类型
+
+编码时请注意:
+1. 所有文本使用 useTranslation 钩子进行国际化
+2. 样式类名使用 cn() 函数合并，支持主题切换
+3. 组件变体使用 cva() 函数定义
+4. 组件需要同时支持深色和浅色主题
+5. 路由使用 TanStack Router 的类型安全语法
+6. 编写单元测试覆盖核心功能
+7. 遵循无障碍性最佳实践
+8. 保持代码简洁，注重用户体验和性能
+9. 使用 React 19 新特性和最佳实践
+10. Radix UI 组件需要正确配置样式和行为
+
+组件开发模式:
+- 基础UI组件基于 Radix UI 封装
+- 使用 cva 定义组件变体和状态
+- 支持 ref 转发和 ...props 扩展
+- 国际化文本通过 t() 函数处理
+- 响应式设计优先，移动端友好

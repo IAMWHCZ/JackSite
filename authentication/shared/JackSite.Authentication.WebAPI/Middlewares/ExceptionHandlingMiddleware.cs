@@ -92,8 +92,10 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
 // 扩展方法，方便在Program.cs中注册中间件
 public static class ExceptionHandlingMiddlewareExtensions
 {
-    public static void UseExceptionHandling(this IApplicationBuilder builder)
+    public static WebApplication UseExceptionHandling(this WebApplication builder)
     {
         builder.UseMiddleware<ExceptionHandlingMiddleware>();
+        
+        return builder;
     }
 }

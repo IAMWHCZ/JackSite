@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [        
+        {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:6066",
+            "webRoot": "${workspaceFolder}/src",
+            "sourceMaps": true,
+            "userDataDir": "/tmp/chrome-debug-profile",
+            "runtimeArgs": [
+                "--allow-running-insecure-content"
+            ],
+            "console": "integratedTerminal",
+            "preLaunchTask": "npm: dev"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Launch App + Debug",
+            "configurations": [
+                "Launch Chrome"
+            ],
+            "stopAll": true
+        }
+    ]
+}

@@ -2,7 +2,7 @@ using JackSite.Authentication.Infrastructure.Options;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace JackSite.Authentication.Infrastructure.Data;
+namespace JackSite.Authentication.Infrastructure.Data.Contexts;
 
 public class MongoDbContext
 {

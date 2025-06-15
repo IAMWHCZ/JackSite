@@ -4,10 +4,7 @@
 /// 查询接口
 /// </summary>
 /// <typeparam name="TResult">查询返回的结果类型</typeparam>
-public interface IQuery<out TResult> : IRequest<TResult>
-{
-    DateTime Timestamp { get; }
-}
+public interface IQuery<out TResult> : IRequest<TResult>;
 
 /// <summary>
 /// 查询处理器接口

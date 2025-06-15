@@ -1,12 +1,17 @@
 using JackSite.Authentication.Entities.Clients;
+using JackSite.Authentication.ValueObjects;
 
 namespace JackSite.Authentication.Infrastructure.Data.Seeds;
 
-public class ClientSeed
+public static class ClientSeeder
 {
-    public static ClientCorsOrigin Seed =>
-    new ClientCorsOrigin
+    public static ClientBasic Client => new()
     {
         
+        Name = "JackSite",
+        Description = "JackSite Authentication Client",
+        Secret = "JackSite123456789"
     };
+    
+    public static ClientCorsOrigin CorsOrigin => new(Client.Id,"http://localhost:6066");
 }

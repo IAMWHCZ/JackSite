@@ -3,7 +3,7 @@ using JackSite.Authentication.Entities.Logs;
 using JackSite.Authentication.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace JackSite.Authentication.Infrastructure.Data;
+namespace JackSite.Authentication.Infrastructure.Data.Contexts;
 public partial class AuthenticationDbContext(DbContextOptions<AuthenticationDbContext> dbContext):DbContext(dbContext)
 {
     public DbSet<Translation>? Translations { get; set; }
@@ -27,6 +27,7 @@ public partial class AuthenticationDbContext(DbContextOptions<AuthenticationDbCo
         ConfigureUserEntities(modelBuilder);
         ConfigurePermissionEntities(modelBuilder);
         ConfigureEmails(modelBuilder);
+        ConfigureClientEntities(modelBuilder);
         
         modelBuilder.Entity<OperationLog>(entity =>
         {

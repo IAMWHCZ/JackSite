@@ -1,4 +1,5 @@
 using JackSite.Authentication.Interfaces.Repositories;
+using AuthenticationDbContext = JackSite.Authentication.Infrastructure.Data.Contexts.AuthenticationDbContext;
 
 namespace JackSite.Authentication.Infrastructure.Repositories;
 

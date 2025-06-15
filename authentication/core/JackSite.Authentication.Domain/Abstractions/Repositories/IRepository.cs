@@ -151,6 +151,8 @@ public interface IRepository<TEntity> where TEntity : Entity
 
     #region 同步方法
 
+    IQueryable<TEntity> GetQueryable();
+    
     /// <summary>
     /// 获取所有实体
     /// </summary>

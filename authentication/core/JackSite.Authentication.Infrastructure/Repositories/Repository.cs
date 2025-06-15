@@ -1,4 +1,5 @@
 using JackSite.Authentication.Abstractions.Repositories;
+using AuthenticationDbContext = JackSite.Authentication.Infrastructure.Data.Contexts.AuthenticationDbContext;
 
 namespace JackSite.Authentication.Infrastructure.Repositories;
 
@@ -339,6 +340,11 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
         dbContext.Entry(entity).State = EntityState.Modified;
         await dbContext.SaveChangesAsync();
         return entity;
+    }
+
+    public IQueryable<TEntity> GetQueryable()
+    {
+        return DbSet.AsQueryable();
     }
 
     public List<TEntity> GetAll()

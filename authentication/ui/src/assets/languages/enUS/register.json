@@ -1,0 +1,28 @@
+{
+  "title": "Register",
+  "description": "Create a new account",
+  "account": "Account",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "submit": "Register",
+  "account_placeholder": "Enter your account",
+  "password_placeholder": "Enter your password",
+  "confirm_password_placeholder": "Confirm your password",
+  "messages": {
+    "success": "Registration successful!",
+    "error": "Registration failed. Please try again."
+  },
+  "account_required": "Account is required.",
+  "password_required": "Password is required.",
+  "confirm_password_required": "Confirm password is required.",
+  "password_mismatch": "Passwords do not match.",
+  "account_min_length": "Account must be at least 3 characters long.",
+  "account_max_length": "Account must not exceed 20 characters.",
+  "password_min_length": "Password must be at least 6 characters long.",
+  "password_max_length": "Password must not exceed 20 characters.",
+  "password_invalid_characters": "Password can only contain letters and numbers.",
+  "password_lowercase_required": "Password must contain at least one lowercase letter.",
+  "passwords_do_not_match": "The passwords you entered do not match.",
+  "account_exists": "This account already exists. Please choose a different one."
+
+}

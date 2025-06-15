@@ -1,3 +1,5 @@
+using JackSite.Authentication.Abstractions;
+using JackSite.Authentication.WebAPI.Extensions;
 using JackSite.Authentication.WebAPI.Middlewares;
 
 try
@@ -8,32 +10,51 @@ try
 
     var configuration = builder.Configuration;
 
+    
+    
     builder.Services
         .AddInfrastructure(configuration)
         .AddApplication()
         .AddOpenApi()
+        .AddApiModules()
+        .AddClientCors()
         .AddHealthChecks();
-
+    
     var app = builder.Build();
-
-    app.UseSerilogConfig()
-        .UseExceptionHandling();
-
-
+    
+    using (var scope = app.Services.CreateScope())
+    {
+        var initializer = scope.ServiceProvider.GetRequiredService<IApplicationDbInitializer>();
+        await initializer.SeedAsync();
+    }
+    
     if (app.Environment.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
         app.MapOpenApi();
-        app.MapScalarApiReference(cfg => { cfg.Title = "JackSite Authentication API"; });
+        app.MapScalarApiReference(cfg =>
+        {
+            cfg.Title = "JackSite Authentication API";
+        });
     }
 
     if (app.Environment.IsProduction())
     {
-        app.UseHttpsRedirection()
+        app
+            .UseHttpsRedirection()
             .UseHsts();
     }
-
-    await app.RunAsync();
+    
+    app.UseCors("DynamicCorsPolicy");
+    
+    app
+        .UseSerilogConfig()
+        .UseExceptionHandling()
+        .MapApiModules();
+    
+    await app
+        .RunAsync();
+    
 }
 catch (Exception ex)
 {

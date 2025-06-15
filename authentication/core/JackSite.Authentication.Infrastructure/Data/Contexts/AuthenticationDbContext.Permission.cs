@@ -3,7 +3,7 @@ using JackSite.Authentication.Entities.Resources;
 using JackSite.Authentication.Entities.Roles;
 using JackSite.Authentication.Entities.UserGroups;
 
-namespace JackSite.Authentication.Infrastructure.Data;
+namespace JackSite.Authentication.Infrastructure.Data.Contexts;
 
 public partial class AuthenticationDbContext
 {

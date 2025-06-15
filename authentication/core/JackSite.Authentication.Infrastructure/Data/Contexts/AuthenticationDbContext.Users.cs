@@ -1,6 +1,6 @@
 using JackSite.Authentication.Entities.UserGroups;
 
-namespace JackSite.Authentication.Infrastructure.Data;
+namespace JackSite.Authentication.Infrastructure.Data.Contexts;
 public partial class AuthenticationDbContext
 {
     public DbSet<UserBasic>? UserBasics { get; set; } = null!;
