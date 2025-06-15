@@ -1,0 +1,1 @@
+public class UserException(string param) : Exception($"{param}");
