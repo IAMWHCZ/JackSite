@@ -11,20 +11,14 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   const router = useRouterState();
-  
-  const fullScreenList = [
-    '/$404',
-    '/login',
-    '/register',
-    '/reset-password'
-  ]
-  const isFullScreen = router.matches
-  .some(match => fullScreenList.includes(match.routeId));
+
+  const fullScreenList = ['/$404', '/login', '/register', '/reset-password'];
+  const isFullScreen = router.matches.some(match => fullScreenList.includes(match.routeId));
 
   if (isFullScreen) {
     return <Wrapper />;
   }
-  
+
   // 正常页面包含导航和内容容器
   return (
     <>

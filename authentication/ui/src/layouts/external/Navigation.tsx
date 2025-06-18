@@ -31,10 +31,10 @@ export const Navigation = () => {
     setSelectedKey(key);
   };
   const handleLogout = () => {
-    localStorage.clear()
-    sessionStorage.clear()
-    navigate({ to: '/login' })
-  }
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate({ to: '/login' });
+  };
   const isDark = theme === 'dark';
 
   return (
@@ -153,7 +153,7 @@ export const Navigation = () => {
                   className={
                     isDark ? 'text-gray-200 hover:bg-gray-800' : 'text-gray-700 hover:bg-gray-100'
                   }
-                   onClick={handleLogout}
+                  onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>{t('signOut', '退出登录')}</span>
@@ -276,7 +276,6 @@ export const Navigation = () => {
 
               <Button
                 variant="ghost"
-               
                 className={cn(
                   'w-full justify-start px-4 py-2 text-left text-base font-medium',
                   isDark
@@ -284,7 +283,7 @@ export const Navigation = () => {
                     : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 )}
               >
-                <LogOut  className="mr-3 h-5 w-5" />
+                <LogOut className="mr-3 h-5 w-5" />
                 {t('signOut', '退出登录')}
               </Button>
 

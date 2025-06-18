@@ -2,26 +2,26 @@ using JackSite.Authentication.Abstractions.Repositories;
 using JackSite.Authentication.Application.Exceptions.User;
 using JackSite.Authentication.Entities.Users;
 
-namespace JackSite.Authentication.Application.Features.Users.Queries.UserIsExist;
+namespace JackSite.Authentication.Application.Features.Users.Queries.EmailIsBind;
 
 /// <summary>
 /// UserIsExist 命令处理器
 /// </summary>
-public sealed class UserIsExistHandler(
+public sealed class EmailIsBindHandler(
     IRepository<UserBasic> userRepository
 )
-    : IQueryHandler<UserIsExistQuery, bool>
+    : IQueryHandler<EmailIsBindQuery, bool>
 {
-    public async Task<bool> Handle(UserIsExistQuery query, CancellationToken cancellationToken)
+    public async Task<bool> Handle(EmailIsBindQuery query, CancellationToken cancellationToken)
     {
         try
         {
-            var userIsExist = await userRepository.ExistsAsync(x=>x.Username == query.Username);
-            return userIsExist;
+            var emailIsBind = await userRepository.ExistsAsync(x=>x.Email == query.Email && !x.EmailConfirmed);
+            return emailIsBind;
         }
         catch (Exception ex)
         {
-            throw new UserException(query.Username,ex);
+            throw new UserException(query.Email,ex);
         }
     }
 }

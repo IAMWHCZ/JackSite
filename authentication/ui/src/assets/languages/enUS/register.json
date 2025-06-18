@@ -23,6 +23,19 @@
   "password_invalid_characters": "Password can only contain letters and numbers.",
   "password_lowercase_required": "Password must contain at least one lowercase letter.",
   "passwords_do_not_match": "The passwords you entered do not match.",
-  "account_exists": "This account already exists. Please choose a different one."
-
+  "account_exists": "This account already exists. Please choose a different one.",
+  "email": "Email",
+  "email_placeholder": "Enter your email",
+  "email_required": "Email is required.",
+  "email_invalid": "Please enter a valid email address.",
+  "email_exists": "This email is already registered. Please use a different email.",
+  "validation_code": "Validation Code",
+  "validation_code_placeholder": "Enter the validation code",
+  "validation_code_required": "Validation code is required.",
+  "validation_code_invalid": "Invalid validation code.",
+  "validation_code_sent": "Validation code sent to your email.",
+  "validation_code_resend": "Resend Validation Code",
+  "validation_code_resend_success": "Validation code resent successfully.",
+  "validation_code_resend_error": "Failed to resend validation code. Please try again.",
+  "validation_code_send": "Send Validation Code"
 }

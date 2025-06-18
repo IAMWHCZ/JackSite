@@ -1,7 +1,3 @@
-export const Content = ({children}: { children?: React.ReactNode }) => {
-  return (
-    <div className="p-10 w-full h-full">
-      {children}
-    </div>
-  );
+export const Content = ({ children }: { children?: React.ReactNode }) => {
+  return <div className="h-full w-full p-10">{children}</div>;
 };

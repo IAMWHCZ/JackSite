@@ -17,18 +17,18 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
     return (
       <div className="relative">
         {leftIcon && (
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400">
+          <div className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-slate-400">
             {leftIcon}
           </div>
         )}
         <Input
           ref={ref}
-          type={showPassword ? "text" : "password"}
+          type={showPassword ? 'text' : 'password'}
           className={cn(
-            "h-12 border-slate-200 dark:border-slate-700 focus:border-blue-500 dark:focus:border-blue-400 transition-colors",
-            leftIcon && "pl-10",
-            showToggle && "pr-10",
-            error && "border-red-500 dark:border-red-400",
+            'h-12 border-slate-200 transition-colors focus:border-blue-500 dark:border-slate-700 dark:focus:border-blue-400',
+            leftIcon && 'pl-10',
+            showToggle && 'pr-10',
+            error && 'border-red-500 dark:border-red-400',
             className
           )}
           {...props}
@@ -47,9 +47,7 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
             ) : (
               <Eye className="h-4 w-4 text-slate-400" />
             )}
-            <span className="sr-only">
-              {showPassword ? '隐藏密码' : '显示密码'}
-            </span>
+            <span className="sr-only">{showPassword ? '隐藏密码' : '显示密码'}</span>
           </Button>
         )}
       </div>
@@ -57,4 +55,4 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
   }
 );
 
-PasswordInput.displayName = "PasswordInput";
+PasswordInput.displayName = 'PasswordInput';

@@ -23,5 +23,20 @@
   "password_invalid_characters": "密码只能包含字母和数字。",
   "password_lowercase_required": "密码必须包含至少一个小写字母。",
   "passwords_do_not_match": "您输入的密码不匹配。",
-  "account_exists": "该账户已存在。请选择其他账户。"
+  "account_exists": "该账户已存在。请选择其他账户。",
+  "email": "电子邮件",
+  "email_placeholder": "输入您的电子邮件",
+  "email_required": "电子邮件是必需的。",
+  "email_invalid": "请输入有效的电子邮件地址。",
+  "email_exists": "该电子邮件已注册。请使用其他电子邮件。",
+  "validation_code": "验证码",
+  "validation_code_placeholder": "输入验证码",
+  "validation_code_required": "验证码是必需的。",
+  "validation_code_invalid": "验证码无效。",
+  "validation_code_sent": "验证码已发送到您的电子邮件。",
+  "validation_code_send":" 发送验证码",
+  "validation_code_resend": "重新发送验证码",
+  "validation_code_resend_success": "验证码已成功重新发送。",
+  "validation_code_resend_error": "重新发送验证码失败。请再试一次。"
+
 }

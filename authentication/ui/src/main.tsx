@@ -7,7 +7,9 @@ import './styles.css';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { TitleProvider } from '@/contexts/TitleContext';
 import { Toaster } from '@/components/ui/sonner';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import '@/extensions/string';
+
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
@@ -24,8 +26,7 @@ const router = createRouter({
 });
 
 const rootElement = document.getElementById('app');
-const queryClient = new QueryClient()
-
+const queryClient = new QueryClient();
 
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);

@@ -15,12 +15,12 @@ i18n
       zh: {
         common: commonCN,
         login: LoginCN,
-        register: RegisterCN
+        register: RegisterCN,
       },
       en: {
         common: commonEN,
         login: LoginEN,
-        register: RegisterEN
+        register: RegisterEN,
       },
     },
     fallbackLng: 'zh',

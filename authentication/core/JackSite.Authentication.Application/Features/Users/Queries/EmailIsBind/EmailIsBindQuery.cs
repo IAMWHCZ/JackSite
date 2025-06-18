@@ -1,6 +1,6 @@
-namespace JackSite.Authentication.Application.Features.Users.Queries.UserIsExist;
+namespace JackSite.Authentication.Application.Features.Users.Queries.EmailIsBind;
 
 /// <summary>
 /// UserIsExist 命令
 /// </summary>
-public sealed record UserIsExistQuery(string Username) : IQuery<bool>;
+public sealed record EmailIsBindQuery(string Email) : IQuery<bool>;

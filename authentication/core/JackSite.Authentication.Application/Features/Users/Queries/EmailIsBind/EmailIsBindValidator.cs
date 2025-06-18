@@ -1,21 +1,19 @@
-namespace JackSite.Authentication.Application.Features.Users.Queries.UserIsExist;
+namespace JackSite.Authentication.Application.Features.Users.Queries.EmailIsBind;
 
 /// <summary>
 /// UserIsExist 命令验证器
 /// </summary>
-public sealed class UserIsExistValidator : AbstractValidator<UserIsExistQuery>
+public sealed class EmailIsBindValidator : AbstractValidator<EmailIsBindQuery>
 {
-    public UserIsExistValidator()
+    public EmailIsBindValidator()
     {
-        RuleFor(x => x.Username
+        RuleFor(x => x.Email
             )
             .NotEmpty()
             .WithMessage("Username is required")
             .NotNull()
             .WithMessage("Username is required")
-            .MaximumLength(20)
-            .WithMessage("Username must be less than 20 characters")
-            .MinimumLength(6)
-            .WithMessage("Username must be at least 6 characters long");
+            .EmailAddress()
+            .WithMessage("Email is not valid") ;
     }
 }
