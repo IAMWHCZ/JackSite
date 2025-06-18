@@ -10,9 +10,9 @@ public sealed class EmailIsBindValidator : AbstractValidator<EmailIsBindQuery>
         RuleFor(x => x.Email
             )
             .NotEmpty()
-            .WithMessage("Username is required")
+            .WithMessage("Email is required")
             .NotNull()
-            .WithMessage("Username is required")
+            .WithMessage("Email is required")
             .EmailAddress()
             .WithMessage("Email is not valid") ;
     }
