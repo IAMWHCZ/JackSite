@@ -40,7 +40,8 @@ export const EmailConfirm = () => {
         name: 'email'
     })
 
-    const { data: isBind, isLoading: isBindLoading, refetch: bindRefetch } = useCheckEmailIsBind(email.state.value ?? '')
+    const { data: isBind, isLoading: isBindLoading, refetch: bindRefetch } =
+        useCheckEmailIsBind(email.state.value ?? '');
     useEffect(() => {
         if (isSendCode) {
             handleSendCode();

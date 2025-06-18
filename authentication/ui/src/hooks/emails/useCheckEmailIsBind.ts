@@ -8,12 +8,12 @@ export function useCheckEmailIsBind(
   return useQuery({
     queryKey: ['email', 'bind', email],
     queryFn: async () => {
-      const response = await ApiService.get<boolean>(`/email/is-bind/${email}`, {
-        preventCache: true,
+      const response = await ApiService.get<boolean>(`/email/is-bind?email=${email}`, {
+        preventCache: false,
       });
       return response.data ?? false; // 从 ApiResult 中提取 data
     },
-    enabled: !!email && email.length > 0,
+    enabled: false,
     staleTime: 1000 * 60 * 5, // 5分钟
     retry: 2,
     ...options,

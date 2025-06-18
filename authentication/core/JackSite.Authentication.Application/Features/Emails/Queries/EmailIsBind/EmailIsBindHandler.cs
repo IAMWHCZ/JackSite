@@ -2,7 +2,7 @@ using JackSite.Authentication.Abstractions.Repositories;
 using JackSite.Authentication.Application.Exceptions.User;
 using JackSite.Authentication.Entities.Users;
 
-namespace JackSite.Authentication.Application.Features.Users.Queries.EmailIsBind;
+namespace JackSite.Authentication.Application.Features.Emails.Queries.EmailIsBind;
 
 /// <summary>
 /// UserIsExist 命令处理器

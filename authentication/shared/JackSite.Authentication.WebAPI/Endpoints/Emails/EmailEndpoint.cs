@@ -1,4 +1,4 @@
-﻿using JackSite.Authentication.Application.Features.Users.Queries.EmailIsBind;
+﻿using JackSite.Authentication.Application.Features.Emails.Queries.EmailIsBind;
 
 
 namespace JackSite.Authentication.WebAPI.Endpoints.Emails;
@@ -7,10 +7,10 @@ public class EmailEndpoint:IApiModule
 {
     public void AddRoutes(IEndpointRouteBuilder routeGroup)
     {
-        routeGroup.MapGet("/email/is-bind", async (string email,ISender sender) =>
+        routeGroup.MapGet("/is-bind", async (string email,ISender sender) =>
         {
             var result = await sender.Send(new EmailIsBindQuery(email));
-            return result ? Results.Ok() : Results.BadRequest("Invalid email confirmation token.");
+            return !result ? Results.Ok() : Results.BadRequest("Invalid email confirmation token.");
         })
         .WithName("Check Email is Bind")
         .WithSummary("Check if an email is already bound to a user account")

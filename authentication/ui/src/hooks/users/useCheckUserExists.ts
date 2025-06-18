@@ -14,7 +14,7 @@ export function useCheckUserExists(
     queryKey: ['user', 'exists', username],
     queryFn: async () => {
       const response = await ApiService.get<boolean>(`/user/exists/${username}`, {
-        preventCache: true
+        preventCache: false
       });
       return response.data ?? false; // 从 ApiResult 中提取 data
     },
