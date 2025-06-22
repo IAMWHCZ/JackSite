@@ -115,6 +115,74 @@ public class ApiResult
             Message = message
         };
     }
+    
+    /// <summary>
+    /// 创建带数据的成功结果（支持类型推断）
+    /// </summary>
+    /// <typeparam name="T">数据类型</typeparam>
+    /// <param name="data">数据</param>
+    /// <param name="message">消息</param>
+    /// <returns>API结果</returns>
+    public static ApiResult<T> Ok<T>(T data, string message = "操作成功")
+    {
+        return ApiResult<T>.Ok(data, message);
+    }
+
+    /// <summary>
+    /// 创建带数据的失败结果（支持类型推断）
+    /// </summary>
+    /// <typeparam name="T">数据类型</typeparam>
+    /// <param name="message">错误消息</param>
+    /// <param name="code">错误码</param>
+    /// <returns>API结果</returns>
+    public static ApiResult<T> Fail<T>(string message = "操作失败", int code = 400)
+    {
+        return ApiResult<T>.Fail(message, code);
+    }
+
+    /// <summary>
+    /// 创建带数据的未授权结果（支持类型推断）
+    /// </summary>
+    /// <typeparam name="T">数据类型</typeparam>
+    /// <param name="message">错误消息</param>
+    /// <returns>API结果</returns>
+    public static ApiResult<T> Unauthorized<T>(string message = "未授权")
+    {
+        return ApiResult<T>.Unauthorized(message);
+    }
+
+    /// <summary>
+    /// 创建带数据的禁止访问结果（支持类型推断）
+    /// </summary>
+    /// <typeparam name="T">数据类型</typeparam>
+    /// <param name="message">错误消息</param>
+    /// <returns>API结果</returns>
+    public static ApiResult<T> Forbidden<T>(string message = "禁止访问")
+    {
+        return ApiResult<T>.Forbidden(message);
+    }
+
+    /// <summary>
+    /// 创建带数据的资源不存在结果（支持类型推断）
+    /// </summary>
+    /// <typeparam name="T">数据类型</typeparam>
+    /// <param name="message">错误消息</param>
+    /// <returns>API结果</returns>
+    public static ApiResult<T> NotFound<T>(string message = "资源不存在")
+    {
+        return ApiResult<T>.NotFound(message);
+    }
+
+    /// <summary>
+    /// 创建带数据的服务器错误结果（支持类型推断）
+    /// </summary>
+    /// <typeparam name="T">数据类型</typeparam>
+    /// <param name="message">错误消息</param>
+    /// <returns>API结果</returns>
+    public static ApiResult<T> Error<T>(string message = "服务器错误")
+    {
+        return ApiResult<T>.Error(message);
+    }
 }
 
 /// <summary>

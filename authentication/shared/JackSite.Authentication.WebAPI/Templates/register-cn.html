@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录确认 - JackSite</title>
+    <title>验证码 - JackSite</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
         
@@ -26,7 +26,7 @@
         }
         
         .email-header {
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            background: linear-gradient(135deg, #3182ce, #2c5282);
             color: #ffffff;
             padding: 30px;
             text-align: center;
@@ -49,48 +49,23 @@
             color: #2d3748;
         }
         
-        .login-details {
-            background: #f8f9fa;
-            border-radius: 6px;
-            padding: 20px;
-            margin: 20px 0;
-            border-left: 4px solid #4CAF50;
-        }
-        
-        .login-details p {
-            margin: 8px 0;
-        }
-        
-        .login-details .detail-label {
-            font-weight: 600;
-            color: #2d3748;
-            display: inline-block;
-            width: 120px;
-        }
-        
-        .alert-message {
-            background-color: #FFF8E1;
-            border-left: 4px solid #FFC107;
-            padding: 15px;
-            margin: 20px 0;
+        .verification-code {
+            font-size: 28px;
+            letter-spacing: 5px;
+            font-weight: 700;
+            background: #f7fafc;
+            color: #2c5282;
+            padding: 15px 25px;
+            margin: 25px auto;
             border-radius: 4px;
-        }
-        
-        .action-button {
+            border: 1px dashed #3182ce;
             display: inline-block;
-            background: #4CAF50;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 12px 30px;
-            border-radius: 4px;
-            font-weight: 500;
-            margin: 20px 0;
             text-align: center;
-            transition: background 0.3s ease;
         }
         
-        .action-button:hover {
-            background: #2E7D32;
+        .code-container {
+            text-align: center;
+            margin: 25px 0;
         }
         
         .info-text {
@@ -115,8 +90,13 @@
         .social-links a {
             display: inline-block;
             margin: 0 10px;
-            color: #4CAF50;
+            color: #3182ce;
             text-decoration: none;
+        }
+        
+        .logo {
+            max-width: 120px;
+            margin-bottom: 15px;
         }
         
         @media only screen and (max-width: 620px) {
@@ -129,43 +109,27 @@
             .email-header, .email-body, .email-footer {
                 padding: 20px;
             }
-            
-            .login-details .detail-label {
-                width: 100%;
-                display: block;
-                margin-bottom: 4px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="email-container">
         <div class="email-header">
-            <h1>JackSite 登录确认</h1>
+            <h1>JackSite 验证码</h1>
         </div>
         
         <div class="email-body">
-            <p class="welcome-text">亲爱的<strong>{{UserName}}</strong>，</p>
+            <p class="welcome-text">亲爱的<strong>{{Email}}</strong>，</p>
             
-            <p>我们检测到您的账户刚刚登录成功。以下是本次登录的详细信息：</p>
+            <p>感谢您使用JackSite！为了验证您的身份，我们需要您输入以下验证码：</p>
             
-            <div class="login-details">
-                <p><span class="detail-label">登录时间：</span>{{LoginTime}}</p>
-                <p><span class="detail-label">设备：</span>{{Device}}</p>
-                <p><span class="detail-label">浏览器：</span>{{Browser}}</p>
-                <p><span class="detail-label">IP地址：</span>{{IPAddress}}</p>
-                <p><span class="detail-label">位置：</span>{{Location}}</p>
+            <div class="code-container">
+                <div class="verification-code">{{Code}}</div>
             </div>
             
-            <div class="alert-message">
-                <p><strong>安全提醒：</strong>如果这不是您本人的登录操作，您的账户可能已被他人访问。</p>
-            </div>
+            <p>此验证码将在<strong>15分钟</strong>内有效。如果您没有请求此验证码，请忽略此邮件。</p>
             
-            <div style="text-align: center;">
-                <a href="{{SecuritySettingsLink}}" class="action-button">查看账户安全设置</a>
-            </div>
-            
-            <p>如果您不认识此次登录，请立即<a href="{{ResetPasswordLink}}">重置密码</a>并联系我们的客户支持团队。</p>
+            <p>请勿将验证码透露给他人，以保障您的账户安全。</p>
             
             <p class="info-text">如果您有任何问题或需要帮助，请随时联系我们的客户支持团队：<a href="mailto:support@jacksite.com">support@jacksite.com</a></p>
         </div>

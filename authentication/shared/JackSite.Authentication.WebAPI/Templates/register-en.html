@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>验证码 - JackSite</title>
+    <title>Verification Code - JackSite</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
         
@@ -115,23 +115,23 @@
 <body>
     <div class="email-container">
         <div class="email-header">
-            <h1>JackSite 验证码</h1>
+            <h1>JackSite Verification Code</h1>
         </div>
         
         <div class="email-body">
-            <p class="welcome-text">亲爱的<strong>{{UserName}}</strong>，</p>
+            <p class="welcome-text">Dear <strong>{{Email}}</strong>,</p>
             
-            <p>感谢您使用JackSite！为了验证您的身份，我们需要您输入以下验证码：</p>
+            <p>Thank you for using JackSite! To verify your identity, please enter the following verification code:</p>
             
             <div class="code-container">
-                <div class="verification-code">{{VerificationCode}}</div>
+                <div class="verification-code">{{Code}}</div>
             </div>
             
-            <p>此验证码将在<strong>15分钟</strong>内有效。如果您没有请求此验证码，请忽略此邮件。</p>
+            <p>This verification code will be valid for <strong>15 minutes</strong>. If you didn't request this code, please ignore this email.</p>
             
-            <p>请勿将验证码透露给他人，以保障您的账户安全。</p>
+            <p>Please do not share this verification code with anyone to protect your account security.</p>
             
-            <p class="info-text">如果您有任何问题或需要帮助，请随时联系我们的客户支持团队：<a href="mailto:support@jacksite.com">support@jacksite.com</a></p>
+            <p class="info-text">If you have any questions or need assistance, please feel free to contact our customer support team at: <a href="mailto:support@jacksite.com">support@jacksite.com</a></p>
         </div>
         
         <div class="email-footer">
@@ -140,9 +140,9 @@
                 <a href="https://facebook.com/jacksite">Facebook</a>
                 <a href="https://instagram.com/jacksite">Instagram</a>
             </div>
-            <p>&copy; <script>document.write(new Date().getFullYear().toString());</script> JackSite。保留所有权利。</p>
+            <p>&copy; <script>document.write(new Date().getFullYear().toString());</script> JackSite. All rights reserved.</p>
             <p>
-                <small>此电子邮件是自动发送的，请勿回复。</small>
+                <small>This email was sent automatically. Please do not reply.</small>
             </p>
         </div>
     </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verification Code - JackSite</title>
+    <title>Password Reset Verification Code - JackSite</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
         
@@ -26,7 +26,7 @@
         }
         
         .email-header {
-            background: linear-gradient(135deg, #3182ce, #2c5282);
+            background: linear-gradient(135deg, #ED8936, #DD6B20);
             color: #ffffff;
             padding: 30px;
             text-align: center;
@@ -54,11 +54,11 @@
             letter-spacing: 5px;
             font-weight: 700;
             background: #f7fafc;
-            color: #2c5282;
+            color: #DD6B20;
             padding: 15px 25px;
             margin: 25px auto;
             border-radius: 4px;
-            border: 1px dashed #3182ce;
+            border: 1px dashed #ED8936;
             display: inline-block;
             text-align: center;
         }
@@ -90,7 +90,7 @@
         .social-links a {
             display: inline-block;
             margin: 0 10px;
-            color: #3182ce;
+            color: #ED8936;
             text-decoration: none;
         }
         
@@ -115,19 +115,19 @@
 <body>
     <div class="email-container">
         <div class="email-header">
-            <h1>JackSite Verification Code</h1>
+            <h1>JackSite Password Reset</h1>
         </div>
         
         <div class="email-body">
-            <p class="welcome-text">Dear <strong>{{UserName}}</strong>,</p>
+            <p class="welcome-text">Dear <strong>{{Email}}</strong>,</p>
             
-            <p>Thank you for using JackSite! To verify your identity, please enter the following verification code:</p>
+            <p>We received a request to reset your password. Please use the following verification code to complete the password reset:</p>
             
             <div class="code-container">
-                <div class="verification-code">{{VerificationCode}}</div>
+                <div class="verification-code">{{Code}}</div>
             </div>
             
-            <p>This verification code will be valid for <strong>15 minutes</strong>. If you didn't request this code, please ignore this email.</p>
+            <p>This verification code will be valid for <strong>15 minutes</strong>. If you didn't request a password reset, please ignore this email and ensure your account is secure.</p>
             
             <p>Please do not share this verification code with anyone to protect your account security.</p>
             
