@@ -18,7 +18,7 @@ public class EmailConfigInfo
     /// <summary>
     /// 是否启用SSL
     /// </summary>
-    public bool EnableSsl { get; set; }
+    public bool EnableSsl { get; set; } = true;
 
     /// <summary>
     /// 邮箱账号

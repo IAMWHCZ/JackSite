@@ -3,10 +3,10 @@ using JackSite.Shared.Models;
 
 namespace JackSite.Authentication.WebAPI.Services;
 
-public class HttpContextAccessorService(
+public class AccessBaseService(
     IHttpContextAccessor contextAccessor
     ) 
-    : IHttpContextAccessorService
+    : IAccessBaseService
 {
     public string? GetHeaderValue(string headerName)
     {
@@ -17,7 +17,7 @@ public class HttpContextAccessorService(
         return context.Request.Headers.TryGetValue(headerName, out var values) ? values.ToString() : null;
     }
     
-    public HttpFromBase GetCurrentFormUser()
+    public HttpFromBase GetCurrentFormBase()
     {
         var currentFormUser = new HttpFromBase();
         var context = contextAccessor.HttpContext;
@@ -26,13 +26,8 @@ public class HttpContextAccessorService(
             return currentFormUser;  // 返回默认对象
         }
         
-        currentFormUser.UserAgent = GetHeaderValue("User-Agent");
-        currentFormUser.ClientIp = GetHeaderValue("X-Forwarded-For") ?? context.Connection.RemoteIpAddress?.ToString();
         currentFormUser.Language = GetHeaderValue("Accept-Language") ?? "en-US";
-        currentFormUser.Referer = GetHeaderValue("Referer");
         currentFormUser.TimeZone = GetHeaderValue("Time-Zone");
-        currentFormUser.IsMobileDevice = context.Request.Headers.ContainsKey("Is-Mobile-Device") &&
-                                         bool.TryParse(GetHeaderValue("Is-Mobile-Device"), out var isMobile) && isMobile;
         
         return currentFormUser;
     }

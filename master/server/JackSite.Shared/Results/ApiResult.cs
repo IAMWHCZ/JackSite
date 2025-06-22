@@ -1,4 +1,4 @@
-﻿namespace JackSite.Authentication.Application.Results;
+﻿namespace JackSite.Shared.Results;
 
 /// <summary>
 /// API统一返回结果

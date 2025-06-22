@@ -71,7 +71,7 @@ export const PasswordAccess = () => {
                 }}
             >
                 {field => (
-                    <div className="space-y-2">
+                    <div className="space-y-2 ml-3">
                         <Label
                             htmlFor="account"
                             className="text-sm font-medium text-slate-700 dark:text-slate-300"
@@ -113,7 +113,7 @@ export const PasswordAccess = () => {
                 }}
             >
                 {field => (
-                    <div className="space-y-2">
+                    <div className="space-y-2 ml-3">
                         <Label
                             htmlFor="password"
                             className="text-sm font-medium text-slate-700 dark:text-slate-300"
@@ -184,16 +184,16 @@ export const PasswordAccess = () => {
                         type="submit"
                         disabled={!canSubmit || isSubmitting || isLoading}
                         className={cn(
-                            'h-12 w-full font-semibold rounded-lg shadow-lg transition-all duration-300',
+                            'h-12 w-full font-semibold rounded-lg transition-all duration-300',
                             theme === 'light'
-                                ? 'bg-black text-white shadow-black/20 hover:bg-gray-900 hover:shadow-black/30'
-                                : 'bg-white text-black shadow-gray-900/20 hover:bg-gray-50 hover:shadow-gray-900/30',
-                            'hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md',
+                                ? 'bg-black text-white hover:bg-gray-900'
+                                : 'bg-white text-black hover:bg-gray-50',
+                            'hover:-translate-y-0.5 active:translate-y-0',
                             'focus:outline-none focus:ring-4',
                             theme === 'light'
                                 ? 'focus:ring-gray-500/30'
                                 : 'focus:ring-gray-400/30',
-                            'disabled:cursor-not-allowed disabled:opacity-60 disabled:transform-none disabled:shadow-none'
+                            'disabled:cursor-not-allowed disabled:opacity-60 disabled:transform-none'
                         )}
                     >
                         {isSubmitting || isLoading ? (

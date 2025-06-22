@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore.Storage;
+using ITransaction = JackSite.Authentication.Base.ITransaction;
 
 namespace JackSite.Authentication.Infrastructure.Transactions;
 

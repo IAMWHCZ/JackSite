@@ -1,4 +1,5 @@
 import { LanguageSelector } from '@/components/LanguageSelector';
+import { RouterProgress } from '@/components/RouterProgress';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Outlet } from '@tanstack/react-router';
@@ -8,6 +9,7 @@ export const Wrapper = () => {
 
     return (
         <div className={`${theme} flex min-h-screen w-full flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-950 dark:to-gray-900`}>
+            <RouterProgress />
             {/* 顶部导航栏 */}
             <header className="z-20 flex h-16 w-full shrink-0 items-center justify-between border-b border-slate-200/50 bg-white/80 px-4 backdrop-blur-sm sm:px-6 dark:border-slate-700/50 dark:bg-black/80">
                 <div className="flex items-center gap-2">

@@ -1,6 +1,6 @@
 using JackSite.Authentication.Application.Features.Users.Queries.UserIsExist;
-using JackSite.Authentication.Application.Results;
 using JackSite.Authentication.WebAPI.Modules;
+using JackSite.Shared.Results;
 using MediatR;
 
 namespace JackSite.Authentication.WebAPI.Endpoints.Users;

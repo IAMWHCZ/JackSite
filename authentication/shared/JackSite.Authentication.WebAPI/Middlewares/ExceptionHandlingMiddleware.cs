@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using System.Text.Json;
 using JackSite.Authentication.Abstractions.Repositories;
-using JackSite.Authentication.Application.Results;
 using JackSite.Authentication.Entities.Logs;
+using JackSite.Shared.Results;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace JackSite.Authentication.WebAPI.Middlewares;

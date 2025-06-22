@@ -1,3 +1,4 @@
+using JackSite.Authentication.Const;
 using JackSite.Authentication.Enums.Emails;
 using JackSite.Domain.Enums;
 
@@ -67,5 +68,22 @@ public interface IEmailService
     /// <param name="type"></param>
     /// <returns></returns>
     Task<bool> VerifyEmailAsync(string email, string code,SendEmailType type);
+
+    /// <summary>
+    /// 根据模板发送邮件
+    /// </summary>
+    /// <param name="to">收件人邮箱</param>
+    /// <param name="templateName">模板名称，不包含扩展名</param>
+    /// <param name="type">邮件类型</param>
+    /// <param name="parameters">模板参数字典</param>
+    /// <param name="subject">邮件主题，如为空则从模板中提取</param>
+    /// <returns>发送结果</returns>
+    Task SendEmailWithTemplateAsync(
+        string to,
+        string templateName,
+        SendEmailType type,
+        Dictionary<string, string> parameters,
+        string? subject = null
+        );
 }
 

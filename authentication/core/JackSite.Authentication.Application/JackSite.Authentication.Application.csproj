@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Features\Emails\Commands\" />
       <Folder Include="Features\Emails\Queries\" />
       <Folder Include="Features\Resources\Commands\" />
     </ItemGroup>

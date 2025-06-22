@@ -2,8 +2,10 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using JackSite.Authentication.Abstractions.Repositories;
 using JackSite.Authentication.Abstractions.Services;
+using JackSite.Authentication.Const;
 using JackSite.Authentication.Entities.Emails;
 using JackSite.Authentication.Enums.Emails;
 using JackSite.Authentication.Exceptions;
@@ -34,16 +36,39 @@ public class EmailService(
             {
                 Title = subject,
                 Type = type,
+                SenderEmail = configuration["Email:Username"],       // 添加发件人邮箱
+                SenderName = configuration["Email:DisplayName"],     // 添加发件人名称
+                Status = EmailStatus.Sent            // 设置邮件状态
             };
             email.EmailContent = new EmailContent
             {
                 Content = body,
                 Subject = subject,
-                EmailId = email.Id
+                EmailId = email.Id,
+                IsHtml = isBodyHtml,
+                Recipient = to,
+                PlainTextContent = isBodyHtml ? body.StripHtml():body
             };
-
+            
+            email.EmailRecipients.Add(new EmailRecipient
+            {
+                RecipientEmail = to,
+                Type = RecipientType.To,
+                Status = DeliveryStatus.Sent,
+                EmailRecordId = email.Id
+            });
+            // 创建并发送邮件
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(configuration["Email:Username"], configuration["Email:DisplayName"]),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = isBodyHtml
+            };
+            mailMessage.To.Add(to);
+            await smtpClient.SendMailAsync(mailMessage);
+            email.MessageId = mailMessage.Headers["Message-ID"];
             await emailRepository.AddAsync(email);
-            await emailRepository.SaveChangesAsync();
         }
         catch (Exception e)
         {
@@ -269,12 +294,12 @@ public class EmailService(
         {
             emailConfigInfo = new EmailConfigInfo
             {
-                SmtpServer = "smtp-mail.outlook.com",
-                SmtpPort = 587,
-                UserName = "cz2545481217@outlook.com",
-                Password = "Cz18972621866!@#",
-                DisplayName = "系统通知",
-                EnableSsl = true
+                SmtpServer = emailConfigInfo.SmtpServer,
+                SmtpPort = emailConfigInfo.SmtpPort,
+                UserName = emailConfigInfo.UserName,
+                Password = emailConfigInfo.Password,
+                DisplayName = emailConfigInfo.DisplayName,
+                EnableSsl = emailConfigInfo.EnableSsl
             };    
         }
 
@@ -476,7 +501,8 @@ public class EmailService(
         var smtpClient = new SmtpClient(config.SmtpServer, config.SmtpPort)
         {
             Credentials = new NetworkCredential(config.UserName, config.Password),
-            EnableSsl = config.EnableSsl
+            EnableSsl = config.EnableSsl,
+            UseDefaultCredentials = false
         };
         return smtpClient;
     }
@@ -640,5 +666,89 @@ public class EmailService(
         {
             throw new EmailException($"验证邮箱失败: {ex.Message}", email, ex);
         }
+    }
+
+    public async Task SendEmailWithTemplateAsync(string to, string templateName, SendEmailType type, Dictionary<string, string> parameters,
+        string? subject = null)
+    {
+        try
+        {
+            var template = await LoadTemplateAsync(templateName);
+            if (string.IsNullOrEmpty(template))
+            {
+                throw new EmailException($"邮件模板 '{templateName}' 内容为空或不存在");
+            }
+        
+            var body = ReplaceTemplateParameters(template, parameters);
+        
+            // 如果未提供主题，尝试从模板的 title 标签中提取
+            if (string.IsNullOrEmpty(subject))
+            {
+                subject = ExtractSubjectFromTemplate(template) ?? "系统通知";
+            }
+            
+            await SendEmailAsync(to,subject,body,type,true);
+        }
+        catch (Exception e)
+        {
+            throw new EmailException("发送邮件失败", e);
+        }
+       
+    }
+
+    /// <summary>
+    /// 加载指定名称的模板
+    /// </summary>
+    /// <param name="templateName">模板名称，不包含扩展名</param>
+    /// <returns>模板内容</returns>
+    private async Task<string?> LoadTemplateAsync(string templateName)
+    {
+        try
+        {
+            var templatePath = Path.Combine(AppContext.BaseDirectory, "Templates", templateName);
+            if (!File.Exists(templatePath))
+            {
+                throw new EmailException($"邮件模板 '{templateName}' 不存在");
+            }
+
+            return await File.ReadAllTextAsync(templatePath, Encoding.UTF8);
+        }
+        catch (Exception ex)
+        {
+            throw new EmailException($"加载邮件模板失败: {ex.Message}", ex);
+        }
+    }
+
+    /// <summary>
+    /// 替换模板中的参数
+    /// </summary>
+    /// <param name="template">模板内容</param>
+    /// <param name="parameters">参数字典</param>
+    /// <returns>替换参数后的内容</returns>
+    private string ReplaceTemplateParameters(string template, Dictionary<string, string>? parameters)
+    {
+        if (parameters == null || parameters.Count == 0)
+        {
+            return template;
+        }
+
+        foreach (var kvp in parameters)
+        {
+            var placeholder = $"{{{{{kvp.Key}}}}}";
+            template = template.Replace(placeholder, kvp.Value);
+        }
+
+        return template;
+    }
+    
+    /// <summary>
+    /// 从模板内容中提取邮件主题
+    /// </summary>
+    /// <param name="template">模板内容</param>
+    /// <returns>提取的主题或 null</returns>
+    private string? ExtractSubjectFromTemplate(string template)
+    {
+        var match = Regex.Match(template, @"<title>(.*?)</title>");
+        return match.Success ? match.Groups[1].Value.Trim() : null;
     }
 }

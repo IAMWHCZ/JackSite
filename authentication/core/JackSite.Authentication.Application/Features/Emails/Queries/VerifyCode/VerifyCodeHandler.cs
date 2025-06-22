@@ -1,17 +1,22 @@
+namespace JackSite.Authentication.Application.Features.Emails.Queries.VerifyCode;
+
 /// <summary>
 /// VerifyCode 命令处理器
 /// </summary>
-public class VerifyCodeHandler : IQueryHandler<VerifyCodeQuery, bool>
+public class VerifyCodeHandler(ICacheService cache): IQueryHandler<VerifyCodeQuery, bool>
 {
     public async Task<bool> Handle(VerifyCodeQuery query, CancellationToken cancellationToken)
     {
         try
         {
-            return true;
+            var key = cache.BuildCacheKey(query.Email, query.Type);
+            var code = await cache.GetAsync<string>(key);
+                
+            return query.Code == code;
         }
         catch (Exception ex)
         {
-            return false;
+            throw new EmailException(ex.Message, ex);
         }
     }
 }

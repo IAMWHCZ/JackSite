@@ -129,7 +129,7 @@ public partial class AuthenticationDbContext
                 .HasMaxLength(32);
         });
         
-        // 配置 EmailTemplate 实体
+        // 配置 EmailTemplateConst 实体
         modelBuilder.Entity<EmailTemplate>(entity =>
         {
             entity.HasKey(e => e.Id);

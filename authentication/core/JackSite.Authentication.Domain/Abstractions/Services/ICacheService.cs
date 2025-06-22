@@ -58,4 +58,6 @@ public interface ICacheService
     /// </summary>
     /// <returns></returns>
     Task ClearAllAsync();
+
+    string BuildCacheKey(params object[] args);
 }

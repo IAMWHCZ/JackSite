@@ -2,6 +2,7 @@
 using JackSite.Authentication.Entities.Resources;
 using JackSite.Authentication.Entities.Roles;
 using JackSite.Authentication.Entities.UserGroups;
+using Role = JackSite.Authentication.Entities.Roles.Role;
 
 namespace JackSite.Authentication.Infrastructure.Data.Contexts;
 

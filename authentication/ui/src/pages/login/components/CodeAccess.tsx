@@ -93,14 +93,14 @@ export const CodeAccess = () => {
                 }}
             >
                 {field => (
-                    <div className="space-y-2">
+                    <div className="space-y-2 ml-3">
                         <Label
                             htmlFor="account"
                             className="text-sm font-medium text-slate-700 dark:text-slate-300"
                         >
                             {t('auth.account')}
                         </Label>
-                        <div className="relative">
+                        <div className="relative ">
                             <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-slate-400" />
                             <Input
                                 id="account"
@@ -135,7 +135,7 @@ export const CodeAccess = () => {
                 }}
             >
                 {field => (
-                    <div className="space-y-2">
+                    <div className="space-y-2 ml-3">
                         <Label
                             htmlFor="smsCode"
                             className="text-sm font-medium text-slate-700 dark:text-slate-300"

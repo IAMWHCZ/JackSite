@@ -1,4 +1,4 @@
-namespace JackSite.Authentication.Application.Features.Emails.Queries.EmailIsBind;
+namespace JackSite.Authentication.Application.Features.Emails;
 
 /// <summary>
 /// UserIsExist 命令验证器
@@ -12,8 +12,6 @@ public sealed class EmailIsBindValidator : AbstractValidator<EmailIsBindQuery>
             .NotEmpty()
             .WithMessage("Email is required")
             .NotNull()
-            .WithMessage("Email is required")
-            .EmailAddress()
-            .WithMessage("Email is not valid") ;
+            .WithMessage("Email is required");
     }
 }

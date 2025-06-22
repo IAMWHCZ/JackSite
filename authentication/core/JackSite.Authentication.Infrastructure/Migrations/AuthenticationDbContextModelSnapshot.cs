@@ -667,7 +667,7 @@ namespace JackSite.Authentication.Infrastructure.Migrations
                     b.ToTable("email_recipients");
                 });
 
-            modelBuilder.Entity("JackSite.Authentication.Entities.Emails.EmailTemplate", b =>
+            modelBuilder.Entity("JackSite.Authentication.Entities.Emails.EmailTemplateConst", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")

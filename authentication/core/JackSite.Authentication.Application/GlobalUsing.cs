@@ -5,3 +5,6 @@ global using JackSite.Authentication.Application.Attributes;
 global using JackSite.Authentication.Application.CQRS;
 global using JackSite.Authentication.Interfaces.Services;
 global using Microsoft.Extensions.Logging;
+global using JackSite.Authentication.Abstractions.Services;
+global using JackSite.Authentication.Exceptions;
+global using JackSite.Authentication.Const;

@@ -7,10 +7,8 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     builder.ApplySerilog();
-
-    var configuration = builder.Configuration;
-
     
+    var configuration = builder.Configuration;
     
     builder.Services
         .AddInfrastructure(configuration)

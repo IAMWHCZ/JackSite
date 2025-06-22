@@ -2,6 +2,7 @@ using JackSite.Authentication.Abstractions.Services;
 using JackSite.Authentication.Infrastructure.Services;
 using JackSite.Authentication.WebAPI.Modules;
 using JackSite.Authentication.WebAPI.Providers;
+using JackSite.Authentication.WebAPI.Services;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace JackSite.Authentication.WebAPI.Extensions;
@@ -29,6 +30,8 @@ public static class ApiModuleExtensions
     {
         // 添加内存缓存
         services.AddMemoryCache();
+        
+        services.AddHttpContextAccessor();
     
         // 注册 CORS 缓存服务
         services.AddScoped<ICorsOriginCacheService, CorsOriginCacheService>();
@@ -43,6 +46,8 @@ public static class ApiModuleExtensions
             });
         });
 
+
+        services.AddScoped<IAccessBaseService, AccessBaseService>();
         
         services.AddScoped<ICorsPolicyProvider, DynamicCorsPolicyProvider>();
     

@@ -18,11 +18,8 @@ var seq = builder.AddSeq("seq")
     .WithEnvironment("ACCEPT_EULA", "Y")
     .WithDataVolume();
 
-var db = mysql.AddDatabase("JackSiteAuthenticationDB");
+var garnet = builder.AddGarnet("garnet");
 
-builder.AddProject<Projects.JackSite_Authentication_WebAPI>("auth-api")
-    .WithReference(db)
-    .WithReference(seq)
-    .WaitFor(seq);
+var db = mysql.AddDatabase("JackSiteAuthenticationDB");
 
 await builder.Build().RunAsync();

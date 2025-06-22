@@ -1,5 +1,6 @@
 using JackSite.Authentication.Abstractions.Repositories;
 using AuthenticationDbContext = JackSite.Authentication.Infrastructure.Data.Contexts.AuthenticationDbContext;
+using ITransaction = JackSite.Authentication.Base.ITransaction;
 
 namespace JackSite.Authentication.Infrastructure.Repositories;
 

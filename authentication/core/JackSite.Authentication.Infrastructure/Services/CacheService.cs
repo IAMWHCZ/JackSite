@@ -1,78 +1,164 @@
-using JackSite.Authentication.Interfaces.Services;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Hybrid;
-using System.Text.Json;
-using JackSite.Authentication.Abstractions.Services;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
-using StackExchange.Redis;
-
 namespace JackSite.Authentication.Infrastructure.Services;
 
 /// <summary>
-/// 混合缓存服务实现
+/// 分布式缓存服务实现
 /// </summary>
-public class CacheService(HybridCache hybridCache,IDistributedCache cache) : ICacheService
+public class CacheService(
+    IDistributedCache cache,
+    ILogger<CacheService> logger,
+    IConnectionMultiplexer? redisConnection = null)
+    : ICacheService
 {
+
     public async Task<T?> GetAsync<T>(string key)
     {
-        var data = await cache.GetAsync(key);
-        if (data == null || data.Length == 0)
+        try
         {
+            var data = await cache.GetStringAsync(key);
+            return string.IsNullOrEmpty(data) ? default : JsonSerializer.Deserialize<T>(data);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "从缓存获取 {Key} 时出错", key);
             return default;
         }
-    
-        return JsonSerializer.Deserialize<T>(data);
     }
-    
+
     public async Task SetAsync<T>(string key, T value, TimeSpan? absoluteExpiration = null, TimeSpan? slidingExpiration = null)
     {
-        var options = new HybridCacheEntryOptions();
-        
-        
-        await hybridCache.SetAsync(key, value, options);
+        try
+        {
+            var options = new DistributedCacheEntryOptions();
+
+            if (absoluteExpiration.HasValue)
+            {
+                options.AbsoluteExpirationRelativeToNow = absoluteExpiration.Value;
+            }
+
+            if (slidingExpiration.HasValue)
+            {
+                options.SlidingExpiration = slidingExpiration.Value;
+            }
+
+            var data = JsonSerializer.Serialize(value);
+            await cache.SetStringAsync(key, data, options);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "设置缓存 {Key} 时出错", key);
+        }
     }
-    
+
     public async Task RemoveAsync(string key)
     {
-        await cache.RemoveAsync(key);
+        try
+        {
+            await cache.RemoveAsync(key);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "移除缓存 {Key} 时出错", key);
+        }
     }
-    
+
     public async Task<bool> ExistsAsync(string key)
     {
-        var value = await cache.GetAsync(key);
-        return value != null;
+        try
+        {
+            return await cache.GetAsync(key) != null;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "检查缓存 {Key} 是否存在时出错", key);
+            return false;
+        }
     }
-    
+
     public async Task RefreshAsync(string key)
     {
-        await cache.RefreshAsync(key);
+        try
+        {
+            await cache.RefreshAsync(key);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "刷新缓存 {Key} 时出错", key);
+        }
     }
-    
+
     public async Task<T> GetOrCreateAsync<T>(string key, Func<Task<T>> factory, TimeSpan? absoluteExpiration = null, TimeSpan? slidingExpiration = null)
     {
-        // 创建缓存选项
-        var options = new HybridCacheEntryOptions();
-
-        // 调用 HybridCache 的 GetOrCreateAsync 方法
-        return await hybridCache.GetOrCreateAsync(key, (Func<CancellationToken, ValueTask<T>>)AdaptedFactory, options);
-
-        // 适配工厂方法
-        async ValueTask<T> AdaptedFactory(CancellationToken _)
+        try
         {
+            var value = await GetAsync<T>(key);
+            if (value != null)
+                return value;
+
+            // 缓存中不存在，调用工厂方法创建
+            value = await factory();
+            
+            // 将结果存入缓存
+            await SetAsync(key, value, absoluteExpiration, slidingExpiration);
+            
+            return value;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "获取或创建缓存 {Key} 时出错", key);
+            // 如果缓存操作失败，直接执行工厂方法
             return await factory();
         }
     }
 
     public async Task ClearAllAsync()
     {
-        if (cache is not RedisCache redisCache) return;
+        try
+        {
+            if (redisConnection == null)
+            {
+                logger.LogWarning("Redis 连接不可用，无法清除所有缓存");
+                return;
+            }
 
-        if (redisCache.GetType()
-                .GetField("_connection",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.GetValue(redisCache) is not IConnectionMultiplexer connection) return;
-        // 执行FLUSHDB命令清空当前数据库
-        var db = connection.GetDatabase();
-        await db.ExecuteAsync("FLUSHDB");
+            var db = redisConnection.GetDatabase();
+            const string prefix = "auth:";
+            var keys = GetAllKeys(prefix);
+
+            foreach (var key in keys)
+            {
+                await db.KeyDeleteAsync(key);
+            }
+
+            logger.LogInformation("已清除所有带前缀 {Prefix} 的缓存", prefix);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "清除所有缓存时出错");
+        }
+    }
+
+    private List<RedisKey> GetAllKeys(string pattern)
+    {
+        if (redisConnection == null)
+            return [];
+
+        var server = redisConnection.GetServer(redisConnection.GetEndPoints()[0]);
+
+        return server.Keys(pattern: $"{pattern}*").ToList();
+    }
+
+    public string BuildCacheKey(params object[] args)
+    {
+        if (args == null || args.Length == 0)
+            throw new ArgumentException("缓存键参数不能为空", nameof(args));
+
+        var sb = new StringBuilder();
+        foreach (var arg in args)
+        {
+            sb.Append($":{arg}");
+        }
+
+        // 移除第一个冒号
+        return sb.Length > 0 ? sb.ToString().Substring(1) : string.Empty;
     }
 }

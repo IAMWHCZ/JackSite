@@ -1,4 +1,4 @@
-namespace JackSite.Authentication.Application.Features.Emails.Queries.EmailIsBind;
+namespace JackSite.Authentication.Application.Features.Emails;
 
 /// <summary>
 /// UserIsExist 命令

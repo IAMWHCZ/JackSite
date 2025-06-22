@@ -1,14 +1,17 @@
 import useRegisterStore from '@/stores/register';
-import { useField, useForm } from '@tanstack/react-form';
+import { useForm } from '@tanstack/react-form';
 import type { RegisterForm } from '../models/register';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useTranslation } from 'react-i18next';
-import { Mail, UserLock } from 'lucide-react';
+import { Mail, Send, UserLock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useEffect, useRef } from 'react';
-import { useCheckEmailIsBind } from '@/hooks/emails/useCheckEmailIsBind';
+import { EmailService } from '@/services/email.service';
+import { useQueries } from '@tanstack/react-query';
+import { SendEmailType } from '@/enums/email';
+import { toast } from 'sonner';
 
 export const EmailConfirm = () => {
     const {
@@ -19,9 +22,29 @@ export const EmailConfirm = () => {
         sendCodeCountDown,
         setSendCodeCountDown
     } = useRegisterStore();
-
+    const [
+        { data: isSend, isLoading: isSendLoading, refetch: sendRefetch },
+        { data: isVerify, isLoading: isVerifyLoading, refetch: verifyRefetch }
+    ] = useQueries({
+        queries: [
+            {
+                queryKey: ['send-code', register.account],
+                queryFn: async () =>
+                    await EmailService.sendVerificationCode(form.state.values.email!, SendEmailType.registerUser),
+                enabled: false,
+                retry: false
+            },
+            {
+                queryKey: ['verify-code', register.account],
+                queryFn: async () =>
+                    await EmailService.verifyCode(form.state.values.email!, form.state.values.validationCode!, SendEmailType.registerUser,),
+                enabled: false,
+                retry: false
+            }
+        ]
+    })
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
+    const { t } = useTranslation()
     const { t: r } = useTranslation('register');
     const form = useForm({
         defaultValues: {
@@ -30,35 +53,39 @@ export const EmailConfirm = () => {
             validationCode: '',
         } as RegisterForm,
         onSubmit: ({ value }) => {
-            console.log('Form submitted with values:', value);
             setRegister({ ...value });
         },
     });
 
-    const email = useField({
-        form,
-        name: 'email'
-    })
-
-    const { data: isBind, isLoading: isBindLoading, refetch: bindRefetch } =
-        useCheckEmailIsBind(email.state.value ?? '');
     useEffect(() => {
-        if (isSendCode) {
-            handleSendCode();
-        } else {
+        // 只在 isSendCode 为 true 时启动计时器
+        if (isSendCode && !timerRef.current) {
+            timerRef.current = setInterval(() => {
+                setSendCodeCountDown(prev => {
+                    if (prev <= 1) {
+                        setIsSendCode(false);
+                        if (timerRef.current) {
+                            clearInterval(timerRef.current);
+                            timerRef.current = null;
+                        }
+                        return 120; // 重置为初始值
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        }
+        // 在组件卸载时清理计时器
+        return () => {
             if (timerRef.current) {
                 clearInterval(timerRef.current);
                 timerRef.current = null;
-                setIsSendCode(false)
             }
-        }
-    }, [])
+        };
+    }, [isSendCode]); // 添加 isSendCode 作为依赖
 
-
-
-    const handleSendCode = async () => {
+    const sendCode = async () => {
         setIsSendCode(true);
-
+        await sendRefetch()
         timerRef.current = setInterval(() => {
             setSendCodeCountDown(prev => {
                 if (prev <= 1) {
@@ -72,7 +99,12 @@ export const EmailConfirm = () => {
                 return prev - 1;
             });
         }, 1000);
+        if (isSend) {
+            toast.success(r('validation_code_send'));
+        }
     }
+
+
     return (
         <form
             onSubmit={e => {
@@ -92,9 +124,8 @@ export const EmailConfirm = () => {
                         if (!value.isEmail()) {
                             return r('email_invalid');
                         }
-                        if (value === email.state.value) {
-                            await bindRefetch();
-                        }
+
+                        const isBind = await EmailService.checkEmailBinding(value)
 
                         if (isBind) {
                             return r('email_exists');
@@ -116,7 +147,6 @@ export const EmailConfirm = () => {
                             <Input
                                 id="email"
                                 type="email"
-                                loading={isBindLoading}
                                 placeholder={r('email_placeholder')}
                                 value={field.state.value}
                                 onChange={e => {
@@ -155,6 +185,7 @@ export const EmailConfirm = () => {
                                 <div className="relative flex-1">
                                     <UserLock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-slate-400 z-10" />
                                     <Input
+                                        loading={isSendLoading || isVerifyLoading}
                                         id="validationCode"
                                         type="text"
                                         placeholder={r('validation_code_placeholder')}
@@ -172,7 +203,7 @@ export const EmailConfirm = () => {
                                 </div>
                                 <Button
                                     type="button"
-                                    onClick={handleSendCode}
+                                    onClick={sendCode}
                                     disabled={isSendCode}
                                     className={cn(
                                         'h-12 flex-shrink-0 whitespace-nowrap px-4 text-sm font-medium',
@@ -186,6 +217,16 @@ export const EmailConfirm = () => {
                         </div>
                     </div>
                 }
+            />
+            <form.Subscribe
+                selector={state => [state.canSubmit, state.isSubmitting]}
+                children={([canSubmit, isSubmitting]) => (
+                    <div className="mt-6 flex items-center justify-center">
+                        <Button type="submit" className="h-12 w-full" disabled={!canSubmit || isSubmitting}>
+                            {isSubmitting ? t('submitting') || '提交中...' : t('submit')}
+                        </Button>
+                    </div>
+                )}
             />
         </form>
     );

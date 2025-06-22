@@ -15,7 +15,7 @@ interface RegisterState {
 
 const useRegisterStore = create<RegisterState>()(
   persist(
-    (set) => ({
+    set => ({
       isCompletePassword: true,
       setIsCompletePassword: (value: boolean) => set({ isCompletePassword: value }),
       register: {
@@ -26,18 +26,18 @@ const useRegisterStore = create<RegisterState>()(
         validationCode: '',
       },
       setRegister: (value: RegisterForm) => set({ register: value }),
-      sendCodeCountDown: 120,
-      setSendCodeCountDown: (value: number | ((prev: number) => number)) => 
-        set(state => ({ 
-          sendCodeCountDown: typeof value === 'function' ? value(state.sendCodeCountDown) : value 
+      sendCodeCountDown: 60,
+      setSendCodeCountDown: (value: number | ((prev: number) => number)) =>
+        set(state => ({
+          sendCodeCountDown: typeof value === 'function' ? value(state.sendCodeCountDown) : value,
         })),
       isSendCode: false,
-      setIsSendCode: (value: boolean) => set({ isSendCode: value })
+      setIsSendCode: (value: boolean) => set({ isSendCode: value }),
     }),
     {
       name: 'register-store',
       storage: createJSONStorage(() => localStorage), // 使用 localStorage
-      partialize: (state) => ({
+      partialize: state => ({
         register: {
           account: state.register.account,
           email: state.register.email,

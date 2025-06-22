@@ -2,7 +2,7 @@ using JackSite.Shared.Models;
 
 namespace JackSite.Authentication.Abstractions.Services;
 
-public interface IHttpContextAccessorService
+public interface IAccessBaseService
 {
 
     /// <summary>
@@ -16,5 +16,5 @@ public interface IHttpContextAccessorService
     /// 获取当前请求的用户表单信息
     /// </summary>
     /// <returns>用户表单信息</returns>
-    HttpFromBase GetCurrentFormUser();
+    HttpFromBase GetCurrentFormBase();
 }
