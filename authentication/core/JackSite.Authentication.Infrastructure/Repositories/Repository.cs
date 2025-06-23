@@ -19,7 +19,6 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     public virtual async Task<List<TEntity>> GetAllAsync()
     {
         return await DbSet
-            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -29,7 +28,6 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     public virtual async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
     {
         return await DbSet
-            .AsNoTracking()
             .Where(predicate)
             .ToListAsync();
     }
@@ -242,7 +240,6 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     public virtual async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
     {
         return await DbSet
-            .AsNoTracking()
             .FirstOrDefaultAsync(predicate);
     }
 
@@ -252,7 +249,6 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     public virtual async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
     {
         return await DbSet
-            .AsNoTracking()
             .SingleOrDefaultAsync(predicate);
     }
 
@@ -262,8 +258,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     public virtual IQueryable<TEntity> AsQueryable()
     {
         return DbSet
-            .AsQueryable()
-            .AsNoTracking();
+            .AsQueryable();
     }
 
     /// <summary>
@@ -321,7 +316,6 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     public virtual async Task<List<long>> GetAllIdsAsync()
     {
         return await DbSet
-            .AsNoTracking()
             .Select(e => e.Id)
             .ToListAsync();
     }
@@ -351,14 +345,12 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     public List<TEntity> GetAll()
     {
         return DbSet
-            .AsNoTracking()
             .ToList();
     }
 
     public List<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
     {
         return DbSet
-            .AsNoTracking()
             .Where(predicate)
             .ToList();
     }

@@ -10,7 +10,9 @@ public class VerifyCodeValidator : AbstractValidator<VerifyCodeQuery>
         RuleFor(x=>x.Email)
             .NotNull()
             .NotEmpty()
-            .WithMessage("Email is required.");
+            .WithMessage("Email is required.")
+            .EmailAddress()
+            .WithMessage("Invalid email format.");
         
         RuleFor(x=>x.Type)
             .NotNull()
@@ -27,7 +29,7 @@ public class VerifyCodeValidator : AbstractValidator<VerifyCodeQuery>
             {
                 var key = cache.BuildCacheKey(c.Email, c.Type);
                 var exists = await cache.ExistsAsync(key);
-                return !exists;
+                return exists;
             })
             .WithMessage("Code does not exist or has expired.");
 

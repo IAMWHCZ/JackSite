@@ -5,7 +5,7 @@ import type { SendEmailType } from '@/enums/email';
 export class EmailService {
   static async checkEmailBinding(email: string) {
     const response = await ApiService.get<ApiResult<boolean>>(`/email/is-bind`, {
-      params: { email: encodeURIComponent(email) },
+      params: { email: email },
     });
 
     return response.data;
@@ -20,7 +20,7 @@ export class EmailService {
   }
   static async verifyCode(email: string, code: string, type: SendEmailType) {
     const response = await ApiService.post<ApiResult<void>>(`/email/verify-code`, {
-      email: encodeURIComponent(email),
+      email: email,
       code,
       type,
     });

@@ -4,7 +4,7 @@ import type { RegisterForm } from '../models/register';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useTranslation } from 'react-i18next';
-import { Mail, Send, UserLock } from 'lucide-react';
+import { Mail, UserLock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useEffect, useRef } from 'react';
@@ -52,8 +52,12 @@ export const EmailConfirm = () => {
             email: '',
             validationCode: '',
         } as RegisterForm,
-        onSubmit: ({ value }) => {
+        onSubmit: async ({ value }) => {
             setRegister({ ...value });
+            await verifyRefetch()
+            if (isVerify) {
+                toast.success('验证成功');
+            }
         },
     });
 
@@ -222,7 +226,7 @@ export const EmailConfirm = () => {
                 selector={state => [state.canSubmit, state.isSubmitting]}
                 children={([canSubmit, isSubmitting]) => (
                     <div className="mt-6 flex items-center justify-center">
-                        <Button type="submit" className="h-12 w-full" disabled={!canSubmit || isSubmitting}>
+                        <Button loading={isVerifyLoading} type="submit" className="h-12 w-full" disabled={!canSubmit || isSubmitting}>
                             {isSubmitting ? t('submitting') || '提交中...' : t('submit')}
                         </Button>
                     </div>

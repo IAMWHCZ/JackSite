@@ -30,9 +30,6 @@ const createAxiosInstance = (): AxiosInstance => {
       return config;
     },
     error => {
-      toast.error('❌ Request Error:', {
-        description: `❌ ${error.message || '请求失败'}`,
-      });
       return Promise.reject(error);
     }
   );
@@ -55,18 +52,12 @@ const createAxiosInstance = (): AxiosInstance => {
       } else {
         // 业务失败
         const error = new Error(data.message || '请求失败');
-        toast.error('System Error', {
-          description: `❌ ${data.message || '请求失败'}`,
-        });
         (error as any).code = data.code;
         (error as any).response = response;
         throw error;
       }
     },
     error => {
-      toast.error('System Error', {
-        description: `❌ ${error.message || '请求失败'}`,
-      });
       const config = error.config as CustomAxiosRequestConfig;
 
       // 如果配置了跳过错误处理，直接抛出
@@ -79,6 +70,12 @@ const createAxiosInstance = (): AxiosInstance => {
         const { status, data } = error.response;
 
         switch (status) {
+          case 400:
+            toast.error('', {
+              position: 'top-center',
+              description: `${data?.Message || '无权限访问'}`,
+            });
+            break;
           case 401:
             // 未授权，清除token并跳转到登录页
             localStorage.removeItem('token');
@@ -86,22 +83,22 @@ const createAxiosInstance = (): AxiosInstance => {
             location.href = '/login';
             break;
           case 403:
-            toast.error('System Error', {
+            toast.error('', {
               description: `❌ Error 403: ${data?.message || '无权限访问'}`,
             });
             break;
           case 404:
-            toast.error('System Error', {
+            toast.error('', {
               description: `❌ Error 404: ${data?.message || '资源不存在'}`,
             });
             break;
           case 500:
-            toast.error('System Error', {
+            toast.error('', {
               description: `❌ Error 500: ${data?.message || '服务器内部错误'}`,
             });
             break;
           default:
-            toast.error('System Error', {
+            toast.error('', {
               description: `❌ Error ${status}: ${data?.message || '请求失败'}`,
             });
         }
@@ -109,18 +106,12 @@ const createAxiosInstance = (): AxiosInstance => {
         // 显示错误消息
         if (config?.showErrorMessage !== false) {
           const message = data?.message || `请求失败 (${status})`;
-          toast.error('System Error', {
-            description: `❌ Error Message:${message}`,
-          });
+          throw new Error(message);
         }
       } else if (error.request) {
-        toast.error('System Error', {
-          description: '🌐 Network Error:网络连接失败，请检查网络设置',
-        });
+        throw new Error('请求未响应，请检查网络连接或服务器状态');
       } else {
-        toast.error('System Error', {
-          description: `⚠️ Unknown Error: ${error.message}`,
-        });
+        throw new Error(`请求配置错误: ${error.message}`);
       }
 
       return Promise.reject(error);

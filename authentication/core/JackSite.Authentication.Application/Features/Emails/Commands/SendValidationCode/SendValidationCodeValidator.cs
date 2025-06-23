@@ -10,7 +10,9 @@ public class SendValidationCodeValidator : AbstractValidator<SendValidationCodeC
         RuleFor(x => x.Email)
             .NotEmpty()
             .NotNull()
-            .WithMessage("Email is required.");
+            .WithMessage("Email is required.")
+            .EmailAddress()
+            .WithMessage("Invalid email format.");
         
         RuleFor(x => x.Type)
             .NotNull()

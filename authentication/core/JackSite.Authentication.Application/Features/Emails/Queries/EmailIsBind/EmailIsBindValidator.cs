@@ -12,6 +12,8 @@ public sealed class EmailIsBindValidator : AbstractValidator<EmailIsBindQuery>
             .NotEmpty()
             .WithMessage("Email is required")
             .NotNull()
-            .WithMessage("Email is required");
+            .WithMessage("Email is required")
+            .EmailAddress()
+            .WithMessage("Invalid email format.");
     }
 }

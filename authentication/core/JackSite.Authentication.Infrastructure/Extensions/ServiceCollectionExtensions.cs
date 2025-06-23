@@ -34,15 +34,36 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddRedisCache(this IServiceCollection services, IConfiguration configuration)
     {
+        // 确保 Redis 配置存在
+        var redisConfig = configuration.GetSection("RedisCache:Configuration").Value;
+        if (string.IsNullOrEmpty(redisConfig))
+        {
+            throw new ArgumentException("Redis 配置缺失，请检查配置文件中的 RedisCache:Configuration 节点");
+        }
 
+        // 添加混合缓存服务
         services.AddHybridCache();
-        
+    
+        // 使用正确的配置节点名称
         services.AddStackExchangeRedisCache(options =>
-           configuration.Bind("DistributedCache", options)
-        );
+        {
+            configuration.GetSection("RedisCache").Bind(options);
+        });
+
+        // 可选：添加 Redis 连接检查
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        {
+            var connection = ConnectionMultiplexer.Connect(redisConfig);
+            // 验证连接
+            if (!connection.IsConnected)
+            {
+                throw new InvalidOperationException($"无法连接到 Redis 服务器: {redisConfig}");
+            }
+            return connection;
+        });
 
         services.AddScoped<ICacheService, CacheService>();
-        
+    
         return services;
     }
 
