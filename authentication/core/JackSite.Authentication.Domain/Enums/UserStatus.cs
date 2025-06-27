@@ -3,7 +3,10 @@ namespace JackSite.Authentication.Enums;
 public enum UserStatus:byte
 {
     [Description("正常")]
-    Normal = 1,
+    Active = 1,
+    
+    [Description("未激活")]
+    Inactive,
     
     [Description("已锁定")]
     Locked,

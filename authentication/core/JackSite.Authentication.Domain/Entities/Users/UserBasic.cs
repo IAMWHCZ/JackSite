@@ -52,7 +52,7 @@ public class UserBasic : Entity, ISoftDeletable, IAggregateRoot
 
     [Required] public DateTime RegisterTime { get; private set; } = DateTime.UtcNow;
 
-    [Required] public UserStatus Status { get; private set; } = UserStatus.Normal;
+    [Required] public UserStatus Status { get; private set; } = UserStatus.Inactive;
 
     public virtual UserProfile? UserProfile { get; private set; }
 

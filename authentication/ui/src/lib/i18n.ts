@@ -7,6 +7,8 @@ import LoginCN from '@/assets/languages/zhCN/login.json';
 import LoginEN from '@/assets/languages/enUs/login.json';
 import RegisterEN from '@/assets/languages/enUs/register.json';
 import RegisterCN from '@/assets/languages/zhCN/register.json';
+import userCn from '@/assets/languages/zhCN/user.json';
+import userEn from '@/assets/languages/enUS/user.json';
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -16,11 +18,13 @@ i18n
         common: commonCN,
         login: LoginCN,
         register: RegisterCN,
+        user: userCn,
       },
       en: {
         common: commonEN,
         login: LoginEN,
         register: RegisterEN,
+        user: userEn,
       },
     },
     fallbackLng: 'zh',

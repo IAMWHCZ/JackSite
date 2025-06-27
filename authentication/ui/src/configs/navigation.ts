@@ -18,7 +18,7 @@ export const NavigationItems: NavigationItemProp[] = [
   {
     key: 2,
     label: 'navigation.account',
-    to: '/',
+    to: '/user',
     isSelected: false,
   },
   {
