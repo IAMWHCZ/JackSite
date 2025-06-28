@@ -44,7 +44,7 @@ public class EmailRecipient : DraftableEntity
     /// </summary>
     public string? FailureReason { get; set; }
     
-    public long EmailRecordId { get; set; }
+    public Guid EmailRecordId { get; set; }
     
     public virtual EmailBasic EmailBasic { get; set; } = null!;
 }

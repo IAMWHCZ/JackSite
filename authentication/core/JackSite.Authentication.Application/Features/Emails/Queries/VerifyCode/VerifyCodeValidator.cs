@@ -21,7 +21,7 @@ public class VerifyCodeValidator : AbstractValidator<VerifyCodeQuery>
             .IsInEnum()
             .WithMessage("Invalid type value.");
 
-        RuleFor(x => x.Code)
+        RuleFor(x => x.ValidationCode)
             .NotNull()
             .NotEmpty()
             .WithMessage("Code is required.") 

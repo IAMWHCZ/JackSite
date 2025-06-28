@@ -58,6 +58,18 @@ public class UserBasic : Entity, ISoftDeletable, IAggregateRoot
 
     public virtual UserSettings? UserSettings { get; private set; }
 
+    [ForeignKey("UserId")]
+    public virtual ICollection<UserAttribute> UserAttribute { get; private set; } = [];
+    
+    [ForeignKey("UserId")]
+    public virtual ICollection<UserSecurityLog> UserSecurityLogs { get; set; } = [];
+    
+    [ForeignKey("UserId")]
+    public virtual UserCredential? UserCredential { get; set; }
+    
+    [ForeignKey("UserId")]
+    public virtual ICollection<UserSession> UserSessions { get; set; } = [];
+
     // 供EF Core使用的私有构造函数
     private UserBasic()
     {

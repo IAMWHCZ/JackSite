@@ -8,5 +8,5 @@ public class Resource:Entity
 
     public string Path { get; set; } = string.Empty;
 
-    public long ParentId { get; set; } = 1;
+    public Guid ParentId { get; set; } = Guid.Empty;
 }

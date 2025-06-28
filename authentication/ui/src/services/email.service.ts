@@ -4,11 +4,16 @@ import type { SendEmailType } from '@/enums/email';
 
 export class EmailService {
   static async checkEmailBinding(email: string) {
-    const response = await ApiService.get<ApiResult<boolean>>(`/email/is-bind`, {
-      params: { email: email },
-    });
+    try {
+      const response = await ApiService.get<ApiResult<boolean>>(`/email/is-bind`, {
+        params: { email: email },
+      });
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      console.error('Error checking email binding:', error);
+      return false;
+    }
   }
 
   static async sendVerificationCode(email: string, type: SendEmailType) {

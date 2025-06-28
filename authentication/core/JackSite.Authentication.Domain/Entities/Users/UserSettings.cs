@@ -3,7 +3,7 @@ namespace JackSite.Authentication.Entities.Users;
 public class UserSettings : Entity
 {
     [Required]
-    public long UserId { get; private set; }
+    public Guid UserId { get; private set; }
     
     [Required]
     public ThemeType Theme { get; private set; } = ThemeType.Default;
@@ -47,7 +47,7 @@ public class UserSettings : Entity
     private UserSettings() { }
     
     // 领域构造函数
-    public UserSettings(long userId)
+    public UserSettings(Guid userId)
     {
         UserId = userId;
     }

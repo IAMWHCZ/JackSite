@@ -4,4 +4,4 @@
 public record CreateUserByEmailCommand(
     string Email,
     int Code,
-    string Password) : ICommand<long>;
+    string Password) : ICommand<Guid>;

@@ -9,9 +9,11 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useEffect, useRef } from 'react';
 import { EmailService } from '@/services/email.service';
-import { useQueries } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { SendEmailType } from '@/enums/email';
 import { toast } from 'sonner';
+import { UserService } from '@/services/user.service';
+import { useNavigate } from '@tanstack/react-router';
 
 export const EmailConfirm = () => {
     const {
@@ -22,30 +24,24 @@ export const EmailConfirm = () => {
         sendCodeCountDown,
         setSendCodeCountDown
     } = useRegisterStore();
-    const [
-        { data: isSend, isLoading: isSendLoading, refetch: sendRefetch },
-        { data: isVerify, isLoading: isVerifyLoading, refetch: verifyRefetch }
-    ] = useQueries({
-        queries: [
+    const { data: isSend, isLoading: isSendLoading, refetch: sendRefetch }
+        = useQuery(
             {
                 queryKey: ['send-code', register.account],
                 queryFn: async () =>
-                    await EmailService.sendVerificationCode(form.state.values.email!, SendEmailType.registerUser),
-                enabled: false,
-                retry: false
-            },
-            {
-                queryKey: ['verify-code', register.account],
-                queryFn: async () =>
-                    await EmailService.verifyCode(form.state.values.email!, form.state.values.validationCode!, SendEmailType.registerUser,),
+                    await EmailService.sendVerificationCode(form.state.values.email!, SendEmailType.registerUser,),
                 enabled: false,
                 retry: false
             }
-        ]
+        )
+    const { data, isPending: registerLoading, mutateAsync } = useMutation({
+        mutationKey: ['register-user'],
+        mutationFn: UserService.RegisterUser
     })
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const { t } = useTranslation()
     const { t: r } = useTranslation('register');
+    const navigate = useNavigate();
     const form = useForm({
         defaultValues: {
             ...register,
@@ -54,10 +50,20 @@ export const EmailConfirm = () => {
         } as RegisterForm,
         onSubmit: async ({ value }) => {
             setRegister({ ...value });
-            await verifyRefetch()
-            if (isVerify) {
-                toast.success('验证成功');
+            await mutateAsync(register);
+            if (!registerLoading) {
+                console.log('data', data);
+                if (data?.success) {
+                    toast.success(r('register_success'));
+                } else {
+                    toast.error(data?.message || r('register_failed'));
+                }
             }
+            await navigate({
+                to: '/login', replace: true, search: {
+                    account: register.account
+                }
+            });
         },
     });
 
@@ -189,7 +195,7 @@ export const EmailConfirm = () => {
                                 <div className="relative flex-1">
                                     <UserLock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-slate-400 z-10" />
                                     <Input
-                                        loading={isSendLoading || isVerifyLoading}
+                                        loading={isSendLoading}
                                         id="validationCode"
                                         type="text"
                                         placeholder={r('validation_code_placeholder')}
@@ -226,7 +232,7 @@ export const EmailConfirm = () => {
                 selector={state => [state.canSubmit, state.isSubmitting]}
                 children={([canSubmit, isSubmitting]) => (
                     <div className="mt-6 flex items-center justify-center">
-                        <Button loading={isVerifyLoading} type="submit" className="h-12 w-full" disabled={!canSubmit || isSubmitting}>
+                        <Button loading={registerLoading} type="submit" className="h-12 w-full" disabled={!canSubmit || isSubmitting}>
                             {isSubmitting ? t('submitting') || '提交中...' : t('submit')}
                         </Button>
                     </div>

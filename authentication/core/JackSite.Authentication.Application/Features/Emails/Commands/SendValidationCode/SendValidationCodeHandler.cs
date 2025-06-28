@@ -34,7 +34,8 @@ public class SendValidationCodeHandler(
                     { "Code", code }
                 }
             );
-            await cacheService.SetAsync(key, code);
+            await cacheService.SetAsync(key, code,
+                TimeSpan.FromMinutes(5));
             return true;
         }
         catch (Exception ex)

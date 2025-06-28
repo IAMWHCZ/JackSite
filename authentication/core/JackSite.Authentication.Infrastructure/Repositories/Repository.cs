@@ -35,7 +35,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// <summary>
     /// 根据ID获取实体
     /// </summary>
-    public virtual async Task<TEntity?> GetByIdAsync(long id)
+    public virtual async Task<TEntity?> GetByIdAsync(Guid id)
     {
         return await DbSet.FindAsync(id);
     }
@@ -83,7 +83,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// <summary>
     /// 根据ID删除实体
     /// </summary>
-    public virtual async Task DeleteByIdAsync(long id)
+    public virtual async Task DeleteByIdAsync(Guid id)
     {
         var entity = await GetByIdAsync(id);
         if (entity != null)
@@ -313,7 +313,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// <summary>
     /// 获取所有实体的ID
     /// </summary>
-    public virtual async Task<List<long>> GetAllIdsAsync()
+    public virtual async Task<List<Guid>> GetAllIdsAsync()
     {
         return await DbSet
             .Select(e => e.Id)
@@ -325,7 +325,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
     /// </summary>
     public virtual async Task<TEntity> CreateOrUpdateAsync(TEntity entity)
     {
-        if (entity.Id == 0 || await DbSet.FindAsync(entity.Id) == null)
+        if (entity.Id != Guid.Empty || await DbSet.FindAsync(entity.Id) == null)
         {
             var entry = await DbSet.AddAsync(entity);
             await dbContext.SaveChangesAsync();
@@ -355,7 +355,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
             .ToList();
     }
 
-    public TEntity? GetById(long id)
+    public TEntity? GetById(Guid id)
     {
         return DbSet
             .Find(id);
@@ -389,7 +389,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
         dbContext.SaveChanges();
     }
 
-    public void DeleteById(long id)
+    public void DeleteById(Guid id)
     {
         var entity = GetById(id);
         if (entity != null)
@@ -552,7 +552,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
             .Min(selector);
     }
 
-    public List<long> GetAllIds()
+    public List<Guid> GetAllIds()
     {
         return DbSet
             .AsNoTracking()
@@ -562,7 +562,7 @@ public class Repository<TEntity>(AuthenticationDbContext dbContext) : IRepositor
 
     public TEntity CreateOrUpdate(TEntity entity)
     {
-        if (entity.Id == 0 || DbSet.Find(entity.Id) == null)
+        if (entity.Id != Guid.Empty || DbSet.Find(entity.Id) == null)
         {
             var entry = DbSet.Add(entity);
             dbContext.SaveChanges();

@@ -31,12 +31,12 @@ public interface IDraftableRepository<TEntity> : IRepository<TEntity> where TEnt
     /// <summary>
     /// 发布草稿
     /// </summary>
-    Task<TEntity> PublishAsync(long id);
+    Task<TEntity> PublishAsync(Guid id);
     
     /// <summary>
     /// 将实体标记为草稿
     /// </summary>
-    Task<TEntity> MarkAsDraftAsync(long id);
+    Task<TEntity> MarkAsDraftAsync(Guid id);
     
     /// <summary>
     /// 获取过期草稿

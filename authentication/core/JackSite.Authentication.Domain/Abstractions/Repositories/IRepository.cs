@@ -21,7 +21,7 @@ public interface IRepository<TEntity> where TEntity : Entity
     /// <summary>
     /// 根据ID获取实体
     /// </summary>
-    Task<TEntity?> GetByIdAsync(long id);
+    Task<TEntity?> GetByIdAsync(Guid id);
 
     /// <summary>
     /// 添加实体
@@ -46,7 +46,7 @@ public interface IRepository<TEntity> where TEntity : Entity
     /// <summary>
     /// 根据ID删除实体
     /// </summary>
-    Task DeleteByIdAsync(long id);
+    Task DeleteByIdAsync(Guid id);
     
     /// <summary>
     /// 批量删除实体
@@ -140,7 +140,7 @@ public interface IRepository<TEntity> where TEntity : Entity
     /// <summary>
     /// 获取所有主键ID
     /// </summary>
-    Task<List<long>> GetAllIdsAsync();
+    Task<List<Guid>> GetAllIdsAsync();
 
     /// <summary>
     /// 创建或更新实体（主键存在则更新，否则创建）
@@ -166,7 +166,7 @@ public interface IRepository<TEntity> where TEntity : Entity
     /// <summary>
     /// 根据ID获取实体
     /// </summary>
-    TEntity? GetById(long id);
+    TEntity? GetById(Guid id);
 
     /// <summary>
     /// 添加实体
@@ -191,7 +191,7 @@ public interface IRepository<TEntity> where TEntity : Entity
     /// <summary>
     /// 根据ID删除实体
     /// </summary>
-    void DeleteById(long id);
+    void DeleteById(Guid id);
 
     /// <summary>
     /// 批量删除实体
@@ -281,7 +281,7 @@ public interface IRepository<TEntity> where TEntity : Entity
     /// <summary>
     /// 获取所有主键ID
     /// </summary>
-    List<long> GetAllIds();
+    List<Guid> GetAllIds();
 
     /// <summary>
     /// 创建或更新实体（主键存在则更新，否则创建）

@@ -4,8 +4,8 @@ namespace JackSite.Authentication.Entities.Clients;
 
 public class ClientSession : Entity
 {
-    public long UserSessionId { get; private set; }
-    public long ClientId { get; private set; }
+    public Guid UserSessionId { get; private set; }
+    public Guid ClientId { get; private set; }
     public DateTime Timestamp { get; private set; }
     
     public virtual UserSession UserSession { get; private set; } = null!;

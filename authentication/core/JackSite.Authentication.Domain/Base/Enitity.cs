@@ -1,13 +1,9 @@
-using JackSite.Authentication.Common;
-
 namespace JackSite.Authentication.Base;
 
-public abstract class Entity : BaseEntity<long>
+public abstract class Entity : BaseEntity<Guid>
 {
-    private static readonly SnowflakeIdGenerator IdGenerator = new(1, 1);
-
-    protected Entity() : base(IdGenerator.NextId())
+    protected Entity() : base(Guid.CreateVersion7())
     {
-        Id = IdGenerator.NextId();
+        Id = Guid.CreateVersion7();
     }
 }

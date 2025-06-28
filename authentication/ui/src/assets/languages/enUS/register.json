@@ -37,5 +37,7 @@
   "validation_code_resend": "Resend Validation Code",
   "validation_code_resend_success": "Validation code resent successfully.",
   "validation_code_resend_error": "Failed to resend validation code. Please try again.",
-  "validation_code_send": "Send Validation Code"
+  "validation_code_send": "Send Validation Code",
+  "register_success": "Registration successful! Please check your email to verify your account.",
+  "register_error": "Registration failed. Please try again later."
 }

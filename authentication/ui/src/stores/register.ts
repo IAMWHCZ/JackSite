@@ -16,7 +16,7 @@ interface RegisterState {
 const useRegisterStore = create<RegisterState>()(
   persist(
     set => ({
-      isCompletePassword: true,
+      isCompletePassword: false,
       setIsCompletePassword: (value: boolean) => set({ isCompletePassword: value }),
       register: {
         account: '',

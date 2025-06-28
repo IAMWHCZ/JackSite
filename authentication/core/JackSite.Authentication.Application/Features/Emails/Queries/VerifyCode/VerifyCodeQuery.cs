@@ -8,5 +8,5 @@ namespace JackSite.Authentication.Application.Features.Emails.Queries.VerifyCode
 public record VerifyCodeQuery(
     string Email,
     SendEmailType Type,
-    string Code
+    string ValidationCode
 ) : IQuery<bool>;

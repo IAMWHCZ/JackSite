@@ -52,7 +52,7 @@ public class EmailAttachment : DraftableEntity
     /// </summary>
     public string StorageType { get; set; } = "local";
 
-    public long EmailRecordId { get; set; }
+    public Guid EmailRecordId { get; set; }
 
     public virtual EmailBasic EmailBasic { get; set; } = null!;
 }

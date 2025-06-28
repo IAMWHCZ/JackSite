@@ -3,7 +3,7 @@ namespace JackSite.Authentication.Entities.Users;
 public class UserSecurityLog : Entity
 {
     [Required]
-    public long UserId { get; private set; }
+    public Guid UserId { get; private set; }
     
     [Required]
     [MaxLength(100)]
@@ -52,7 +52,7 @@ public class UserSecurityLog : Entity
     
     // 领域构造函数
     public UserSecurityLog(
-        long userId, 
+        Guid userId, 
         string action, 
         string? ipAddress = null, 
         string? userAgent = null,

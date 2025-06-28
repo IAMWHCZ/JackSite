@@ -12,7 +12,7 @@ public class VerifyCodeHandler(ICacheService cache): IQueryHandler<VerifyCodeQue
             var key = cache.BuildCacheKey(query.Email, query.Type);
             var code = await cache.GetAsync<string>(key);
                 
-            return query.Code == code;
+            return query.ValidationCode == code;
         }
         catch (Exception ex)
         {

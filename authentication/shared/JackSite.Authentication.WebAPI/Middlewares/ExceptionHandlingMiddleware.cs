@@ -51,7 +51,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         Description = exception.Message,
         IsAuthorization = context.User.Identity?.IsAuthenticated ?? false,
         UserId = context.User.FindFirst("UserId")?.Value is not null
-            ? long.Parse(context.User.FindFirst("UserId")!.Value)
+            ? Guid.Parse(context.User.FindFirst("UserId")!.Value)
             : null,
         IpAddress = context.Connection.RemoteIpAddress?.ToString(),
         UserAgent = context.Request.Headers.UserAgent.ToString(),

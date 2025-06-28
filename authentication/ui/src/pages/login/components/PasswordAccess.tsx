@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useForm } from '@tanstack/react-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useSearch } from '@tanstack/react-router';
 
 interface PasswordFormData {
     account: string;
@@ -20,6 +21,9 @@ export const PasswordAccess = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { theme } = useTheme();
+    const { account } = useSearch({
+        from: '/login'
+    })
     const form = useForm({
         defaultValues: {
             account: '',
@@ -42,7 +46,9 @@ export const PasswordAccess = () => {
             }
         },
     });
-
+    useEffect(() => {
+        form.setFieldValue('account', account || '');
+    }, [account]);
     return (
         <form
             onSubmit={e => {

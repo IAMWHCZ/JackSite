@@ -2,7 +2,7 @@ namespace JackSite.Authentication.Entities.Users;
 
 public class UserProfile : Entity, ISoftDeletable
 {
-    [Required] public long UserId { get; private set; }
+    [Required] public Guid UserId { get; private set; }
 
     [MaxLength(50)]
     [Column(TypeName = "varchar(50)")]
@@ -53,7 +53,7 @@ public class UserProfile : Entity, ISoftDeletable
     }
 
     // 领域构造函数
-    public UserProfile(long userId, string? realName = null, string? gender = null, DateTime? birthDate = null)
+    public UserProfile(Guid userId, string? realName = null, string? gender = null, DateTime? birthDate = null)
     {
         UserId = userId;
         RealName = realName;

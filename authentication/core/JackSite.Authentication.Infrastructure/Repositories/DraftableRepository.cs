@@ -50,7 +50,7 @@ public class DraftableRepository<TEntity>(AuthenticationDbContext dbContext)
     /// <summary>
     /// 发布草稿
     /// </summary>
-    public virtual async Task<TEntity> PublishAsync(long id)
+    public virtual async Task<TEntity> PublishAsync(Guid id)
     {
         var entity = await GetByIdAsync(id);
         if (entity == null)
@@ -66,7 +66,7 @@ public class DraftableRepository<TEntity>(AuthenticationDbContext dbContext)
     /// <summary>
     /// 将实体标记为草稿
     /// </summary>
-    public virtual async Task<TEntity> MarkAsDraftAsync(long id)
+    public virtual async Task<TEntity> MarkAsDraftAsync(Guid id)
     {
         var entity = await GetByIdAsync(id);
         if (entity == null)

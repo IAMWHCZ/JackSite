@@ -4,7 +4,7 @@ namespace JackSite.Authentication.Entities.Users;
 
 public class UserSession : Entity
 {
-    public long UserId { get; private set; }
+    public Guid UserId { get; private set; }
     public string IpAddress { get; private set; } = null!;
     public string? UserAgent { get; private set; }
     public DateTime StartTime { get; private set; }

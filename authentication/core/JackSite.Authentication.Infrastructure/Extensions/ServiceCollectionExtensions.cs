@@ -162,6 +162,7 @@ public static class ServiceCollectionExtensions
         // 添加服务
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ICorsOriginCacheService, CorsOriginCacheService>();
+        services.AddScoped<ISecurityService, SecurityService>();
         return services;
     }
 }

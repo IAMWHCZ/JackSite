@@ -2,6 +2,6 @@ namespace JackSite.Authentication.Entities.Roles;
 
 public class RoleReference:Entity
 {
-    public long RoleId { get; set; }
-    public long GroupId  { get; set; }
+    public Guid RoleId { get; set; }
+    public Guid GroupId  { get; set; }
 }

@@ -4,5 +4,5 @@ public record BaseHeaderParams(
     LanguageType Language,
     string UserName,
     string Email,
-    long UserId
+    Guid UserId
 );

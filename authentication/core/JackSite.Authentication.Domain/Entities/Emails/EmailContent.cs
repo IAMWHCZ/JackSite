@@ -52,7 +52,7 @@ public class EmailContent : DraftableEntity
     /// </summary>
     public string? PreviewText { get; set; }
 
-    public long EmailId { get; set; }
+    public Guid EmailId { get; set; }
 
     public virtual EmailBasic EmailBasic { get; set; } = null!;
 }

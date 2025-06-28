@@ -2,7 +2,7 @@ namespace JackSite.Authentication.Entities.Users;
 
 public class UserCredential : Entity
 {
-    public long UserId { get; private set; }
+    public Guid UserId { get; private set; }
     public string Type { get; private set; } = null!; // password, otp, certificate等
     public string Value { get; private set; } = null!;
     public string? Salt { get; private set; }
