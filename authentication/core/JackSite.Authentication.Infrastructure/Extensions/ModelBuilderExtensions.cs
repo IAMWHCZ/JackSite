@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.Reflection;
+
 namespace JackSite.Authentication.Infrastructure.Extensions;
 
 public static class ModelBuilderExtensions
@@ -43,5 +46,24 @@ public static class ModelBuilderExtensions
             }
         }
         return builder;
+    }
+    
+    public static void ApplyDescriptionAsComments(this ModelBuilder modelBuilder)
+    {
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            foreach (var property in entityType.GetProperties())
+            {
+                var clrProperty = property.PropertyInfo;
+                if (clrProperty != null)
+                {
+                    var descriptionAttribute = clrProperty.GetCustomAttribute<DescriptionAttribute>();
+                    if (descriptionAttribute != null)
+                    {
+                        property.SetComment(descriptionAttribute.Description);
+                    }
+                }
+            }
+        }
     }
 }

@@ -13,7 +13,7 @@ public abstract class DraftableEntity : Entity, IDraftable
     /// <summary>
     /// 创建草稿的时间
     /// </summary>
-    public DateTime? DraftedOnUtc { get; set; }
+    public DateTimeOffset? DraftedOnUtc { get; set; }
     
     /// <summary>
     /// 将实体标记为草稿
@@ -23,7 +23,7 @@ public abstract class DraftableEntity : Entity, IDraftable
         if (!IsDraft)
         {
             IsDraft = true;
-            DraftedOnUtc = DateTime.UtcNow;
+            DraftedOnUtc = DateTimeOffset.UtcNow;
         }
     }
     
@@ -50,7 +50,7 @@ public abstract class DraftableEntity : Entity, IDraftable
     /// 获取草稿创建时间
     /// </summary>
     /// <returns>草稿创建时间，如果不是草稿则返回null</returns>
-    public DateTime? GetDraftTime()
+    public DateTimeOffset? GetDraftTime()
     {
         return IsDraft ? DraftedOnUtc : null;
     }
@@ -64,6 +64,6 @@ public abstract class DraftableEntity : Entity, IDraftable
         if (!IsDraft || DraftedOnUtc == null)
             return null;
             
-        return DateTime.UtcNow - DraftedOnUtc.Value;
+        return DateTimeOffset.UtcNow - DraftedOnUtc.Value;
     }
 }

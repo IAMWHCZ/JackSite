@@ -32,6 +32,16 @@ public class HttpFromBase
     /// <summary>
     /// 请求时间
     /// </summary>
-    public DateTime AccessTime { get; set; } = DateTime.UtcNow;
+    public DateTimeOffset AccessTime { get; set; } = DateTimeOffset.UtcNow;
+
+    /// <summary>
+    /// IP 地址
+    /// </summary>
+    public string? IPAdress { get; set; }
+
+    /// <summary>
+    /// 用户代理信息
+    /// </summary>
+    public string? UserAgent { get; set; }
 
 }

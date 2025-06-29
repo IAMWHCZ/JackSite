@@ -6,10 +6,10 @@ public abstract class BaseEntity<TId>(TId id)
 
     public Guid CreateBy { get; set; } = Guid.Empty;
     
-    public DateTime CreateAt { get; set; } = DateTime.UtcNow;
+    public DateTimeOffset CreateAt { get; set; } = DateTimeOffset.UtcNow;
 
     public Guid UpdateBy { get; set; } = Guid.Empty;
     
-    public DateTime UpdateAt { get; set; } = DateTime.UtcNow;
+    public DateTimeOffset UpdateAt { get; set; } = DateTimeOffset.UtcNow;
     
 }

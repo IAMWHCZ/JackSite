@@ -20,5 +20,5 @@ public interface IQueryHandler<in TQuery, TResult> : IRequestHandler<TQuery, TRe
 /// <typeparam name="TResult">查询返回的结果类型</typeparam>
 public record QueryBase<TResult> : IQuery<TResult>
 {
-    public DateTime Timestamp { get; } = DateTime.UtcNow;
+    public DateTimeOffset Timestamp { get; } = DateTimeOffset.UtcNow;
 }

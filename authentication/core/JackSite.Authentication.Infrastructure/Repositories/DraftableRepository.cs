@@ -84,7 +84,7 @@ public class DraftableRepository<TEntity>(AuthenticationDbContext dbContext)
     /// </summary>
     public virtual async Task<List<TEntity>> GetExpiredDraftsAsync(TimeSpan maxDraftAge)
     {
-        var cutoffDate = DateTime.UtcNow - maxDraftAge;
+        var cutoffDate = DateTimeOffset.UtcNow - maxDraftAge;
         return await DbSet
             .Where(e => e.IsDraft && e.DraftedOnUtc != null && e.DraftedOnUtc < cutoffDate)
             .ToListAsync();

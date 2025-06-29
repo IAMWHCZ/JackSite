@@ -144,7 +144,7 @@ public class EmailService(
                             FileExtension = fileInfo.Extension,
                             ContentType = fileInfo.Extension.ToMimeType(),
                             StorageType = "local",
-                            UploadTime = DateTime.UtcNow
+                            UploadTime = DateTimeOffset.UtcNow
                         });
                     }
                 }
@@ -161,7 +161,7 @@ public class EmailService(
                 SenderEmail = config.UserName,
                 SenderName = config.DisplayName,
                 Status = EmailStatus.Sent,
-                SentTime = DateTime.UtcNow,
+                SentTime = DateTimeOffset.UtcNow,
                 MessageId = mailMessage.Headers["Message-ID"]
             };
 
@@ -358,7 +358,7 @@ public class EmailService(
                     SenderEmail = config.UserName,
                     SenderName = config.DisplayName,
                     Status = EmailStatus.Sent,
-                    SentTime = DateTime.UtcNow,
+                    SentTime = DateTimeOffset.UtcNow,
                     MessageId = mailMessage.Headers["Message-ID"]
                 };
 
@@ -393,7 +393,7 @@ public class EmailService(
                     SenderEmail = config.UserName,
                     SenderName = config.DisplayName,
                     Status = EmailStatus.Failed,
-                    SentTime = DateTime.UtcNow,
+                    SentTime = DateTimeOffset.UtcNow,
                     FailureReason = ex.Message
                 };
 
@@ -464,7 +464,7 @@ public class EmailService(
             preview.AppendLine($"      <div class=\"email-subject\">{subject}</div>");
             preview.AppendLine("      <div class=\"email-info\">");
             preview.AppendLine($"        <strong>发件人:</strong> {config.DisplayName} &lt;{config.UserName}&gt;<br>");
-            preview.AppendLine($"        <strong>发送时间:</strong> {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+            preview.AppendLine($"        <strong>发送时间:</strong> {DateTimeOffset.Now:yyyy-MM-dd HH:mm:ss}");
             preview.AppendLine("      </div>");
             preview.AppendLine("    </div>");
             preview.AppendLine("    <div class=\"email-body\">");
@@ -597,7 +597,7 @@ public class EmailService(
                         FileExtension = fileInfo.Extension,
                         ContentType = fileInfo.Extension.ToMimeType(),
                         StorageType = "local",
-                        UploadTime = DateTime.UtcNow,
+                        UploadTime = DateTimeOffset.UtcNow,
                         EmailRecordId = email.Id
                     });
                 }

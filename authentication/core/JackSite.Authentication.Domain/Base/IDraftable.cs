@@ -13,7 +13,7 @@ public interface IDraftable
     /// <summary>
     /// 创建草稿的时间
     /// </summary>
-    DateTime? DraftedOnUtc { get; set; }
+    DateTimeOffset? DraftedOnUtc { get; set; }
     
     /// <summary>
     /// 将实体标记为草稿
@@ -35,7 +35,7 @@ public interface IDraftable
     /// 获取草稿创建时间
     /// </summary>
     /// <returns>草稿创建时间，如果不是草稿则返回null</returns>
-    DateTime? GetDraftTime();
+    DateTimeOffset? GetDraftTime();
     
     /// <summary>
     /// 计算草稿已存在的时间

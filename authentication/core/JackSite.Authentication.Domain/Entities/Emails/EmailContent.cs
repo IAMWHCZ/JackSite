@@ -2,57 +2,29 @@ namespace JackSite.Authentication.Entities.Emails;
 
 public class EmailContent : DraftableEntity
 {
-    /// <summary>
-    /// 邮件内容
-    /// </summary>
-    public string? Content { get; set; }
+    [Description("邮件内容")] public string? Content { get; set; }
 
-    /// <summary>
-    /// 是否HTML格式
-    /// </summary>
-    public bool IsHtml { get; set; } = true;
-    
-    /// <summary>
-    /// 邮件主题
-    /// </summary>
-    public string? Subject { get; set; }
-    
-    /// <summary>
-    /// 纯文本内容（用于搜索和展示）
-    /// </summary>
-    public string? PlainTextContent { get; set; }
-    
-    /// <summary>
-    /// 收件人（以分号分隔）
-    /// </summary>
-    public string? Recipient { get; set; }
-    
-    /// <summary>
-    /// 抄送人（以分号分隔）
-    /// </summary>
-    public string? CC { get; set; }
-    
-    /// <summary>
-    /// 密送人（以分号分隔）
-    /// </summary>
-    public string? BCC { get; set; }
-    
-    /// <summary>
-    /// 模板ID（如果使用模板）
-    /// </summary>
-    public string? TemplateId { get; set; }
-    
-    /// <summary>
-    /// 模板参数（JSON格式）
-    /// </summary>
-    public string? TemplateParameters { get; set; }
-    
-    /// <summary>
-    /// 预览文本（显示在邮件列表中的摘要）
-    /// </summary>
-    public string? PreviewText { get; set; }
+    [Description("是否HTML格式")] public bool IsHtml { get; set; } = true;
 
+    [Description("邮件主题")] public string? Subject { get; set; }
+
+    [Description("纯文本内容")] public string? PlainTextContent { get; set; }
+
+    [Description("收件人")] public string? Recipient { get; set; }
+
+    [Description("抄送人")] public string? CC { get; set; }
+
+    [Description("密送人")] public string? BCC { get; set; }
+
+    [Description("模板ID")] public string? TemplateId { get; set; }
+
+    [Description("模板参数")] public string? TemplateParameters { get; set; }
+
+    [Description("预览文本")] public string? PreviewText { get; set; }
+
+    [Description("邮件ID")]
     public Guid EmailId { get; set; }
 
+    [Description("关联的邮件基础信息")]
     public virtual EmailBasic EmailBasic { get; set; } = null!;
 }

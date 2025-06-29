@@ -1,62 +1,34 @@
 using JackSite.Authentication.Enums.Emails;
-using JackSite.Domain.Enums;
 
 namespace JackSite.Authentication.Entities.Emails;
 
 public class EmailBasic : DraftableEntity
 {
-    public string Title { get; set; } = null!;
-    
-    public SendEmailType Type { get; set; }
-    
-    /// <summary>
-    /// 邮件唯一标识符（SMTP生成）
-    /// </summary>
-    public string? MessageId { get; set; }
-    
-    /// <summary>
-    /// 发件人邮箱
-    /// </summary>
-    public string SenderEmail { get; set; } = null!;
-    
-    /// <summary>
-    /// 发件人显示名称
-    /// </summary>
-    public string? SenderName { get; set; }
-    
-    /// <summary>
-    /// 邮件发送状态
-    /// </summary>
-    public EmailStatus Status { get; set; } = EmailStatus.Draft;
-    
-    /// <summary>
-    /// 邮件重要性
-    /// </summary>
-    public EmailPriorityType Importance { get; set; } = EmailPriorityType.Normal;
-    
-    /// <summary>
-    /// 发送时间
-    /// </summary>
-    public DateTime? SentTime { get; set; }
-    
-    /// <summary>
-    /// 最后尝试发送时间
-    /// </summary>
-    public DateTime? LastTryTime { get; set; }
-    
-    /// <summary>
-    /// 尝试发送次数
-    /// </summary>
-    public int RetryCount { get; set; } = 0;
-    
-    /// <summary>
-    /// 发送失败原因
-    /// </summary>
-    public string? FailureReason { get; set; }
-    
-    public virtual ICollection<EmailRecipient> EmailRecipients { get; set; } = [];
+    [Description("邮件标题")] public string Title { get; set; } = null!;
 
-    public virtual EmailContent? EmailContent { get; set; }
-    
-    public virtual ICollection<EmailAttachment> EmailAttachments { get; set; } = [];
+    [Description("邮件发送类型")] public SendEmailType Type { get; set; }
+
+    [Description("邮件唯一标识符")] public string? MessageId { get; set; }
+
+    [Description("发件人邮箱")] public string SenderEmail { get; set; } = null!;
+
+    [Description("发件人显示名称")] public string? SenderName { get; set; }
+
+    [Description("邮件发送状态")] public EmailStatus Status { get; set; } = EmailStatus.Draft;
+
+    [Description("邮件重要性")] public EmailPriorityType Importance { get; set; } = EmailPriorityType.Normal;
+
+    [Description("发送时间")] public DateTimeOffset? SentTime { get; set; }
+
+    [Description("最后尝试发送时间")] public DateTimeOffset? LastTryTime { get; set; }
+
+    [Description("尝试发送次数")] public int RetryCount { get; set; }
+
+    [Description("发送失败原因")] public string? FailureReason { get; set; }
+
+    [Description("邮件收件人列表")] public virtual ICollection<EmailRecipient> EmailRecipients { get; set; } = [];
+
+    [Description("邮件内容")] public virtual EmailContent? EmailContent { get; set; }
+
+    [Description("邮件附件列表")] public virtual ICollection<EmailAttachment> EmailAttachments { get; set; } = [];
 }

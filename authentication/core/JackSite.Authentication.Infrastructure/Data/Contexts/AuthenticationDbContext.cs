@@ -14,6 +14,7 @@ public partial class AuthenticationDbContext(DbContextOptions<AuthenticationDbCo
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyNamingConventions();
+        modelBuilder.ApplyDescriptionAsComments();  
         var entityTypes = modelBuilder.Model.GetEntityTypes();
         foreach (var entityType in entityTypes)
         {

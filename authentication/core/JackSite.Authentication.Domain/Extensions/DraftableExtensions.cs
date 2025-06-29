@@ -16,7 +16,7 @@ public static class DraftableExtensions
         if (!draftable.IsDraft || draftable.DraftedOnUtc == null)
             return false;
             
-        var draftAge = DateTime.UtcNow - draftable.DraftedOnUtc.Value;
+        var draftAge = DateTimeOffset.UtcNow - draftable.DraftedOnUtc.Value;
         return draftAge > maxDraftAge;
     }
     
@@ -61,7 +61,7 @@ public static class DraftableExtensions
         if (draftable.DraftedOnUtc == null)
             return "Draft (Unknown time)";
             
-        var age = DateTime.UtcNow - draftable.DraftedOnUtc.Value;
+        var age = DateTimeOffset.UtcNow - draftable.DraftedOnUtc.Value;
         
         if (age.TotalDays >= 1)
             return $"Draft (Created {(int)age.TotalDays} days ago)";

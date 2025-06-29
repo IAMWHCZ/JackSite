@@ -196,7 +196,7 @@ public partial class AuthenticationDbContext
 
             entity.Property(e => e.CreatedAt)
                 .IsRequired()
-                .HasDefaultValueSql("UTC_TIMESTAMP()"); // MySQL 使用 UTC_TIMESTAMP()
+                ; // MySQL 使用 UTC_TIMESTAMP(6)
 
             // 配置与 UserBasic 的关系
             entity.HasOne(e => e.User)
@@ -224,11 +224,11 @@ public partial class AuthenticationDbContext
 
             entity.Property(e => e.StartTime)
                 .IsRequired()
-                .HasDefaultValueSql("UTC_TIMESTAMP()"); // MySQL 使用 UTC_TIMESTAMP()
+                ; // MySQL 使用 UTC_TIMESTAMP(6)
 
             entity.Property(e => e.LastAccess)
                 .IsRequired()
-                .HasDefaultValueSql("UTC_TIMESTAMP()"); // MySQL 使用 UTC_TIMESTAMP()
+                ; // MySQL 使用 UTC_TIMESTAMP(6)
 
             entity.Property(e => e.ExpiresAt)
                 .IsRequired();

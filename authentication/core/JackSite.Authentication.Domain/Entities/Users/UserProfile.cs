@@ -2,28 +2,43 @@ namespace JackSite.Authentication.Entities.Users;
 
 public class UserProfile : Entity, ISoftDeletable
 {
-    [Required] public Guid UserId { get; private set; }
+    [Required]
+    [Description("用户ID")]
+    public Guid UserId { get; private set; }
 
     [MaxLength(50)]
     [Column(TypeName = "varchar(50)")]
+    [Description("真实姓名")]
     public string? RealName { get; private set; }
 
     [MaxLength(20)]
     [Column(TypeName = "varchar(20)")]
+    [Description("性别")]
     public string? Gender { get; private set; }
 
-    public DateTime? BirthDate { get; private set; }
+    [Description("出生日期")]
+    public DateTimeOffset? BirthDate { get; private set; }
 
-    // 数据库映射字段
-    [MaxLength(200)] public string? Street { get; private set; }
+// 数据库映射字段
+    [MaxLength(200)]
+    [Description("街道地址")]
+    public string? Street { get; private set; }
 
-    [MaxLength(100)] public string? City { get; private set; }
+    [MaxLength(100)]
+    [Description("城市")]
+    public string? City { get; private set; }
 
-    [MaxLength(100)] public string? Province { get; private set; }
+    [MaxLength(100)]
+    [Description("省份/州")]
+    public string? Province { get; private set; }
 
-    [MaxLength(100)] public string? Country { get; private set; }
+    [MaxLength(100)]
+    [Description("国家")]
+    public string? Country { get; private set; }
 
-    [MaxLength(20)] public string? PostalCode { get; private set; }
+    [MaxLength(20)]
+    [Description("邮政编码")]
+    public string? PostalCode { get; private set; }
 
     // 不映射到数据库的值对象属性
     [NotMapped]
@@ -45,7 +60,7 @@ public class UserProfile : Entity, ISoftDeletable
 
     // 软删除属性
     public bool IsDeleted { get; set; }
-    public DateTime? DeletedOnUtc { get; set; }
+    public DateTimeOffset? DeletedOnUtc { get; set; }
 
     // 私有构造函数供 EF Core 使用
     private UserProfile()
@@ -53,7 +68,7 @@ public class UserProfile : Entity, ISoftDeletable
     }
 
     // 领域构造函数
-    public UserProfile(Guid userId, string? realName = null, string? gender = null, DateTime? birthDate = null)
+    public UserProfile(Guid userId, string? realName = null, string? gender = null, DateTimeOffset? birthDate = null)
     {
         UserId = userId;
         RealName = realName;
@@ -62,7 +77,7 @@ public class UserProfile : Entity, ISoftDeletable
     }
 
     // 领域行为
-    public void UpdateBasicInfo(string? realName, string? gender, DateTime? birthDate)
+    public void UpdateBasicInfo(string? realName, string? gender, DateTimeOffset? birthDate)
     {
         RealName = realName;
         Gender = gender;

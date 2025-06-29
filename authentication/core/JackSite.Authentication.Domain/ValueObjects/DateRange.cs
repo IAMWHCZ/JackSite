@@ -2,13 +2,13 @@ namespace JackSite.Authentication.ValueObjects;
 
 public class DateRange : ValueObject
 {
-    public DateTime StartDate { get; }
-    public DateTime EndDate { get; }
+    public DateTimeOffset StartDate { get; }
+    public DateTimeOffset EndDate { get; }
     
     // 私有构造函数供EF Core使用
     private DateRange() { }
     
-    public DateRange(DateTime startDate, DateTime endDate)
+    public DateRange(DateTimeOffset startDate, DateTimeOffset endDate)
     {
         if (endDate < startDate)
             throw new ArgumentException("End date must be greater than or equal to start date");
@@ -18,17 +18,17 @@ public class DateRange : ValueObject
     }
     
     // 创建新实例的方法（保持不可变性）
-    public DateRange WithStartDate(DateTime newStartDate) => 
+    public DateRange WithStartDate(DateTimeOffset newStartDate) => 
         new DateRange(newStartDate, EndDate > newStartDate ? EndDate : newStartDate);
         
-    public DateRange WithEndDate(DateTime newEndDate) => 
+    public DateRange WithEndDate(DateTimeOffset newEndDate) => 
         new DateRange(StartDate < newEndDate ? StartDate : newEndDate, newEndDate);
     
     // 计算日期范围的天数
     public int GetDays() => (EndDate - StartDate).Days + 1;
     
     // 检查日期是否在范围内
-    public bool Includes(DateTime date) => 
+    public bool Includes(DateTimeOffset date) => 
         date >= StartDate && date <= EndDate;
     
     // 检查两个日期范围是否重叠

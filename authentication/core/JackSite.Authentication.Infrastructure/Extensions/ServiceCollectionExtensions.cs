@@ -1,14 +1,12 @@
 using JackSite.Authentication.Abstractions;
 using JackSite.Authentication.Abstractions.Repositories;
-using JackSite.Authentication.Abstractions.Services;
-using JackSite.Authentication.Common;
 using JackSite.Authentication.Infrastructure.Data.Contexts;
 using JackSite.Authentication.Infrastructure.Options;
 using JackSite.Authentication.Infrastructure.Services;
 using JackSite.Authentication.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using Minio;
-using StackExchange.Redis;
+
 using AuthenticationDbContext = JackSite.Authentication.Infrastructure.Data.Contexts.AuthenticationDbContext;
 
 namespace JackSite.Authentication.Infrastructure.Extensions;
@@ -22,7 +20,6 @@ public static class ServiceCollectionExtensions
         configuration.GetSection("SnowflakeId").Bind(snowflakeIdOption);
         configuration.GetSection("MongoDB").Bind(mongoDbOption);
         services
-            .AddSingleton(new SnowflakeIdGenerator(snowflakeIdOption.MachineId,snowflakeIdOption.DatacenterId))
             .AddSingleton<MongoDbContext>()
             .AddAllRepositories()
             .AddEntityFrameworkCore(configuration)

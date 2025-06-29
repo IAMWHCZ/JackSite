@@ -31,7 +31,7 @@ public interface ICommandHandler<in TCommand, TResult> : IRequestHandler<TComman
 /// </summary>
 public record CommandBase : ICommand
 {
-    public DateTime Timestamp { get; } = DateTime.UtcNow;
+    public DateTimeOffset Timestamp { get; } = DateTimeOffset.UtcNow;
 }
 
 /// <summary>
@@ -40,6 +40,6 @@ public record CommandBase : ICommand
 /// <typeparam name="TResult">命令执行后返回的结果类型</typeparam>
 public record CommandBase<TResult> : ICommand<TResult>
 {
-    public DateTime Timestamp { get; } = DateTime.UtcNow;
+    public DateTimeOffset Timestamp { get; } = DateTimeOffset.UtcNow;
 }
 

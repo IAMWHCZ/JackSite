@@ -27,7 +27,7 @@ public class UserBasic : Entity, ISoftDeletable, IAggregateRoot
 
     [Required] public bool IsDeleted { get; set; }
 
-    public DateTime? DeletedOnUtc { get; set; }
+    public DateTimeOffset? DeletedOnUtc { get; set; }
 
     // 新增属性
     [MaxLength(20)]
@@ -42,7 +42,7 @@ public class UserBasic : Entity, ISoftDeletable, IAggregateRoot
     [Column(TypeName = "varchar(255)")]
     public string? AvatarUrl { get; private set; }
 
-    [Required] public DateTime LastLoginTime { get; private set; }
+    [Required] public DateTimeOffset LastLoginTime { get; private set; }
 
     [MaxLength(50)]
     [Column(TypeName = "varchar(50)")]
@@ -50,7 +50,7 @@ public class UserBasic : Entity, ISoftDeletable, IAggregateRoot
 
     [Required] public int LoginCount { get; private set; }
 
-    [Required] public DateTime RegisterTime { get; private set; } = DateTime.UtcNow;
+    [Required] public DateTimeOffset RegisterTime { get; private set; } = DateTimeOffset.UtcNow;
 
     [Required] public UserStatus Status { get; private set; } = UserStatus.Inactive;
 
@@ -94,8 +94,8 @@ public class UserBasic : Entity, ISoftDeletable, IAggregateRoot
         Email = email;
         PasswordHash = passwordHash;
         Salt = salt;
-        RegisterTime = DateTime.UtcNow;
-        LastLoginTime = DateTime.UtcNow;
+        RegisterTime = DateTimeOffset.UtcNow;
+        LastLoginTime = DateTimeOffset.UtcNow;
     }
 
     // 领域行为
@@ -130,7 +130,7 @@ public class UserBasic : Entity, ISoftDeletable, IAggregateRoot
             return;
 
         IsDeleted = true;
-        DeletedOnUtc = DateTime.UtcNow;
+        DeletedOnUtc = DateTimeOffset.UtcNow;
     }
 
     public void Restore()

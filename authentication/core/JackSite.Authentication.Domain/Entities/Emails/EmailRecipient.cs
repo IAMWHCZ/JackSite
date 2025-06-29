@@ -4,50 +4,25 @@ namespace JackSite.Authentication.Entities.Emails;
 
 public class EmailRecipient : DraftableEntity
 {
-    /// <summary>
-    /// 收件人邮箱
-    /// </summary>
-    public string RecipientEmail { get; set; } = null!;
-    
-    /// <summary>
-    /// 收件人名称
-    /// </summary>
-    public string? RecipientName { get; set; }
-    
-    /// <summary>
-    /// 收件人类型（主收件人、抄送、密送）
-    /// </summary>
-    public RecipientType Type { get; set; } = RecipientType.To;
-    
-    /// <summary>
-    /// 发送状态
-    /// </summary>
-    public DeliveryStatus Status { get; set; } = DeliveryStatus.Pending;
-    
-    /// <summary>
-    /// 送达时间
-    /// </summary>
-    public DateTime? DeliveredTime { get; set; }
-    
-    /// <summary>
-    /// 阅读时间
-    /// </summary>
-    public DateTime? ReadTime { get; set; }
-    
-    /// <summary>
-    /// 跟踪ID（用于跟踪邮件阅读和点击）
-    /// </summary>
-    public string? TrackingId { get; set; }
-    
-    /// <summary>
-    /// 送达失败原因
-    /// </summary>
-    public string? FailureReason { get; set; }
-    
+    [Description("收件人邮箱")] public string RecipientEmail { get; set; } = null!;
+
+    [Description("收件人名称")] public string? RecipientName { get; set; }
+
+    [Description("收件人类型")] public RecipientType Type { get; set; } = RecipientType.To;
+
+    [Description("发送状态")] public DeliveryStatus Status { get; set; } = DeliveryStatus.Pending;
+
+    [Description("送达时间")] public DateTimeOffset? DeliveredTime { get; set; }
+
+    [Description("阅读时间")] public DateTimeOffset? ReadTime { get; set; }
+
+    [Description("跟踪ID")] public string? TrackingId { get; set; }
+
+    [Description("送达失败原因")] public string? FailureReason { get; set; }
+
+    [Description("邮件记录ID")]
     public Guid EmailRecordId { get; set; }
-    
+
+    [Description("关联的邮件基础信息")]
     public virtual EmailBasic EmailBasic { get; set; } = null!;
 }
-
-
-

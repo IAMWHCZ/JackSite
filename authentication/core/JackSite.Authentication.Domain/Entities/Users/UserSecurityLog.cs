@@ -3,46 +3,57 @@ namespace JackSite.Authentication.Entities.Users;
 public class UserSecurityLog : Entity
 {
     [Required]
+    [Description("用户ID")]
     public Guid UserId { get; private set; }
-    
+
     [Required]
     [MaxLength(100)]
     [Column(TypeName = "varchar(100)")]
+    [Description("安全操作类型")]
     public string Action { get; private set; } = string.Empty;
-    
+
     [MaxLength(50)]
     [Column(TypeName = "varchar(50)")]
+    [Description("IP地址")]
     public string? IpAddress { get; private set; }
-    
+
     [MaxLength(500)]
     [Column(TypeName = "varchar(500)")]
+    [Description("用户代理字符串")]
     public string? UserAgent { get; private set; }
-    
+
     [MaxLength(50)]
     [Column(TypeName = "varchar(50)")]
+    [Description("浏览器")]
     public string? Browser { get; private set; }
-    
+
     [MaxLength(50)]
     [Column(TypeName = "varchar(50)")]
+    [Description("操作系统")]
     public string? OperatingSystem { get; private set; }
-    
+
     [MaxLength(20)]
     [Column(TypeName = "varchar(20)")]
+    [Description("设备类型")]
     public string? DeviceType { get; private set; }
-    
+
     [MaxLength(100)]
     [Column(TypeName = "varchar(100)")]
+    [Description("地理位置")]
     public string? Location { get; private set; }
-    
+
     [Required]
+    [Description("是否成功")]
     public bool IsSuccessful { get; private set; }
-    
+
     [MaxLength(200)]
     [Column(TypeName = "varchar(200)")]
+    [Description("失败原因")]
     public string? FailureReason { get; private set; }
-    
+
     [Required]
-    public DateTime Timestamp { get; private set; }
+    [Description("时间戳")]
+    public DateTimeOffset Timestamp { get; private set; }
     
     // 导航属性
     public virtual UserBasic User { get; private set; } = null!;
@@ -68,7 +79,7 @@ public class UserSecurityLog : Entity
         UserAgent = userAgent;
         IsSuccessful = isSuccessful;
         FailureReason = failureReason;
-        Timestamp = DateTime.UtcNow;
+        Timestamp = DateTimeOffset.UtcNow;
         
         // 解析用户代理字符串
         if (!string.IsNullOrWhiteSpace(userAgent))

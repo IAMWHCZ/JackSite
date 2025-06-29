@@ -184,16 +184,16 @@ export const routeTree = rootRoute
       "filePath": "index.ts"
     },
     "/$404": {
-      "filePath": "$404.tsx"
+      "filePath": "$404.ts"
     },
     "/login": {
-      "filePath": "login.tsx"
+      "filePath": "login.ts"
     },
     "/profile": {
       "filePath": "profile.ts"
     },
     "/register": {
-      "filePath": "register.tsx"
+      "filePath": "register.ts"
     },
     "/user": {
       "filePath": "user.ts"

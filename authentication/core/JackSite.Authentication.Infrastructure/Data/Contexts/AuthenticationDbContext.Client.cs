@@ -1,4 +1,5 @@
 using JackSite.Authentication.Entities.Clients;
+using JackSite.Authentication.Enums.Clients;
 
 namespace JackSite.Authentication.Infrastructure.Data.Contexts;
 
@@ -30,8 +31,7 @@ public partial class AuthenticationDbContext
                 
             entity.Property(e => e.Protocol)
                 .IsRequired()
-                .HasMaxLength(50)
-                .HasDefaultValue("openid-connect");
+                .HasDefaultValue(ClientProtocolType.OpenIdConnect);
                 
             // 配置与关联实体的关系
             entity.HasMany(e => e.RedirectUris)
@@ -65,7 +65,7 @@ public partial class AuthenticationDbContext
         {
             entity.HasKey(e => e.Id);
             
-            entity.Property(e => e.Scope)
+            entity.Property(e => e.ScopeName)
                 .IsRequired()
                 .HasMaxLength(100);
         });

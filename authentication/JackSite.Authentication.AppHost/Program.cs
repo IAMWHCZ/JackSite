@@ -18,7 +18,10 @@ var seq = builder.AddSeq("seq")
     .WithEnvironment("ACCEPT_EULA", "Y")
     .WithDataVolume();
 
-var garnet = builder.AddGarnet("garnet");
+var garnet = builder.AddGarnet("garnet")
+    .WithEndpoint(name: "garnet", port: 6379, targetPort: 6379)
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithDataVolume();
 
 var db = mysql.AddDatabase("JackSiteAuthenticationDB");
 
