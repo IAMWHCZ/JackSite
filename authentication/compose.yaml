@@ -1,6 +1,0 @@
-﻿services:
-  jacksite.authentication.webapi:
-    image: jacksite.authentication.webapi
-    build:
-      context: .
-      dockerfile: core/JackSite.Authentication.WebAPI/Dockerfile

@@ -1,7 +1,0 @@
-﻿services:
-  jacksite.http:
-    image: jacksite.http
-    build:
-      context: .
-      dockerfile: JackSite.Http/Dockerfile
-
