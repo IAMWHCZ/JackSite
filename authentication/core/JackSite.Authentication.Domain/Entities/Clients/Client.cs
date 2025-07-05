@@ -2,7 +2,7 @@ using JackSite.Authentication.Enums.Clients;
 
 namespace JackSite.Authentication.Entities.Clients;
 
-public class ClientBasic : Entity
+public class Clients : Entity
 {
     [Description("客户端名称")]
     public string Name { get; set; } = null!; // 显示名称
