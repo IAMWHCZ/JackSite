@@ -308,4 +308,7 @@ ci: CI/CD 相关
 - [部署指南](./docs/deployment.md)
 - [开发指南](./docs/development.md)
 - [架构设计](./docs/architecture.md)
-- [架构设计](./docs/architecture.md)
+
+---
+
+**[English](./README.en.md)** | 中文
