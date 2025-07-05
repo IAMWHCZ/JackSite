@@ -1,1 +1,69 @@
-**/wwwroot/libs/** linguist-vendored
+# Git attributes for proper line ending handling
+
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# TypeScript/JavaScript files
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.vue text eol=lf
+*.json text eol=lf
+
+# Configuration files
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.ini text eol=lf
+*.cfg text eol=lf
+*.conf text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+
+# Web files
+*.html text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+*.less text eol=lf
+
+# Shell scripts (always use LF)
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Windows scripts (always use CRLF)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.otf binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
+*.dmg binary
+*.exe binary
+*.msi binary
+
+# Fonts
+*.woff linguist-generated=true
+*.woff2 linguist-generated=true
+
+# Generated files
+dist/* linguist-generated=true
+build/* linguist-generated=true
+coverage/* linguist-generated=true
