@@ -1,16 +1,18 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
-  "devDependencies": {
-    "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
-    "turbo": "^2.5.4"
-  },
-  "packageManager": "pnpm@8.15.6",
-  "name": "with-vite-react"
+    "private": true,
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "turbo run dev",
+        "lint": "turbo run lint",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "new": "cd apps/ && pnpm create vite@latest",
+        "clear": "rimraf node_modules && rimraf packages/*/node_modules && rimraf apps/*/node_modules && rimraf .turbo && rimraf .next && rimraf dist && rimraf .cache"
+    },
+    "devDependencies": {
+        "eslint": "^8.57.0",
+        "prettier": "^3.2.5",
+        "turbo": "^2.5.4"
+    },
+    "packageManager": "pnpm@8.15.6",
+    "name": "jacksite"
 }

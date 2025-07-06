@@ -1,8 +1,7 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 import "./style.css";
 import typescriptLogo from "/typescript.svg";
-import { Header, Counter } from "@repo/ui";
+import { Button } from "@jacksite/ui";
 
 const App = () => (
   <div>
@@ -16,10 +15,7 @@ const App = () => (
         alt="TypeScript logo"
       />
     </a>
-    <Header title="Web" />
-    <div className="card">
-      <Counter />
-    </div>
+    <Button>123</Button>
   </div>
 );
 
